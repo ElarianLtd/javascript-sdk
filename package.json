@@ -1,17 +1,29 @@
 {
-  "name": "@elarian/sdk",
+  "name": "elarian",
   "version": "0.0.0",
   "description": "Elrian JavaScript SDK",
   "main": "index.js",
   "scripts": {
     "test": "nyc mocha ./test"
   },
-  "author": "Salama Balekage <sbalekage@elarian.com>",
+  "author": "Elarian <sdk@elarian.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ElarianLtd/javascript-sdk"
+  },
+  "keywords": [
+    "africastalking",
+    "elarian",
+    "sms",
+    "ussd",
+    "voice",
+    "customer",
+    "payments"
+  ],
   "dependencies": {
     "@grpc/proto-loader": "^0.5.5",
     "grpc": "^1.24.3",
-    "grpc-web": "^1.2.0",
     "lodash": "^4.17.19",
     "validate.js": "^0.13.1"
   },

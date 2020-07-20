@@ -1,0 +1,396 @@
+syntax = "proto3";
+
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "common.proto";
+
+package com.elarian.hera.proto;
+
+service GrpcWebService {
+  rpc AuthToken (AuthTokenRequest) returns (AuthTokenReply) {}
+
+  rpc GetCustomerState (GetCustomerStateRequest) returns (GetCustomerStateReply) {}
+  rpc AdoptCustomerState (AdoptCustomerStateRequest) returns (UpdateCustomerStateReply) {}
+  
+  rpc AddCustomerReminder (AddCustomerReminderRequest) returns (UpdateCustomerStateReply) {}
+  rpc AddCustomerReminderByTag (AddCustomerReminderTagRequest) returns (TagCommandReply) {}
+  rpc CancelCustomerReminder (CancelCustomerReminderRequest) returns (UpdateCustomerStateReply) {}
+  rpc CancelCustomerReminderByTag (CancelCustomerReminderTagRequest) returns (TagCommandReply) {}
+  
+  rpc UpdateCustomerTag (UpdateCustomerTagRequest) returns (UpdateCustomerStateReply) {}
+  rpc DeleteCustomerTag (DeleteCustomerTagRequest) returns (UpdateCustomerStateReply) {}
+
+  rpc UpdateCustomerSecondaryId (UpdateCustomerSecondaryIdRequest) returns (UpdateCustomerStateReply) {}
+  rpc DeleteCustomerSecondaryId (DeleteCustomerSecondaryIdRequest) returns (UpdateCustomerStateReply) {}
+
+  rpc UpdateCustomerMetadata (UpdateCustomerMetadataRequest) returns (UpdateCustomerStateReply) {}
+  rpc DeleteCustomerMetadata (DeleteCustomerMetadataRequest) returns (UpdateCustomerStateReply) {}
+
+  rpc SendMessage (SendMessageRequest) returns (SendMessageReply) {}
+  rpc SendMessageByTag (SendMessageTagRequest) returns (TagCommandReply) {}
+  rpc ReplyToMessage (ReplyToMessageRequest) returns (SendMessageReply) {}
+  rpc MessagingConsent (MessagingConsentRequest) returns (MessagingConsentReply) {}
+
+  rpc SendPayment (SendPaymentRequest) returns (SendPaymentReply) {}
+  rpc CheckoutPayment (CheckoutPaymentRequest) returns (CheckoutPaymentReply) {}
+
+  rpc MakeVoiceCall (MakeVoiceCallRequest) returns (MakeVoiceCallReply) {}
+  
+  rpc StreamNotifications(StreamNotificationRequest) returns (stream WebhookRequest) {}
+  
+  rpc SendWebhookResponse(WebhookResponse) returns (WebhookResponseReply) {}
+}
+
+message AuthTokenRequest {
+  string app_id = 1;
+}
+
+message AuthTokenReply {
+  string token                      = 1;
+  google.protobuf.Duration lifetime = 2;
+}
+
+message GetCustomerStateRequest {
+  string app_id = 1;
+  oneof customer {
+    string  customer_id            = 2;
+    CustomerNumber customer_number = 3;
+  }
+}
+
+message GetCustomerStateReply {
+  bool status                 = 1;
+  string description          = 2;
+  CustomerStateReplyData data = 3;
+}
+
+message CustomerStateReplyData {
+  MessagingState messaging_state       = 1;
+  UssdState ussd_state                 = 2;
+  VoiceState voice_state               = 3;
+  PaymentState payment_state           = 4;
+  repeated CustomerIndex tags          = 5;
+  map<string, string> metadata         = 6;
+  repeated CustomerIndex secondary_ids = 7;
+}
+
+message AdoptCustomerStateRequest {
+  string app_id      = 1;
+  string customer_id = 2;
+  oneof other_customer {
+    string other_customer_id             = 3;
+    CustomerNumber other_customer_number = 4;
+  }
+}
+
+message AddCustomerReminderRequest {
+  string app_id = 1;
+  oneof customer {
+    string customer_id             = 2;
+    CustomerNumber customer_number = 3;
+  }
+  CustomerReminder reminder = 5;
+}
+
+message AddCustomerReminderTagRequest {
+  string app_id             = 1;
+  IndexMapping tag          = 2;
+  CustomerReminder reminder = 3;
+}
+
+message CancelCustomerReminderRequest {
+  string app_id = 1;
+  oneof customer {
+    string customer_id             = 2;
+    CustomerNumber customer_number = 3;
+  }
+  string product_id = 4;
+  string key        = 5;
+}
+
+message CancelCustomerReminderTagRequest {
+  string app_id     = 1;
+  IndexMapping tag  = 2;
+  string product_id = 3;
+  string key        = 4;
+}
+
+message UpdateCustomerTagRequest {
+  string app_id = 1;
+  oneof customer {
+    string customer_id             = 2;
+    CustomerNumber customer_number = 3;
+  }
+  repeated CustomerIndex tags = 4;    
+}
+
+message DeleteCustomerTagRequest {
+  string app_id = 1;
+  oneof customer {
+    string customer_id             = 2;
+    CustomerNumber customer_number = 3;
+  }
+  repeated string tags = 4;
+}
+
+message UpdateCustomerSecondaryIdRequest {
+  string appId = 1;
+  oneof customer {
+    string customer_id             = 2;
+    CustomerNumber customer_number = 3;
+  }
+  repeated CustomerIndex secondary_ids = 4;
+}
+
+message DeleteCustomerSecondaryIdRequest {
+  string app_id = 1;
+  oneof customer {
+    string customer_id             = 2;
+    CustomerNumber customer_number = 3;
+  }
+  repeated IndexMapping secondary_ids = 4;  
+}
+
+message UpdateCustomerMetadataRequest {
+  string app_id = 1;
+  oneof customer {
+    string customer_id             = 2;
+    CustomerNumber customer_number = 3;
+  }
+  map<string, string> metadata = 4;
+}
+
+message DeleteCustomerMetadataRequest {
+  string app_id = 1;
+  oneof customer {
+    string customer_id             = 2;
+    CustomerNumber customer_number = 3;
+  }
+  repeated string metadata = 4;
+}
+
+message SendMessageRequest {
+  string app_id     = 1;
+  string product_id = 2;
+  oneof customer {
+    string customerId              = 3;
+    CustomerNumber customer_number = 4;    
+  }
+  MessagingChannelNumber channel_number = 5;
+  CustomerMessageBody body              = 6;   
+}
+
+message SendMessageTagRequest {
+  string app_id                         = 1;
+  string product_id                     = 2;
+  IndexMapping tag                      = 3;
+  MessagingChannelNumber channel_number = 4;
+  CustomerMessageBody body              = 5;   
+}
+
+message ReplyToMessageRequest {
+  string app_id              = 1;
+  string product_id          = 2;
+  string customer_id         = 3;
+  string reply_to_message_id = 4;
+  CustomerMessageBody body   = 5;   
+}
+
+message SendMessageReply {
+  MessageDeliveryStatus status            = 1;
+  string description                      = 2;
+  google.protobuf.StringValue message_id  = 3;
+  google.protobuf.StringValue customer_id = 4;
+}
+
+message MessagingConsentRequest {
+  string app_id                         = 1;
+  oneof customer {
+    string customer_id                  = 2;
+    CustomerNumber customer_number      = 3;
+  }
+  MessagingChannelNumber channel_number = 4;
+  MessagingConsentAction action         = 5;
+}
+
+message MessagingConsentReply {
+  MessagingConsentStatus status           = 1;
+  string description                      = 2;
+  google.protobuf.StringValue customer_id = 3;
+}
+
+message SendPaymentRequest {
+  string app_id     = 1;
+  string product_id = 2;
+  oneof customer {
+    string customer_id             = 3;
+    CustomerNumber customer_number = 4;
+  }
+  PaymentChannelNumber channel_number = 5;
+  Cash value                          = 6;
+}
+
+message SendPaymentReply {
+  PaymentStatus status                       = 1;
+  string description                         = 2;
+  google.protobuf.StringValue transaction_id = 3;
+  google.protobuf.StringValue customer_id    = 4;
+}
+
+message CheckoutPaymentRequest {
+  string app_id     = 1;
+  string product_id = 2;
+  oneof customer {
+    string customer_id             = 3;
+    CustomerNumber customer_number = 4;
+  }
+  PaymentChannelNumber channel_number = 5;
+  Cash value                          = 6;
+}
+
+message CheckoutPaymentReply {
+  PaymentStatus status                       = 1;
+  string description                         = 2;
+  google.protobuf.StringValue transaction_id = 3;
+  google.protobuf.StringValue customer_id    = 4;
+}
+
+message MakeVoiceCallRequest {
+  string app_id          = 1;
+  string product_id      = 2;
+  oneof customer {
+    string customer_id             = 3;
+    CustomerNumber customer_number = 4;
+  }  
+  VoiceChannelNumber channel_number = 5;
+}
+
+message MakeVoiceCallReply {
+  VoiceCallStatus status                  = 1;
+  string description                      = 2;
+  google.protobuf.StringValue session_id  = 3;
+  google.protobuf.StringValue customer_id = 4;
+}
+
+message UpdateCustomerStateReply {
+  bool status        = 1;
+  string description = 2;
+}
+
+message TagCommandReply {
+  bool status                         = 1;
+  string description                  = 2;
+  google.protobuf.StringValue work_id = 3;
+}
+
+message StreamNotificationRequest {
+  string app_id = 1;
+}
+
+message MessagingConsentStatusNotification {
+  string customer_id                    = 1;
+  CustomerNumber customer_number        = 2;
+  MessagingChannelNumber channel_number = 3;
+  MessagingConsentStatus status         = 4;
+}
+
+message MessagingSessionStatusNotification {
+  string customer_id                    = 1;
+  CustomerNumber customer_number        = 2;
+  MessagingChannelNumber channel_number = 3;
+  google.protobuf.Timestamp expiration  = 4;
+  MessagingSessionStatus status         = 5;
+}
+
+message ReminderNotification {
+  string product_id                   = 1;
+  string customer_id                  = 2;
+  CustomerReminder reminder           = 3;
+  CustomerIndex tag                   = 4;
+  google.protobuf.StringValue work_id = 5;
+}
+
+message ReceivedMessageNotification {
+  string product_id                     = 1;
+  string customer_id                    = 2;
+  string message_id                     = 3;
+  CustomerNumber customer_number        = 5;
+  MessagingChannelNumber channel_number = 6;
+  google.protobuf.StringValue text      = 7;
+  repeated MediaMessageBody media       = 8;
+  LocationMessageBody location          = 9;
+}
+
+message MessageStatusNotification {
+  string product_id            = 1;
+  string customer_id           = 2;
+  string message_id            = 3;
+  MessageDeliveryStatus status = 4;
+}
+
+message UssdSessionNotification {
+  string product_id                 = 1;
+  string customer_id                = 2;
+  string session_id                 = 3;
+  string channel_number             = 4;
+  string customer_number            = 5;
+  google.protobuf.StringValue input = 6;
+}
+
+message VoiceCallNotification {
+  string product_id                 = 1;
+  string customer_id                = 2;
+  string session_id                 = 3;
+  VoiceChannelNumber channel_number = 4;
+  CustomerNumber customer_number    = 5;
+  CustomerEventDirection direction  = 6;
+  VoiceCallHopInput input           = 7;
+  google.protobuf.Duration duration = 8;
+  Cash cost                         = 9;
+}  
+
+message ReceivedPaymentNotification {
+  string product_id                   = 1;
+  string customer_id                  = 2;
+  string transaction_id               = 3;
+  CustomerNumber customer_number      = 4;
+  PaymentChannelNumber channel_number = 5;
+  Cash value                          = 6;
+  PaymentStatus status                = 7;  
+}
+
+message PaymentStatusNotification {
+  string product_id     = 1;
+  string customer_id    = 2;
+  string transaction_id = 3;
+  PaymentStatus status  = 4;
+}
+
+message WebhookRequest {
+  string app_id                       = 1;
+  google.protobuf.Timestamp timestamp = 2;
+  oneof entry {
+    MessagingConsentStatusNotification messaging_consent_status = 3;
+    MessagingSessionStatusNotification messaging_session_status = 4;
+    ReminderNotification reminder                               = 5;
+    ReceivedMessageNotification received_message                = 6;
+    MessageStatusNotification message_status                    = 7;
+    UssdSessionNotification ussd_session                        = 8;
+    VoiceCallNotification voice_call                            = 9;
+    ReceivedPaymentNotification received_payment                = 10;
+    PaymentStatusNotification payment_status                    = 11;    
+  }    
+}
+
+message WebhookResponse {
+  string app_id                               = 1;
+  string session_id                           = 2;
+  UssdMenu ussd_menu                          = 3;
+  repeated VoiceCallAction voice_call_actions = 4;
+}
+
+message WebhookResponseReply {
+  bool status        = 1;
+  string description = 2;
+}

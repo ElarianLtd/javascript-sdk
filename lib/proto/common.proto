@@ -1,0 +1,462 @@
+syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+
+package com.elarian.hera.proto;
+
+enum MessagingChannel {
+  MESSAGING_CHANNEL_UNSPECIFIED  = 0;
+  MESSAGING_CHANNEL_GOOGLE_RCS   = 1;
+  MESSAGING_CHANNEL_FB_MESSENGER = 2;
+  MESSAGING_CHANNEL_SMS          = 3;
+  MESSAGING_CHANNEL_TELEGRAM     = 4;
+  MESSAGING_CHANNEL_WHATSAPP     = 5;
+}
+
+enum PaymentChannel {
+  PAYMENT_CHANNEL_UNSPECIFIED = 0;
+  PAYMENT_CHANNEL_TELCO       = 1;
+}
+
+enum VoiceChannel {
+  VOICE_CHANNEL_UNSPECIFIED = 0;
+  VOICE_CHANNEL_TELCO       = 1;
+}
+
+enum CustomerNumberProvider {
+  CUSTOMER_NUMBER_PROVIDER_UNSPECIFIED = 0;
+  CUSTOMER_NUMBER_PROVIDER_FACEBOOK    = 1;
+  CUSTOMER_NUMBER_PROVIDER_TELCO       = 2;
+  CUSTOMER_NUMBER_PROVIDER_TELEGRAM    = 3;
+}
+
+enum MediaType {
+  MEDIA_TYPE_UNSPECIFIED = 0;
+  MEDIA_TYPE_IMAGE       = 1;
+  MEDIA_TYPE_AUDIO       = 2;
+  MEDIA_TYPE_VIDEO       = 3;
+  MEDIA_TYPE_DOCUMENT    = 4;
+  MEDIA_TYPE_VOICE       = 5;
+  MEDUA_TYPE_STICKER     = 6;
+}
+
+enum MessagingConsentAction {
+  MESSAGING_CONSENT_ACTION_UNSPECIFIED = 0;
+  MESSAGING_CONSENT_ACTION_OPT_IN      = 1;
+  MESSAGING_CONSENT_ACTION_OPT_OUT     = 2;
+}
+
+enum MessagingConsentStatus {
+  MESSAGING_CONSENT_STATUS_UNSPECIFIED                = 0;
+  MESSAGING_CONSENT_STATUS_OPT_IN_REQUEST_SENT        = 101;
+  MESSAGING_CONSENT_STATUS_OPT_IN_COMPLETED           = 300;
+  MESSAGING_CONSENT_STATUS_OPT_OUT_COMPLETED          = 301;
+  MESSAGING_CONSENT_STATUS_INVALID_CHANNEL_NUMBER     = 401;
+  MESSAGING_CONSENT_STATUS_DECOMMISSIONED_CUSTOMER_ID = 402;
+  MESSAGING_CONSENT_STATUS_APPLICATION_ERROR          = 501;
+}
+
+enum MessagingSessionStatus {
+  MESSAGING_SESSION_STATUSN_UNSPECIFIED = 0;
+  MESSAGING_SESSION_STATUSN_ACTIVE      = 100;
+  MESSAGING_SESSION_STATUSN_EXPIRED     = 200;
+}
+
+enum CustomerEventDirection {
+  CUSTOMER_EVENT_DIRECTION_UNSPECIFIED = 0;
+  CUSTOMER_EVENT_DIRECTION_INBOUND     = 1;
+  CUSTOMER_EVENT_DIRECTION_OUTBOUND    = 2;
+}
+
+enum CustomerRequestOrigin {
+  CUSTOMER_REQUEST_ORIGIN_UNSPECIFIED  = 0;
+  CUSTOMER_REQUEST_ORIGIN_API_REQUEST  = 1;
+  CUSTOMER_REQUEST_ORIGIN_CUSTOMER_TAG = 2;
+} 
+
+enum MessageDeliveryStatus {
+  MESSAGE_DELIVERY_STATUS_UNSEPCIFIED = 0;
+  MESSAGE_DELIVERY_STATUS_SENT                        = 101;
+  MESSAGE_DELIVERY_STATUS_DELIVERED                   = 300;
+  MESSAGE_DELIVERY_STATUS_READ                        = 301;
+  MESSAGE_DELIVERY_STATUS_RECEIVED                    = 302;
+  MESSAGE_DELIVERY_STATUS_FAILED                      = 400;
+  MESSAGE_DELIVERY_STATUS_NO_CONSENT                  = 401;
+  MESSAGE_DELIVERY_STATUS_NO_CAPABILITY               = 402;
+  MESSAGE_DELIVERY_STATUS_EXPIRED                     = 403;
+  MESSAGE_DELIVERY_STATUS_ONLY_TEMPLATE_ALLOWED       = 404;
+  MESSAGE_DELIVERY_STATUS_INVALID_CHANNEL_NUMBER      = 405;
+  MESSAGE_DELIVERY_STATUS_NOT_SUPPORTED               = 406;
+  MESSAGE_DELIVERY_STATUS_INVALID_REPLY_TO_MESSAGE_ID = 407;
+  MESSAGE_DELIVERY_STATUS_INVALID_CUSTOMER_ID         = 408;
+  MESSAGE_DELIVERY_STATUS_DUPLICATE_REQUEST           = 409;
+  MESSAGE_DELIVERY_STATUS_TAG_NOT_FOUND               = 410;
+  MESSAGE_DELIVERY_STATUS_CUSTOMER_NUMBER_NOT_FOUND   = 411;
+  MESSAGE_DELIVERY_STATUS_DECOMMISSIONED_CUSTOMERID   = 412;
+  MESSAGE_DELIVERY_STATUS_INVALID_REQUEST             = 413;
+  MESSAGE_DELIVERY_STATUS_APPLICATION_ERROR           = 501;    
+}
+
+enum VoiceCallHangupCause {
+  VOICE_CALL_HANGUP_CAUSE_UNSPECIFIED              = 0;
+  VOICE_CALL_HANGUP_CAUSE_UNALLOCATED_NUMBER       = 1;
+  VOICE_CALL_HANGUP_CAUSE_USER_BUSY                = 17;
+  VOICE_CALL_HANGUP_CAUSE_NORMAL_CLEARING          = 16;
+  VOICE_CALL_HANGUP_CAUSE_NO_USER_RESPONSE         = 18;
+  VOICE_CALL_HANGUP_CAUSE_NO_ANSWER                = 19;
+  VOICE_CALL_HANGUP_CAUSE_SUBSCRIBER_ABSENT        = 20;
+  VOICE_CALL_HANGUP_CAUSE_CALL_REJECTED            = 21;
+  VOICE_CALL_HANGUP_CAUSE_NORMAL_UNSPECIFIED       = 31;
+  VOICE_CALL_HANGUP_CAUSE_NORMAL_TEMPORARY_FAILURE = 41;
+  VOICE_CALL_HANGUP_CAUSE_SERVICE_UNAVAILABLE      = 63;
+  VOICE_CALL_HANGUP_CAUSE_RECOVERY_ON_TIMER_EXPIRE = 102;
+  VOICE_CALL_HANGUP_CAUSE_ORIGINATOR_CANCEL        = 487;
+  VOICE_CALL_HANGUP_CAUSE_LOSE_RACE                = 502;
+  VOICE_CALL_HANGUP_CAUSE_USER_NOT_REGISTERED      = 606;
+}
+
+enum VoiceCallTransferState {
+  VOICE_CALL_TRANSFER_STATE_UNSPECIFIED      = 0;
+  VOICE_CALL_TRANSFER_STATE_ACTIVE           = 1;
+  VOICE_CALL_TRANSFER_STATE_ACTIVE_COMPLETED = 2;
+  VOICE_CALL_TRANSFER_STATE_CALLER_HANGUP    = 3;
+  VOICE_CALL_TRANSFER_STATE_CALLEE_HANGUP    = 4;
+}
+
+enum VoiceCallStatus {
+  VOICE_CALL_STATUS_UNSPECIFIED               = 0;
+  VOICE_CALL_STATUS_QUEUED                    = 100;
+  VOICE_CALL_STATUS_ANSWERED                  = 101;
+  VOICE_CALL_STATUS_RINGING                   = 102;
+  VOICE_CALL_STATUS_ACTIVE                    = 200;
+  VOICE_CALL_STATUS_DIALING                   = 201;
+  VOICE_CALL_STATUS_DIAL_COMPLETED            = 202;
+  VOICE_CALL_STATUS_BRIDGED                   = 203;
+  VOICE_CALL_STATUS_ENQUEUED                  = 204;
+  VOICE_CALL_STATUS_DEQUEUED                  = 205;
+  VOICE_CALL_STATUS_TRANSFERRED               = 206;
+  VOICE_CALL_STATUS_TRANSFER_COMPLETED        = 207;
+  VOICE_CALL_STATUS_COMPLETED                 = 300;
+  VOICE_CALL_STATUS_INSUFFICIENT_CREDIT       = 400;
+  VOICE_CALL_STATUS_NOT_ANSWERED              = 401;
+  VOICE_CALL_STATUS_INVALID_PHONE_NUMBER      = 402;
+  VOICE_CALL_STATUS_DESTINATION_NOT_SUPPORTED = 403;
+  VOICE_CALL_STATUS_DECOMMISSIONED_CUSTOMERID = 404;
+  VOICE_CALL_STATUS_EXPIRED                   = 405;
+  VOICE_CALL_STATUS_APPLICATION_ERROR         = 501;
+}
+
+enum PaymentStatus {
+  PAYMENT_STATUS_UNSPECIFIED                = 0;
+  PAYMENT_STATUS_QUEUED                     = 101;
+  PAYMENT_STATUS_PENDING_CONFIRMATION       = 102;
+  PAYMENT_STATUS_PENDING_VALIDATION         = 103;
+  PAYMENT_STATUS_VALIDATED                  = 104;
+  PAYMENT_STATUS_INVALID_REQUEST            = 200;
+  PAYMENT_STATUS_NOT_SUPPORTED              = 201;
+  PAYMENT_STATUS_INSUFFICIENT_FUNDS         = 202;
+  PAYMENT_STATUS_APPLICATION_ERROR          = 203;
+  PAYMENT_STATUS_NOT_ALLOWED                = 204;
+  PAYMENT_STATUS_DUPLICATE_REQUEST          = 205;
+  PAYMENT_STATUS_INVALID_WALLET             = 206;
+  PAYMENT_STATUS_DECOMMISSIONED_CUSTOMER_ID = 299;
+  PAYMENT_STATUS_SUCCESS                    = 300;
+  PAYMENT_STATUS_PASS_THROUGH               = 301;
+  PAYMENT_STATUS_FAILED                     = 400;
+  PAYMENT_STATUS_THROTTLED                  = 401;
+  PAYMENT_STATUS_EXPIRED                    = 402;
+  PAYMENT_STATUS_REJECTED                   = 403;
+  PAYMENT_STATUS_REVERSED                   = 500;
+}
+
+enum TextToSpeechVoice {
+  TEXT_TO_SPEECH_VOICE_UNSPECIFIED = 0;
+  TEXT_TO_SPEECH_VOICE_MALE        = 1;
+  TEXT_TO_SPEECH_VOICE_FEMALE      = 2;
+}
+
+message Cash {
+  string currency_code = 1;
+  double amount        = 2;
+}
+
+message CustomerNumber {
+  CustomerNumberProvider provider = 1;
+  string number                   = 2;
+}
+
+message MessagingChannelNumber {
+  MessagingChannel channel = 1;
+  string number            = 2;
+}
+
+message PaymentChannelNumber {
+  PaymentChannel channel = 1;
+  string number          = 2;
+}
+
+message VoiceChannelNumber {
+  VoiceChannel channel = 1;
+  string number        = 2;
+}
+
+message TextMessageTemplate {
+  string name            = 1;
+  repeated string params = 2;
+}
+
+message TextMessageBody {
+  google.protobuf.StringValue text = 1;
+  TextMessageTemplate template     = 2;
+}
+
+message MediaMessageBody {
+  string url      = 1;
+  MediaType media = 2;
+}
+
+message LocationMessageBody {
+  double latitude  = 1;
+  double longitude = 2;
+}
+
+message CustomerMessageBody {
+  oneof entry {
+    TextMessageBody text         = 1;
+    MediaMessageBody media       = 2;
+    LocationMessageBody location = 3;
+  }
+}
+
+message UssdMenu {
+  string text      = 1;
+  bool is_terminal = 2;
+}
+
+message UssdHop {
+  google.protobuf.StringValue input   = 1;
+  UssdMenu menu                       = 2;
+  google.protobuf.Timestamp timestamp = 3;
+}
+
+message MessagingConsentStateEntry {
+  MessagingConsentStatus status        = 1;
+  google.protobuf.Timestamp updated_at = 2;
+}
+
+message MessagingSessionStateEntry {
+  google.protobuf.Timestamp start_time  = 1;
+  google.protobuf.Timestamp expiration = 2;
+}
+
+message MessagingChannelStateEntry {
+  CustomerNumber customer_number            = 1;
+  MessagingChannelNumber channel_number     = 2;
+  MessagingConsentStateEntry consent_state  = 3;
+  MessagingSessionStateEntry active_session = 4;
+}
+
+message MessageStateEntry {
+  CustomerEventDirection direction      = 1;
+  CustomerNumber customer_number        = 2;
+  MessagingChannelNumber channel_number = 3;
+  string message_id                     = 4;
+  string product_id                     = 5;
+  google.protobuf.StringValue text      = 6;
+  TextMessageTemplate template          = 7;
+  repeated MediaMessageBody media       = 8;
+  LocationMessageBody location          = 9;
+  google.protobuf.Timestamp created_at  = 10;
+  google.protobuf.Timestamp updated_at  = 11;
+  MessageDeliveryStatus status          = 12;
+}
+
+message MessagingState {
+  repeated MessagingChannelStateEntry channel_state = 1;
+  repeated MessageStateEntry messages               = 2;
+  repeated CustomerNumber customer_numbers          = 3;
+  repeated MessagingChannelNumber channel_numbers   = 4;
+}
+
+message UssdSessionStateEntry {
+  CustomerNumber customer_number       = 1;
+  string channel_number                = 2;
+  string session_id                    = 3;
+  string product_id                    = 4;
+  repeated UssdHop hops                = 5;
+  google.protobuf.Timestamp created_at = 6;
+  google.protobuf.Timestamp updated_at = 7;
+}
+
+message UssdState {
+  repeated UssdSessionStateEntry sessions  = 1;
+  repeated CustomerNumber customer_numbers = 2;
+  repeated string channel_numbers          = 3;
+}
+
+message VoiceCallHopInput {
+  VoiceCallStatus status                                 = 1;
+  google.protobuf.StringValue call_start_time            = 2;
+  VoiceCallHangupCause hangup_cause                      = 3; 
+  google.protobuf.StringValue dtmf_digits                = 4;
+  google.protobuf.StringValue dial_destination_number    = 5;
+  google.protobuf.StringValue queue_name                 = 6;
+  google.protobuf.StringValue dequeued_to_phone_number   = 7;
+  google.protobuf.StringValue dequeued_to_session_id     = 8;
+  google.protobuf.StringValue call_transferred_to_number = 9;
+  VoiceCallTransferState call_transfer_state             = 10;
+  VoiceCallHangupCause call_transfer_hangup_cause        = 11;
+  google.protobuf.StringValue recording_url              = 12;
+}
+
+message VoiceCallHop {
+  VoiceCallHopInput input             = 1;
+  repeated VoiceCallAction actions    = 2;
+  google.protobuf.Timestamp timestamp = 3;
+}
+
+message VoiceCallStateEntry {
+  CustomerEventDirection direction     = 1;
+  CustomerNumber customer_number       = 2;
+  VoiceChannelNumber channel_number    = 3;
+  string session_id                    = 4;
+  string product_id                    = 5;
+  VoiceCallStatus status               = 6;
+  repeated VoiceCallHop hops           = 7;
+  google.protobuf.Duration duration    = 8;
+  Cash cost                            = 9;
+  google.protobuf.Timestamp created_at = 10;
+  google.protobuf.Timestamp updated_at = 11;
+}
+
+message VoiceState {
+  repeated VoiceCallStateEntry calls          = 1;
+  repeated CustomerNumber customer_numbers    = 2;
+  repeated VoiceChannelNumber channel_numbers = 3;
+}
+
+message PaymentTransactionStateEntry {
+  CustomerEventDirection direction     = 1;
+  CustomerNumber customer_number       = 2;
+  PaymentChannelNumber channel_number  = 3;
+  string transaction_id                = 4;
+  string product_id                    = 5;
+  Cash value                           = 6;
+  google.protobuf.Timestamp created_at = 7;
+  google.protobuf.Timestamp updated_at = 8;
+  PaymentStatus status                 = 9;
+}
+
+message PaymentState {
+  repeated CustomerNumber customer_numbers                   = 1;
+  repeated PaymentChannelNumber channel_numbers              = 2;
+  repeated PaymentTransactionStateEntry transaction_log      = 3;
+  repeated PaymentTransactionStateEntry pending_transactions = 4;
+}
+
+message IndexMapping {
+  string key                        = 1;
+  google.protobuf.StringValue value = 2;
+}
+
+message CustomerIndex {
+  IndexMapping mapping                 = 1;
+  google.protobuf.Timestamp expiration = 2;  
+}
+
+message CustomerReminder {
+  string product_id                    = 1;
+  string key                           = 2;
+  google.protobuf.Timestamp expiration = 3;
+  google.protobuf.StringValue payload  = 4; 
+}
+
+message SayCallAction {
+  string text             = 1;
+  TextToSpeechVoice voice = 2;
+  bool play_beep          = 3;
+}
+
+message PlayCallAction {
+  string url = 1;
+}
+
+message GetDigitsCallAction {
+  oneof prompt {
+    SayCallAction say   = 1;
+    PlayCallAction play = 2;
+  }
+  google.protobuf.Duration timeout          = 3;
+  google.protobuf.StringValue finish_on_key = 4;
+  google.protobuf.Int32Value num_digits     = 5;
+}
+
+message GetRecordingCallAction {
+  oneof prompt {
+    SayCallAction say   = 1;
+    PlayCallAction play = 2;
+  }
+  google.protobuf.Duration timeout          = 3;
+  google.protobuf.Duration max_length       = 4;
+  google.protobuf.StringValue finish_on_key = 5;
+  bool play_beep                            = 6;
+  bool trim_silence                         = 7;
+}
+
+message RecordSessionCallAction {}
+
+message DialCallAction {
+  repeated CustomerNumber customer_numbers  = 1;
+  bool record                               = 2;
+  bool sequential                           = 3;
+  google.protobuf.StringValue ringback_tone = 4;
+  google.protobuf.StringValue caller_id     = 5;
+  google.protobuf.Int32Value max_duration   = 6;
+}
+
+message EnqueueCallAction {
+  google.protobuf.StringValue hold_music = 1;
+  google.protobuf.StringValue queue_name = 2;
+}
+
+message DequeueCallAction {
+  VoiceChannelNumber channel_number      = 1;
+  bool record                            = 2;
+  google.protobuf.StringValue queue_name = 3;
+}
+
+message RejectCallAction {}
+
+message RedirectCallAction {
+  string url = 1;
+}
+
+message VoiceCallAction {
+  oneof entry {
+    SayCallAction say                      = 1;
+    PlayCallAction play                    = 2;
+    GetDigitsCallAction get_digits         = 3;
+    DialCallAction dial                    = 4;
+    RecordSessionCallAction record_session = 5;
+    GetRecordingCallAction get_recording   = 6;
+    EnqueueCallAction enqueue              = 7;
+    DequeueCallAction dequeue              = 8;
+    RejectCallAction reject                = 9;
+    RedirectCallAction redirect            = 10;
+  }
+}
+
+message PendingWalletTransaction {
+  google.protobuf.Timestamp created_at = 1;
+  Cash value                           = 2;
+  Cash converted                       = 3;
+}
+
+message WalletBalance {
+  string currency_code                          = 1;
+  Cash available                                = 2;
+  Cash actual                                   = 3;
+  map<string, PendingWalletTransaction> pending = 4;
+}

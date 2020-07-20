@@ -6,7 +6,7 @@ const elarian = new Elarian({
 });
 
 const req = {
-    "customerNumber": {
+    "customer_number": {
         "provider": "CUSTOMER_NUMBER_PROVIDER_TELCO",
         "number": "+254718008164"
     },
