@@ -11,7 +11,7 @@ Take a look at the [API docs here](http://docs.elarian.com).
 
 ## Install
 
-You can install the package from [npm](npmjs.com/package/elarian) by running: 
+You can install the package from [npm](https://www.npmjs.com/package/elarian) by running: 
 
 ```bash
 $ npm install elarian
