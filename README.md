@@ -22,9 +22,32 @@ $ bower install @elarian/sdk
 
 
 ```javascript
-const elarian = require('@elarian/sdk');
-await elarian.initialize({...});
-const customerState = await elarian.GetCustomerState({...});
+const Elarian = require('@elarian/sdk');
+
+const elarian = new Elarian({
+    apiKey: 'test_api_key',
+    sandbox: true,
+});
+
+const req = {
+    "customerNumber": {
+        "provider": "CUSTOMER_NUMBER_PROVIDER_TELCO",
+        "number": "+254718008164"
+    },
+    "body": {
+        "text": {
+            "text": { "Hello": "de" }
+        }
+    },
+    "channel_number": {
+        "channel": "MESSAGING_CHANNEL_SMS",
+        "number": "+254718008174"
+    },
+    "app_id": "test_app",
+    "product_id": "test_product"
+};
+const resp = await elarian.SendMessage(req);
+console.log(resp);
 // ...
 ```
 
