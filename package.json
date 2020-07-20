@@ -9,7 +9,7 @@
   "author": "Salama Balekage <sbalekage@elarian.com>",
   "license": "MIT",
   "dependencies": {
-    "google-protobuf": "^4.0.0-rc.1",
+    "@grpc/proto-loader": "^0.5.5",
     "grpc": "^1.24.3",
     "grpc-web": "^1.2.0",
     "lodash": "^4.17.19",
