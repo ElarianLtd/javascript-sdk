@@ -1,3 +1,0 @@
-[submodule "lib/definitions"]
-	path = lib/definitions
-	url = git@github.com:ElarianLtd/elarian-proto.git
