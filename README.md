@@ -69,10 +69,10 @@ stream.on('status', (status) => {
 - `UpdateCustomerMetadata()`:
 - `DeleteCustomerMetadata ()`:
 
-- `SendMessage()`: Sending a message to your customer
-- `SendMessageByTag()`: Sending a message to a group of customers using tags
-- `ReplyToMessage()`: Replying to a message from your customer
-- `MessagingConsent()`: Opting a customer in or out of receiving messages from your app
+- `SendMessage()`:
+- `SendMessageByTag()`:
+- `ReplyToMessage()`:
+- `MessagingConsent()`:
 
 - `SendPayment()`:
 - `CheckoutPayment()`:
