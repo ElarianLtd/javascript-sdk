@@ -28,7 +28,7 @@ const elarian = new Elarian({
     sandbox: true,
 });
 
-const stream = await elarian.StreamNotifications({
+const stream = elarian.StreamNotifications({
     app_id: 'test_app'
 });
 

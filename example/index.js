@@ -25,3 +25,5 @@ const req = {
 elarian.SendMessage(req)
     .then(res => console.log(res))
     .catch(ex => console.error("FAILEDDDDD", ex));
+
+console.log(elarian.StreamNotifications);
