@@ -21,16 +21,15 @@ $ npm install elarian
 
 
 ```javascript
-const Elarian = require('elarian');
+const { Client, StreamNotificationRequest } = require('elarian');
 
-const elarian = new Elarian({
+const elarian = new Client({
     apiKey: 'test_api_key',
     sandbox: true,
 });
 
-const stream = elarian.StreamNotifications({
-    app_id: 'test_app'
-});
+const req = new StreamNotificationRequest({ app_id: 'test_app'});
+const stream = elarian.streamNotifications(req);
 
 stream.on('data', (notification) => {
     console.log(notification);
@@ -50,37 +49,37 @@ stream.on('status', (status) => {
 
 ## Methods
 
-- `AuthToken()`: Generate auth token
+- `authToken()`: Generate auth token
 
-- `GetCustomerState()`:
-- `AdoptCustomerState()`: 
+- `getCustomerState()`:
+- `adoptCustomerState()`: 
 
-- `AddCustomerReminder()`:
-- `AddCustomerReminderByTag()`:
-- `CancelCustomerReminder()`:
-- `CancelCustomerReminderByTag()`:
+- `addCustomerReminder()`:
+- `addCustomerReminderByTag()`:
+- `cancelCustomerReminder()`:
+- `cancelCustomerReminderByTag()`:
   
-- `UpdateCustomerTag()`:
-- `DeleteCustomerTag()`:
+- `updateCustomerTag()`:
+- `deleteCustomerTag()`:
 
-- `UpdateCustomerSecondaryId()`:
-- `DeleteCustomerSecondaryId()`:
+- `updateCustomerSecondaryId()`:
+- `deleteCustomerSecondaryId()`:
 
-- `UpdateCustomerMetadata()`:
-- `DeleteCustomerMetadata ()`:
+- `updateCustomerMetadata()`:
+- `deleteCustomerMetadata ()`:
 
-- `SendMessage()`:
-- `SendMessageByTag()`:
-- `ReplyToMessage()`:
-- `MessagingConsent()`:
+- `sendMessage()`:
+- `sendMessageByTag()`:
+- `replyToMessage()`:
+- `messagingConsent()`:
 
-- `SendPayment()`:
-- `CheckoutPayment()`:
+- `sendPayment()`:
+- `checkoutPayment()`:
 
-- `MakeVoiceCall()`:
+- `makeVoiceCall()`:
   
-- `StreamNotifications()`:
-- `SendWebhookResponse()`:
+- `streamNotifications()`:
+- `sendWebhookResponse()`:
 
 
 ## Development
