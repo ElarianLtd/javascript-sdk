@@ -1,3 +1,0 @@
-[submodule "lib/utils/proto"]
-	path = lib/utils/proto
-	url = git@github.com:ElarianLtd/elarian-proto.git
