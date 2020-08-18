@@ -28,7 +28,8 @@ const elarian = new Client({
     sandbox: true,
 });
 
-const req = new StreamNotificationRequest({ app_id: 'test_app'});
+const req = new StreamNotificationRequest()
+    .setAppId('test_app');
 const stream = elarian.streamNotifications(req);
 
 stream.on('data', (notification) => {
@@ -49,7 +50,7 @@ stream.on('status', (status) => {
 
 ## Methods
 
-- `authToken()`: Generate auth token
+- `authToken()`:
 
 - `getCustomerState()`:
 - `adoptCustomerState()`: 
