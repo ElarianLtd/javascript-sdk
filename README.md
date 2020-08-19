@@ -21,29 +21,31 @@ $ npm install elarian
 
 
 ```javascript
-const { Client } = require('elarian');
+const { Client, NumberProvider, MessagingChannel } = require('elarian');
 
 const elarian = new Client({
     apiKey: 'test_api_key',
     appId: 'test_app'
 });
 
-const stream = elarian.streamNotifications();
-
-stream.on('data', (notification) => {
-    console.log(notification);
-});
-stream.on('end', () => {
-    // The server has finished sending
-});
-stream.on('error', (err) => {
-    // An error has occurred and the stream has been closed.
-    console.error(err);
-});
-stream.on('status', (status) => {
-    // process status
-});
-
+elarian.sendMessage({
+        productId: 'product-j90HNs',
+        customerNumber: {
+            number: '+254700000000',
+            provider: NumberProvider.TELCO,
+        },
+        channelNumber: {
+            number: '41011',
+            channel: MessagingChannel.SMS, // MessagingChannel.WHATSAPP, MessagingChannel.TELEGRAM, MessagingChannel.FACEBOOK_MESSENGER, MessagingChannel.GOOGLE_RCS
+        },
+        body: {
+            text: {
+                text: 'Hello Boss'
+            }
+        }
+    })
+    .then(res => console.log(res))
+    .catch(ex => console.error(ex));
 ```
 
 ## Methods

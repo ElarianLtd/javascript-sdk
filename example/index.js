@@ -34,10 +34,10 @@ elarian.sendMessage({
         body: {
             text: {
                 text: 'Hello Boss',
-                template: {
-                    name: 'abc-template',
-                    params: ['value1', 'value2']
-                }
+                // template: {
+                //     name: 'abc-template',
+                //     params: ['value1', 'value2']
+                // }
             },
 
             // media: {
