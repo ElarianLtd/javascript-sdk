@@ -21,16 +21,14 @@ $ npm install elarian
 
 
 ```javascript
-const { Client, StreamNotificationRequest } = require('elarian');
+const { Client } = require('elarian');
 
 const elarian = new Client({
     apiKey: 'test_api_key',
-    sandbox: true,
+    appId: 'test_app'
 });
 
-const req = new StreamNotificationRequest()
-    .setAppId('test_app');
-const stream = elarian.streamNotifications(req);
+const stream = elarian.streamNotifications();
 
 stream.on('data', (notification) => {
     console.log(notification);
