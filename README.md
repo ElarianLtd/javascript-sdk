@@ -52,36 +52,442 @@ elarian.sendMessage({
 
 - `authToken()`:
 
-- `getCustomerState()`:
-- `adoptCustomerState()`: 
+- `getCustomerState(params)`:
+```js
+{
+    // either
+    // customerId: 'el_cst_67a6d10ccffa84ba2c017ae77c9e4d94',
+    
+    // or
+    customerNumber: {
+        number: '+254700000000',
+        provider: NumberProvider.{ TELCO | FACEBOOK | TELEGRAM },
+    }
+}
+```
 
-- `addCustomerReminder()`:
-- `addCustomerReminderByTag()`:
-- `cancelCustomerReminder()`:
-- `cancelCustomerReminderByTag()`:
+- `adoptCustomerState(params)`:
+```js
+{
+    customerId: 'el_cst_67a6d10ccffa84ba2c017ae77c9e4d94',
+
+    // either
+    // otherCustomerId: 'el_cst_67a6d10ccffa84ba2c017ae77c9e4d94',
+    
+    // or
+    otherCustomerNumber: {
+        number: '+254700000001',
+        provider: NumberProvider.{ TELCO | FACEBOOK | TELEGRAM },
+    }
+}
+```
+
+- `addCustomerReminder(params)`:
+```js
+{
+    // either
+    // customerId: 'el_cst_67a6d10ccffa84ba2c017ae77c9e4d94',
+
+    // or
+    customerNumber: {
+        number: '+254700000000',
+        provider: NumberProvider.{ TELCO | FACEBOOK | TELEGRAM },
+    },
+    
+    reminder: {
+        productId: 'fake',
+        key: 'rm-key',
+        expiration: 34235234523,
+        payload: '{"abc":"def"}',
+    }
+}
+```
+
+- `addCustomerReminderByTag(params)`:
+```js
+{
+    tag: {
+        key: 'fake',
+        value: 'longvalue',
+    },
+    reminder: {
+        productId: 'fake';,
+        key: 'rm-key',
+        expiration: 3600,
+        payload: '{"abc":"def"}',
+    }
+}
+```
+
+- `cancelCustomerReminder(params)`:
+```js
+{
+    productId: 'fake',
+    key: 'fake',
+
+    // either
+    // customerId: 'el_cst_67a6d10ccffa84ba2c017ae77c9e4d94',
+    
+    // or
+    customerNumber: {
+        number: '+254700000000',
+        provider: NumberProvider.{ TELCO | FACEBOOK | TELEGRAM },
+    }
+}
+```
+
+- `cancelCustomerReminderByTag(params)`:
+```js
+{
+    tag: {
+        key: 'fake',
+        value: 'longvalue',
+    },
+    productId: 'fake',
+    key: 'fake',
+}
+```
   
-- `updateCustomerTag()`:
-- `deleteCustomerTag()`:
+- `updateCustomerTag(params)`:
+```js
+{
+    // either
+    // customerId: 'el_cst_67a6d10ccffa84ba2c017ae77c9e4d94',
+    
+    // or
+    customerNumber: {
+        number: '+254700000000',
+        provider: NumberProvider.{ TELCO | FACEBOOK | TELEGRAM },
+    },
 
-- `updateCustomerSecondaryId()`:
-- `deleteCustomerSecondaryId()`:
+    tags: [
+        {
+            mapping: {
+                key: 'test_one_tag',
+                value: 'one_tag'
+            },
+            expiration: 3600
+        }
+    ]
+}
+```
 
-- `updateCustomerMetadata()`:
-- `deleteCustomerMetadata ()`:
+- `deleteCustomerTag(params)`:
+```js
+{
+    // either
+    // customerId: 'el_cst_67a6d10ccffa84ba2c017ae77c9e4d94',
 
-- `sendMessage()`:
-- `sendMessageByTag()`:
-- `replyToMessage()`:
-- `messagingConsent()`:
+    // or
+    customerNumber: {
+        number: '+254700000000',
+        provider: NumberProvider.{ TELCO | FACEBOOK | TELEGRAM },
+    },
 
-- `sendPayment()`:
-- `checkoutPayment()`:
+    tags: ['a', 'c', 'd']
+}
+```
 
-- `makeVoiceCall()`:
+- `updateCustomerSecondaryId(params)`:
+```js
+{
+    // either
+    // customerId: 'el_cst_67a6d10ccffa84ba2c017ae77c9e4d94',
+    
+    // or
+    customerNumber: {
+        number: '+254700000000',
+        provider: NumberProvider.{ TELCO | FACEBOOK | TELEGRAM },
+    },
+    
+    secondaryIds: [
+        {
+            mapping: {
+                key: 'test_one_tag',
+                value: 'one_tag'
+            },
+            expiration: 3600
+        }
+    ]
+}
+```
+
+- `deleteCustomerSecondaryId(params)`:
+```js
+{
+    // either
+    // customerId: 'el_cst_67a6d10ccffa84ba2c017ae77c9e4d94',
+
+    // or
+    customerNumber: {
+        number: '+254700000000',
+        provider: NumberProvider.{ TELCO | FACEBOOK | TELEGRAM },
+    },
+    secondaryIds: [
+        {
+            key: 'test_one_tag',
+            value: 'one_tag'
+        }
+    ]
+}
+```
+
+- `updateCustomerMetadata(params)`:
+```js
+{
+    // either
+    //customerId: 'el_cst_67a6d10ccffa84ba2c017ae77c9e4d94',
+    
+    // or
+    customerNumber: {
+        number: '+254700000000',
+        provider: NumberProvider.{ TELCO | FACEBOOK | TELEGRAM },
+    },
+
+    metadata: {
+        foo: 'bar',
+    }
+}
+```
+
+- `deleteCustomerMetadata(params)`:
+```js
+{
+    // either
+    //customerId: 'el_cst_67a6d10ccffa84ba2c017ae77c9e4d94',
+    
+    // or
+    customerNumber: {
+        number: '+254700000000',
+        provider: NumberProvider.{ TELCO | FACEBOOK | TELEGRAM },
+    },
+
+    metadata: ['a', 'c', 'd']
+}
+```
+
+- `sendMessage(params)`:
+```js
+{
+    productId: 'fake fake',
+
+    // either
+    //customerId: 'el_cst_67a6d10ccffa84ba2c017ae77c9e4d94',
+    
+    // or
+    customerNumber: {
+        number: '+254700000000',
+        provider: NumberProvider.{ TELCO | FACEBOOK | TELEGRAM },
+    },
+
+    channelNumber: {
+        number: '41011',
+        channel: MessagingChannel.{ SMS | TELEGRAM | WHATSAPP | FACEBOOK_MESSENGER | GOOGLE_RCS }
+    },
+    body: {
+        text: {
+            text: 'Hello Boss',
+            template: {
+                name: 'abc-template',
+                params: ['value1', 'value2']
+            }
+        },
+
+        media: {
+            url: 'https://fake.faa',
+            type: MediaType.{ VOICE | VIDEO | IMAGE | AUDIO | DOCUMENT | STICKER }
+        },
+
+        location: {
+            latitude: -1.45609,
+            longitude: 33.8449
+        },
+    }
+}
+```
+
+- `sendMessageByTag(params)`:
+```js
+{
+    productId: 'fake fake',
+
+    tag: {
+        key: 'fake',
+        value: 'longvalue',
+    },
+
+    channelNumber: {
+        number: '41011',
+        channel: MessagingChannel.{ SMS | TELEGRAM | WHATSAPP | FACEBOOK_MESSENGER | GOOGLE_RCS }
+    },
+    body: {
+        text: {
+            text: 'Hello Boss',
+            template: {
+                name: 'abc-template',
+                params: ['value1', 'value2']
+            }
+        },
+
+        media: {
+            url: 'https://fake.faa',
+            type: MediaType.{ VOICE | VIDEO | IMAGE | AUDIO | DOCUMENT | STICKER }
+        },
+
+        location: {
+            latitude: -1.45609,
+            longitude: 33.8449
+        },
+    }
+}
+```
+
+- `replyToMessage(params)`:
+```js
+{
+    productId: 'fake',
+    customerId: 'el_cst_67a6d10ccffa84ba2c017ae77c9e4d94',
+    replyToMessageId: 'el_msg_67a6d10ccffa84ba2c017ae77c9e4d94',
+
+    body: {
+        text: {
+            text: 'Hello Bosses',
+            template: {
+                name: 'abc-template',
+                params: ['value1', 'value2']
+            }
+        },
+
+        media: {
+            url: 'https://fake.faa',
+            type: MediaType.{ VOICE | VIDEO | IMAGE | AUDIO | DOCUMENT | STICKER }
+        },
+
+        location: {
+            latitude: -1.45609,
+            longitude: 23.8449
+        },
+    }
+}
+```
+
+
+- `messagingConsent(params)`:
+```js
+{
+    action: ConsentAction.{ OPT_IN | OPT_OUT },
+
+    // either
+    // customerId: 'el_cst_67a6d10ccffa84ba2c017ae77c9e4d94',
+    
+    // or
+    customerNumber: {
+        number: '+254700000000',
+        provider: NumberProvider.{ TELCO | FACEBOOK | TELEGRAM },
+    },
+
+    channelNumber: {
+        number: '41011',
+        channel: MessagingChannel.{ SMS | TELEGRAM | WHATSAPP | FACEBOOK_MESSENGER | GOOGLE_RCS }
+    },
+}
+```
+
+- `sendPayment(params)`:
+```js
+{
+    productId: 'product_x',
+    
+    // either
+    // customerId: 'el_cst_67a6d10ccffa84ba2c017ae77c9e4d94',
+    
+    // or
+    customerNumber: {
+        number: '+254700000000',
+        provider: NumberProvider.{ TELCO | FACEBOOK | TELEGRAM },
+    },
+
+    channelNumber: {
+        number: '+254700000001',
+        channel: PaymentChannel.{ TELCO }
+    },
+
+    value: {
+        currencyCode: 'KES',
+        amount: 8989,
+    }
+}
+```
+
+- `checkoutPayment(params)`:
+```js
+{
+    productId: 'fake',
+    
+    // either
+    // customerId: 'el_cst_67a6d10ccffa84ba2c017ae77c9e4d94',
+    
+    // or
+    customerNumber: {
+        number: '+254700000000',
+        provider: NumberProvider.{ TELCO | FACEBOOK | TELEGRAM },
+    },
+
+    channelNumber: {
+        number: '+254700000001',
+        channel: PaymentChannel.{ TELCO }
+    },
+
+    value: {
+        currencyCode: 'KES',
+        amount: 8989,
+    }
+}
+```
+
+- `makeVoiceCall(params)`:
+```js
+{
+    productId: 'orjnsjewkjn',
+    
+    // either
+    // customerId: 'el_cst_67a6d10ccffa84ba2c017ae77c9e4d94',
+    
+    // or
+    customerNumber: {
+        number: '+254700000000',
+        provider: NumberProvider.{ TELCO | FACEBOOK | TELEGRAM },
+    },
+
+    channelNumber: {
+        number: '+254700000001',
+        channel: VoiceChannel.{ TELCO }
+    },
+}
+```
   
+- `sendWebhookResponse(params)`:
+```js
+{
+    sessionId: 'fake',
+    ussdMenu: {
+        text: 'Hey Guys! Welcome to my USSD Channel',
+        isTerminal: true
+    },
+    voiceCallActions: [
+        {
+            // SayCallAction
+        },
+        {
+            // PlayCallAction
+        }
+        // ...
+    ]
+}
+```
+
+
 - `streamNotifications()`:
-- `sendWebhookResponse()`:
-
 
 ## Development
 
@@ -94,4 +500,4 @@ $ npm test
 
 ## Issues
 
-If you find a bug, please file an issue on [our issue tracker on GitHub](https://github.com/ElarianLtd/javascript-sdk/issues).
+If you find a bug, please file an issue on [our issue tracker on GitHub](https://github.com/ElarianLtd/node-sdk/issues).
