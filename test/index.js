@@ -2,9 +2,8 @@
 
 const _ = require('lodash');
 const should = require('should');
-const validate = require('validate.js');
 
-const Elarian = require('../');
+const { Client } = require('../');
 
 describe('Initialization', () => {
 
@@ -24,7 +23,8 @@ describe('Initialization', () => {
         }).should.throw();
 
         options.apiKey = 'SOME_POSSIBLE_VALID_KEY';
-        var c = new Elarian(options);
+        options.appId = 'SOME_POSSIBLE_VALID_APP';
+        var c = new Client(options);
         should.exist(c);
     });
 });
