@@ -14,16 +14,15 @@ describe('Initialization', () => {
         };
 
         (function (){
-            new Elarian(options);
+            new Client(options);
         }).should.throw();
 
         delete options.apiKey;
         (function (){
-            new Elarian(options);
+            new Client(options);
         }).should.throw();
 
         options.apiKey = 'SOME_POSSIBLE_VALID_KEY';
-        options.appId = 'SOME_POSSIBLE_VALID_APP';
         var c = new Client(options);
         should.exist(c);
     });
