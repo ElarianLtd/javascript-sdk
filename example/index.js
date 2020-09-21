@@ -1,48 +1,46 @@
 const {
     Client,
-    NumberProvider,
+    StringValue,
+    CustomerNumber,
+    TextMessageBody,
     MessagingChannel,
+    SendMessageRequest,
+    TextMessageTemplate,
+    CustomerMessageBody,
+    CustomerNumberProvider,
+    MessagingChannelNumber,
 } = require('../');
 
 const elarian = new Client({
-    apiKey: 'test',
-    appId: 'test'
+    apiKey: '77bcc4b83574b3626e5b4780169c1dd7d62ed76e4515edc3e584c21e4e89ce91',
 });
 
+const req = new SendMessageRequest()
+    .setAppId('app-j90HNs')
+    .setOrgId('org-1234')
+    .setCustomerNumber(
+        new CustomerNumber()
+            .setProvider(CustomerNumberProvider.CUSTOMER_NUMBER_PROVIDER_TELCO)
+            .setNumber('+254700000000')
+    )
+    .setChannelNumber(
+        new MessagingChannelNumber()
+            .setChannel(MessagingChannel.MESSAGING_CHANNEL_SMS)
+            .setNumber('41011')
+    )
+    .setBody(
+        new CustomerMessageBody()
+            .setText(
+                new TextMessageBody()
+                    .setText(new StringValue('????'))
+                    .setTemplate(
+                        new TextMessageTemplate()
+                            .setName('abc')
+                            .setParamsList(['efg', 'def'])
+                    )
+            )
+    );
 
-elarian.sendMessage({
-        productId: 'test',
-
-        //customerId: 'el_cst_67a6d10ccffa84ba2c017ae77c9e4d94', // or
-        customerNumber: {
-            number: '+254700000000',
-            provider: NumberProvider.TELCO,
-        },
-
-        channelNumber: {
-            number: '41011',
-            channel: MessagingChannel.SMS
-        },
-        body: {
-            text: {
-                text: 'Hello Boss',
-                // template: {
-                //     name: 'abc-template',
-                //     params: ['value1', 'value2']
-                // }
-            },
-
-            // media: {
-            //     url: 'https://fake.faa',
-            //     type: MediaType.VOICE
-
-            // },
-
-            // location: {
-            //     latitude: 0,
-            //     longitude: 0
-            // },
-        }
-    })
-    .then(res => console.log('sendMessage()', res))
+elarian.sendMessage(req)
+    .then(res => console.log(res))
     .catch(ex => console.error(ex));
