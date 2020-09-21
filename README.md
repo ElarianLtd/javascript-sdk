@@ -32,7 +32,7 @@ const {
     CustomerMessageBody,
     CustomerNumberProvider,
     MessagingChannelNumber,
-} = require('../');
+} = require('elarian');
 
 const elarian = new Client({
     apiKey: '77bcc4b83574b3626e5b4780169c1dd7d62ed76e4515edc3e584c21e4e89ce91',
