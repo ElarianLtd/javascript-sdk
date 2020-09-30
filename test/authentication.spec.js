@@ -5,8 +5,8 @@ const Elarian = require('..');
 const fixtures = require('./fixtures');
 
 describe('Authentication', () => {
+    const client = new Elarian(fixtures.clientParams);
     it('authToken()', async () => {
-        const client = new Elarian(fixtures.clientParams);
         const resp = await client.authToken();
         resp.should.have.properties(['token', 'lifetime']);
     });
