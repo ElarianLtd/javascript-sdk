@@ -5,7 +5,7 @@ const Elarian = require('..');
 const fixtures = require('./fixtures');
 
 describe('Customer', function fx() {
-    this.timeout(3000);
+    this.timeout(15000);
 
     const client = new Elarian(fixtures.clientParams);
     const customer = new client.Customer({

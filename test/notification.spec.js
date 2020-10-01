@@ -14,13 +14,6 @@ describe('Notification', () => {
                 'channelNumber',
             ]);
             should.exist(customer);
-
-            const { sessionId } = data;
-            const resp = await client.replyToUssdSession(sessionId, {
-                text: 'It works!',
-                isTerminal: true,
-            });
-            resp.should.have.properties(['status', 'description']);
             done();
         });
 
@@ -38,12 +31,6 @@ describe('Notification', () => {
                 'channelNumber',
             ]);
             should.exist(customer);
-            const {
-                sessionId,
-            } = data;
-
-            const resp = await client.replyToVoiceCall(sessionId, []);
-            resp.should.have.properties(['status', 'description']);
             done();
         });
 
