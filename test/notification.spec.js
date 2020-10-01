@@ -17,6 +17,26 @@ describe('Notification', () => {
         client.disconnect();
     });
 
+    it('reminder', async (done) => {
+        client.on('reminder', async (data, customer) => {
+            data.should.have.properties([
+                'tag',
+                'reminder',
+                'workId',
+            ]);
+            data.tag.should.have.properties(['key', 'value']);
+            data.reminder.should.have.properties(['key', 'appId', 'expiration', 'interval', 'payload']);
+            should.exist(customer);
+            done();
+        });
+        const resp = await bob.addReminder({
+            key: 'test-reminder',
+            expiration: (new Date().getTime() + 2000) / 1000,
+            payload: 'test-ok',
+        });
+        resp.status.should.equal(true);
+    });
+
     it('ussdSession', (done) => {
         client.on('ussdSession', async (data, customer) => {
             data.should.have.properties([
@@ -165,20 +185,5 @@ describe('Notification', () => {
             done();
         });
         // TODO: Trigger a message
-    });
-
-    it('reminder', (done) => {
-        client.on('reminder', async (data, customer) => {
-            data.should.have.properties([
-                'tag',
-                'reminder',
-                'workId',
-            ]);
-            data.tag.should.have.properties(['key', 'value']);
-            data.reminder.should.have.properties(['key', 'appId', 'expiration', 'interval', 'payload']);
-            should.exist(customer);
-            done();
-        });
-        // TODO: Trigger a quick reminder
     });
 });

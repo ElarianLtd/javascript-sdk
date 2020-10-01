@@ -4,8 +4,8 @@ const should = require('should');
 const Elarian = require('..');
 const fixtures = require('./fixtures');
 
-describe('Customer', () => {
-    // this.timeout(15000);
+describe('Customer', function fx() {
+    this.timeout(5000);
 
     const client = new Elarian(fixtures.clientParams);
     const customer = new client.Customer({
