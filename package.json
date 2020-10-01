@@ -26,6 +26,7 @@
     "google-protobuf": "^3.13.0",
     "grpc": "^1.24.3",
     "lodash": "^4.17.20",
+    "signale": "^1.4.0",
     "validate.js": "^0.13.1"
   },
   "devDependencies": {

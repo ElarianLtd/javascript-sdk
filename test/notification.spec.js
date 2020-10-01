@@ -6,6 +6,17 @@ const fixtures = require('./fixtures');
 describe('Notification', () => {
     const client = new Elarian(fixtures.clientParams);
 
+    const bob = new client.Customer({
+        customerNumber: {
+            number: '+254780000000',
+            provider: 'telco',
+        },
+    });
+
+    after(() => {
+        client.disconnect();
+    });
+
     it('ussdSession', (done) => {
         client.on('ussdSession', async (data, customer) => {
             data.should.have.properties([
@@ -20,7 +31,7 @@ describe('Notification', () => {
         // TODO: Trigger a ussd dial
     });
 
-    it('voiceCall', (done) => {
+    it('voiceCall', async (done) => {
         client.on('voiceCall', async (data, customer) => {
             data.should.have.properties([
                 'cost',
@@ -33,11 +44,11 @@ describe('Notification', () => {
             should.exist(customer);
             done();
         });
-
-        // TODO: Trigger a voice dial
+        const resp = await client.makeVoiceCall(bob, { number: '+254711082000', provider: 'telco' });
+        resp.status.should.equal(100);
     });
 
-    it('receivedPayment', (done) => {
+    it('receivedPayment', async (done) => {
         client.on('receivedPayment', async (data, customer) => {
             data.should.have.properties([
                 'purseId',
@@ -49,7 +60,29 @@ describe('Notification', () => {
             should.exist(customer);
             done();
         });
-        // TODO: Trigger a payment
+
+        await bob.getState();
+        const debitParty = {
+            customer: {
+                customerNumber: bob.customerNumber,
+                channelNumber: {
+                    number: '525900',
+                    provider: 'telco',
+                },
+            },
+        };
+        const creditParty = {
+            wallet: {
+                customerId: bob.customerId,
+                walletId: 'test_wallet',
+            },
+        };
+        const value = {
+            amount: 5456.78,
+            currencyCode: 'KES',
+        };
+        const resp = await client.initiatePayment(debitParty, creditParty, value);
+        resp.status.should.equal(102);
     });
 
     it('paymentStatus', (done) => {

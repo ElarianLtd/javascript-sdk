@@ -13,13 +13,11 @@ client.sendMessageByTag(
         value: 'testers',
     },
     {
-        channel: {
-            number: 21414,
-            provider: 'sms',
-        },
-        body: {
-            text: 'Hey There! Wanna see something cool? Dial *384#!',
-        },
+        number: 21414,
+        provider: 'sms',
+    },
+    {
+        text: 'Hey There! Wanna see something cool? Dial *384#!',
     },
 );
 

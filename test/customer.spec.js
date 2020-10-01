@@ -4,13 +4,13 @@ const should = require('should');
 const Elarian = require('..');
 const fixtures = require('./fixtures');
 
-describe('Customer', function fx() {
-    this.timeout(15000);
+describe('Customer', () => {
+    // this.timeout(15000);
 
     const client = new Elarian(fixtures.clientParams);
     const customer = new client.Customer({
         customerNumber: {
-            number: '+254710000000',
+            number: '+254780000000',
             provider: 'telco',
         },
     });

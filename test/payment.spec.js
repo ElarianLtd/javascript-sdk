@@ -8,7 +8,7 @@ describe('Payment', () => {
     const client = new Elarian(fixtures.clientParams);
     const customer = new client.Customer({
         customerNumber: {
-            number: '+254710000000',
+            number: '+254780000000',
             provider: 'telco',
         },
     });
@@ -16,8 +16,8 @@ describe('Payment', () => {
     it('initiatePayment()', async () => {
         let resp = await customer.getState();
         const { customerId } = resp.data;
-        resp = await client.initiatePayment({
-            debitParty: {
+        resp = await client.initiatePayment(
+            {
                 customer: {
                     customerNumber: customer.customerNumber,
                     channelNumber: {
@@ -26,17 +26,17 @@ describe('Payment', () => {
                     },
                 },
             },
-            creditParty: {
+            {
                 wallet: {
                     customerId,
                     walletId: 'test_wallet',
                 },
             },
-            value: {
+            {
                 amount: 5456.78,
                 currencyCode: 'KES',
             },
-        });
+        );
         resp.should.have.properties([
             'status',
             'description',
@@ -45,21 +45,21 @@ describe('Payment', () => {
             'creditCustomerId',
         ]);
 
-        resp = await client.initiatePayment({
-            debitParty: {
+        resp = await client.initiatePayment(
+            {
                 wallet: {
                     customerId,
                     walletId: 'test_wallet',
                 },
             },
-            creditParty: {
+            {
                 purse: 'test_purse',
             },
-            value: {
+            {
                 amount: 5456.78,
                 currencyCode: 'KES',
             },
-        });
+        );
         resp.should.have.properties([
             'status',
             'description',
