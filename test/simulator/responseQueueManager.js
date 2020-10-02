@@ -18,7 +18,7 @@ module.exports = {
                 }
             }
         } catch (ex) {
-            log.error(`Failed while getting response handler for response -> ${JSON.stringify(response)} ex -> ${ex}`)
+            log.error(`Failed while getting response handler for response -> ${JSON.stringify(response)} ex -> ${ex}`);
         }
     },
 };
