@@ -2,43 +2,58 @@ const should = require('should');
 
 const Elarian = require('..');
 const fixtures = require('./fixtures');
+const simulator = require('./simulator');
+const { log } = require('../lib/utils');
 
-describe('Notification', () => {
+describe('Notification', function fx() {
+    this.timeout(10000);
+
+    let messageId;
     const client = new Elarian(fixtures.clientParams);
-
     const bob = new client.Customer({
-        customerNumber: {
-            number: '+254780000000',
-            provider: 'telco',
-        },
+        customerNumber: fixtures.customerNumber,
     });
 
-    after(() => {
-        client.disconnect();
+    before(async () => {
+        await simulator.startSession({
+            phoneNumber: bob.customerNumber.number,
+            cb: (notif) => {
+                log.warn('Simulator: ', notif.data.type);
+            },
+        });
     });
 
-    it('reminder', async (done) => {
-        client.on('reminder', async (data, customer) => {
+    after(async () => {
+        await client.disconnect();
+        await simulator.endSession(bob.customerNumber.number);
+    });
+
+    it('reminder', (done) => {
+        const key = new Date().getTime();
+        client.on('reminder', (data, customer) => {
             data.should.have.properties([
                 'tag',
                 'reminder',
                 'workId',
             ]);
-            data.tag.should.have.properties(['key', 'value']);
             data.reminder.should.have.properties(['key', 'appId', 'expiration', 'interval', 'payload']);
+            data.reminder.key.should.equal(key.toString());
+            data.reminder.payload.value.should.equal('test-ok');
             should.exist(customer);
             done();
         });
-        const resp = await bob.addReminder({
-            key: 'test-reminder',
-            expiration: (new Date().getTime() + 2000) / 1000,
+        bob.addReminder({
+            key: key.toString(),
+            expiration: (new Date().getTime() + 1500) / 1000,
             payload: 'test-ok',
-        });
-        resp.status.should.equal(true);
+        })
+            .then((resp) => resp.status.should.equal(true))
+            .catch((err) => done(err));
     });
 
     it('ussdSession', (done) => {
         client.on('ussdSession', async (data, customer) => {
+            console.log(data);
             data.should.have.properties([
                 'input',
                 'sessionId',
@@ -48,10 +63,23 @@ describe('Notification', () => {
             done();
         });
 
-        // TODO: Trigger a ussd dial
+        const ussdRequest = {
+            type: 'UssdRequest',
+            customerNumber: {
+                provider: 2,
+                number: bob.customerNumber.number,
+            },
+            channelNumber: {
+                channel: 1,
+                number: '*483#',
+            },
+            input: '',
+        };
+        simulator.submit(ussdRequest)
+            .catch((err) => done(err));
     });
 
-    it('voiceCall', async (done) => {
+    it('voiceCall', (done) => {
         client.on('voiceCall', async (data, customer) => {
             data.should.have.properties([
                 'cost',
@@ -64,11 +92,28 @@ describe('Notification', () => {
             should.exist(customer);
             done();
         });
-        const resp = await client.makeVoiceCall(bob, { number: '+254711082000', provider: 'telco' });
-        resp.status.should.equal(100);
+        const callData = {
+            type: 'VoiceRequest',
+            customerNumber: {
+                provider: 2,
+                number: bob.customerNumber.number,
+            },
+            channelNumber: {
+                channel: 1,
+                number: '+254711082000',
+            },
+            direction: 1,
+            input: {
+                status: 102,
+                callStartTime: new Date().getTime(),
+            },
+            isActive: false,
+        };
+        simulator.submit(callData)
+            .catch((err) => done(err));
     });
 
-    it('receivedPayment', async (done) => {
+    it('receivedPayment', (done) => {
         client.on('receivedPayment', async (data, customer) => {
             data.should.have.properties([
                 'purseId',
@@ -81,32 +126,25 @@ describe('Notification', () => {
             done();
         });
 
-        await bob.getState();
-        const debitParty = {
-            customer: {
-                customerNumber: bob.customerNumber,
-                channelNumber: {
-                    number: '525900',
-                    provider: 'telco',
-                },
+        const sendPaymentData = {
+            type: 'PaymentRequest',
+            customerNumber: {
+                provider: 2,
+                number: bob.customerNumber.number,
             },
-        };
-        const creditParty = {
-            wallet: {
-                customerId: bob.customerId,
-                walletId: 'test_wallet',
+            channelNumber: {
+                channel: 1,
+                number: '525900',
             },
+            value: 'KES 300',
         };
-        const value = {
-            amount: 5456.78,
-            currencyCode: 'KES',
-        };
-        const resp = await client.initiatePayment(debitParty, creditParty, value);
-        resp.status.should.equal(102);
+        simulator.submit(sendPaymentData)
+            .catch((err) => done(err));
     });
 
     it('paymentStatus', (done) => {
         client.on('paymentStatus', async (data, customer) => {
+            console.log(data);
             data.should.have.properties([
                 'transactionId',
                 'status',
@@ -119,6 +157,7 @@ describe('Notification', () => {
 
     it('walletPaymentStatus', (done) => {
         client.on('walletPaymentStatus', async (data, customer) => {
+            console.log(data);
             data.should.have.properties([
                 'walletId',
                 'transactionId',
@@ -134,12 +173,27 @@ describe('Notification', () => {
         client.on('messageStatus', async (data, customer) => {
             data.should.have.properties([
                 'messageId',
+                'customerId',
                 'status',
             ]);
+            data.messageId.should.equal(messageId);
             should.exist(customer);
             done();
         });
-        // TODO: Trigger a message
+        bob.sendMessage(
+            {
+                number: '3000',
+                provider: 'sms',
+            },
+            {
+                text: 'messageStatus test',
+            },
+        )
+            .then((resp) => {
+                resp.status.should.equal(101);
+                messageId = resp.messageId;
+            })
+            .catch((err) => done(err));
     });
 
     it('messagingSessionStatus', (done) => {
@@ -168,6 +222,7 @@ describe('Notification', () => {
 
     it('receivedMessage', (done) => {
         client.on('receivedMessage', async (data, customer) => {
+            console.log(data);
             data.should.have.properties([
                 'messageId',
                 'text',
@@ -176,14 +231,21 @@ describe('Notification', () => {
                 'channelNumber',
             ]);
             should.exist(customer);
-            const {
-                messageId,
-            } = data;
-
-            const resp = await client.replyToMessage(messageId, {});
-            resp.should.have.properties(['status', 'description']);
             done();
         });
-        // TODO: Trigger a message
+        const sendMessageData = {
+            type: 'MessageRequest',
+            customerNumber: {
+                provider: 2,
+                number: bob.customerNumber.number,
+            },
+            channelNumber: {
+                channel: 3,
+                number: '3000',
+            },
+            text: 'test receivedMessage',
+        };
+        simulator.submit(sendMessageData)
+            .catch((err) => done(err));
     });
 });

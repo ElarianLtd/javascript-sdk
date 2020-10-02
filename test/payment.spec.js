@@ -7,10 +7,7 @@ const fixtures = require('./fixtures');
 describe('Payment', () => {
     const client = new Elarian(fixtures.clientParams);
     const customer = new client.Customer({
-        customerNumber: {
-            number: '+254780000000',
-            provider: 'telco',
-        },
+        customerNumber: fixtures.customerNumber,
     });
 
     it('initiatePayment()', async () => {

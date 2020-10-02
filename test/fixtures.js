@@ -5,5 +5,10 @@ module.exports = {
         apiKey: 'test_api_key',
     },
 
+    customerNumber: {
+        number: '+254720000000',
+        provider: 'telco',
+    },
+
     sleep: (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
 };

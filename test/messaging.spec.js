@@ -7,10 +7,7 @@ const fixtures = require('./fixtures');
 describe('Messaging', () => {
     const client = new Elarian(fixtures.clientParams);
     const customer = new client.Customer({
-        customerNumber: {
-            number: '+254780000000',
-            provider: 'telco',
-        },
+        customerNumber: fixtures.customerNumber,
     });
 
     it('sendMessage()', async () => {
@@ -21,17 +18,17 @@ describe('Messaging', () => {
                 provider: 'sms',
             },
             {
-                text: 'ABC',
+                text: 'node messaging test',
             },
         );
         resp.should.have.properties(['status', 'description', 'messageId', 'customerId']);
         resp = await customer.sendMessage(
             {
-                number: '21414',
+                number: 'Elarian',
                 provider: 'sms',
             },
             {
-                text: 'ABC+',
+                text: 'node customer messaging test',
             },
         );
         resp.should.have.properties(['status', 'description', 'messageId', 'customerId']);
@@ -44,7 +41,7 @@ describe('Messaging', () => {
                 value: 'testers',
             },
             {
-                number: '21414',
+                number: 'Elarian',
                 provider: 'sms', // sms|telegram|whatsapp|fb_messenger|google_rcs
             },
             {

@@ -5,14 +5,11 @@ const Elarian = require('..');
 const fixtures = require('./fixtures');
 
 describe('Customer', function fx() {
-    this.timeout(5000);
+    this.timeout(10000);
 
     const client = new Elarian(fixtures.clientParams);
     const customer = new client.Customer({
-        customerNumber: {
-            number: '+254780000000',
-            provider: 'telco',
-        },
+        customerNumber: fixtures.customerNumber,
     });
 
     it('getCustomerState()', async () => {

@@ -6,20 +6,15 @@ const fixtures = require('./fixtures');
 
 describe('Voice', () => {
     const client = new Elarian(fixtures.clientParams);
+    const customer = new client.Customer({
+        customerNumber: fixtures.customerNumber,
+    });
 
     it('makeVoiceCall()', async () => {
-        const resp = await client.makeVoiceCall(
-            new client.Customer({
-                customerNumber: {
-                    number: '+254780000000',
-                    provider: 'telco',
-                },
-            }),
-            {
-                number: '+254711082000',
-                provider: 'telco',
-            },
-        );
+        const resp = await client.makeVoiceCall(customer, {
+            number: '+254711082000',
+            provider: 'telco',
+        });
         resp.should.have.properties(['status', 'description', 'customerId', 'sessionId']);
     });
 
