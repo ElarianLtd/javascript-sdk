@@ -75,6 +75,11 @@ describe('Customer', function fx() {
                 value: 'premium',
                 expiration: new Date(2025, 1, 1).getTime() / 1000,
             },
+            {
+                key: 'userSegment',
+                value: 'testers',
+                expiration: new Date(2025, 1, 1).getTime() / 1000,
+            },
         ]);
         resp.should.have.properties(['status', 'description', 'customerId']);
 

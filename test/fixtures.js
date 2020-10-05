@@ -10,5 +10,10 @@ module.exports = {
         provider: 'telco',
     },
 
+    notifCustomerNumber: {
+        number: '+254710000000',
+        provider: 'telco',
+    },
+
     sleep: (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
 };
