@@ -71,7 +71,7 @@ describe('Notification', function fx() {
             },
             channelNumber: {
                 channel: 1,
-                number: '*483#',
+                number: '*384#',
             },
             input: '',
         };
