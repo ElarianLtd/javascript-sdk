@@ -1,46 +1,67 @@
-const {
-    Client,
-    StringValue,
-    CustomerNumber,
-    TextMessageBody,
-    MessagingChannel,
-    SendMessageRequest,
-    TextMessageTemplate,
-    CustomerMessageBody,
-    CustomerNumberProvider,
-    MessagingChannelNumber,
-} = require('../');
+// Simple SMS+USSD app
+const Elarian = require('..');
 
-const elarian = new Client({
-    apiKey: '77bcc4b83574b3626e5b4780169c1dd7d62ed76e4515edc3e584c21e4e89ce91',
+const client = new Elarian({
+    apiKey: 'test_api_key',
+    orgId: 'test_org_id',
+    appId: 'test_app_id',
 });
 
-const req = new SendMessageRequest()
-    .setAppId('app-j90HNs')
-    .setOrgId('org-1234')
-    .setCustomerNumber(
-        new CustomerNumber()
-            .setProvider(CustomerNumberProvider.CUSTOMER_NUMBER_PROVIDER_TELCO)
-            .setNumber('+254700000000')
-    )
-    .setChannelNumber(
-        new MessagingChannelNumber()
-            .setChannel(MessagingChannel.MESSAGING_CHANNEL_SMS)
-            .setNumber('41011')
-    )
-    .setBody(
-        new CustomerMessageBody()
-            .setText(
-                new TextMessageBody()
-                    .setText(new StringValue('????'))
-                    .setTemplate(
-                        new TextMessageTemplate()
-                            .setName('abc')
-                            .setParamsList(['efg', 'def'])
-                    )
-            )
-    );
+client.sendMessageByTag(
+    {
+        key: 'userSegment',
+        value: 'testers',
+    },
+    {
+        number: 21414,
+        provider: 'sms',
+    },
+    {
+        text: 'Hey There! Wanna see something cool? Dial *384#!',
+    },
+);
 
-elarian.sendMessage(req)
-    .then(res => console.log(res))
-    .catch(ex => console.error(ex));
+client.on('ussdSession', async (data, customer) => {
+    const {
+        input,
+        sessionId,
+    } = data;
+
+    const metadata = await customer.leaseMetadata('awesomeSurvey');
+    let {
+        name,
+        state = 'newbie',
+    } = metadata.value;
+
+    const menu = {
+        text: null,
+        isTerminal: true,
+    };
+
+    switch (state) {
+    case 'veteran':
+        if (name) {
+            menu.text = `Welcome back ${name}! What's your new name?`;
+            menu.isTerminal = false;
+        } else {
+            name = input;
+            menu.text = `Thank you for trying Elarian, ${name}!`;
+            menu.isTerminal = true;
+        }
+        break;
+    case 'newbie':
+    default:
+        menu.text = 'Hey there, welcome to Elarian! What\'s your name?';
+        menu.isTerminal = false;
+        state = 'veteran';
+        break;
+    }
+
+    await customer.updateMetadata({
+        awesomeSurvey: {
+            state,
+            name,
+        },
+    });
+    await client.replyToUssdSession(sessionId, menu);
+});

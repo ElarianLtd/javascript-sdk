@@ -21,91 +21,163 @@ $ npm install elarian
 
 
 ```javascript
-const {
-    Client,
-    StringValue,
-    CustomerNumber,
-    TextMessageBody,
-    MessagingChannel,
-    SendMessageRequest,
-    TextMessageTemplate,
-    CustomerMessageBody,
-    CustomerNumberProvider,
-    MessagingChannelNumber,
-} = require('elarian');
+// Simple SMS+USSD app
+const Elarian = require('elarian');
 
-const elarian = new Client({
-    apiKey: '77bcc4b83574b3626e5b4780169c1dd7d62ed76e4515edc3e584c21e4e89ce91',
+const client = new Elarian({
+    apiKey: 'test_api_key',
+    orgId: 'test_org_id',
+    appId: 'test_app_id',
 });
 
-const req = new SendMessageRequest()
-    .setAppId('app-j90HNs')
-    .setOrgId('org-1234')
-    .setCustomerNumber(
-        new CustomerNumber()
-            .setProvider(CustomerNumberProvider.CUSTOMER_NUMBER_PROVIDER_TELCO)
-            .setNumber('+254700000000')
-    )
-    .setChannelNumber(
-        new MessagingChannelNumber()
-            .setChannel(MessagingChannel.MESSAGING_CHANNEL_SMS)
-            .setNumber('41011')
-    )
-    .setBody(
-        new CustomerMessageBody()
-            .setText(
-                new TextMessageBody()
-                    .setText(new StringValue('????'))
-                    .setTemplate(
-                        new TextMessageTemplate()
-                            .setName('abc')
-                            .setParamsList(['efg', 'def'])
-                    )
-            )
-    );
+client.sendMessageByTag(
+    {
+        key: 'userSegment',
+        value: 'testers',
+    },
+    {
+        number: 21414,
+        provider: 'sms',
+    },
+    {
+        text: 'Hey There! Wanna see something cool? Dial *384#!',
+    },
+);
 
-elarian.sendMessage(req)
-    .then(res => console.log(res))
-    .catch(ex => console.error(ex));
+client.on('ussdSession', async (data, customer) => {
+    const {
+        input,
+        sessionId,
+    } = data;
+
+    const metadata = await customer.leaseMetadata('awesomeSurvey');
+    let {
+        name,
+        state = 'newbie',
+    } = metadata.value;
+
+    const menu = {
+        text: null,
+        isTerminal: true,
+    };
+
+    switch (state) {
+    case 'veteran':
+        if (name) {
+            menu.text = `Welcome back ${name}! What's your new name?`;
+            menu.isTerminal = false;
+        } else {
+            name = input;
+            menu.text = `Thank you for trying Elarian, ${name}!`;
+            menu.isTerminal = true;
+        }
+        break;
+    case 'newbie':
+    default:
+        menu.text = 'Hey there, welcome to Elarian! What\'s your name?';
+        menu.isTerminal = false;
+        state = 'veteran';
+        break;
+    }
+
+    await customer.updateMetadata({
+        awesomeSurvey: {
+            state,
+            name,
+        },
+    });
+    await client.replyToUssdSession(sessionId, menu);
+});
+
 ```
+
+## Initialization
+
+To use the SDK, you need an instance of the Elarian client. One can be created as follows:
+
+```js
+const client = new Elarian(options);
+```
+
+From this client, you can instantiate customer objects as follows:
+
+```js
+const kamau = new client.Customer(options);
+```
+
+## Classes
+
+- `Elarian(options)`: Elarian client class. `options`has the following keys:
+  - `orgId`: The id of your registered organization
+  - `appId`: The id of your app
+  - `apiKey`: Your organization's API key
+  - `authToken`: An short-lived auth token that can be used instead of the API key.
+- `Elarian.Customer(options)`: Customer class. `options` must have **one** the following keys:
+  - `customerId`: An elarian-generated customer id.
+  - `customerNumber`: An object containing the customer's phone number and provider.
+    - `number`: A phone number string
+    - `provider`: Must be one of `[telco, telegram, facebook]`
+  - `secondaryId`: An object containining a customer secondary id.
+    - `key`: A string idenifying the type of id. e.g. `passportNumber`
+    - `value`: A string value of the secondary id. e.g. `OP00332`
 
 ## Methods
 
-```
-authToken(AuthTokenRequest) -> AuthTokenReply
+The `Elarian` class has the following methods
 
-getCustomerState(GetCustomerStateRequest) -> GetCustomerStateReply
-adoptCustomerState(AdoptCustomerStateRequest) -> UpdateCustomerStateReply
+- `authToken()`
 
-addCustomerReminder(AddCustomerReminderRequest) -> UpdateCustomerStateReply
-addCustomerReminderByTag(AddCustomerReminderTagRequest) -> TagCommandReply
-cancelCustomerReminder(CancelCustomerReminderRequest) -> UpdateCustomerStateReply
-cancelCustomerReminderByTag(CancelCustomerReminderTagRequest) -> TagCommandReply
+- `getCustomerState(customer)`
+- `adoptCustomerState(customer)`
+- `updateCustomerTag(customer, tags)`
+- `deleteCustomerTag(customer, tags)`
+- `updateCustomerSecondaryId(customer, secondaryIds)`
+- `deleteCustomerSecondaryId(customer, secondaryIds)`
+- `addCustomerReminder(customer, reminder)`
+- `cancelCustomerReminder(customer, key)`
+- `addCustomerReminderByTag(tag, reminder)`
+- `cancelCustomerReminderByTag(tag, key)`
+- `updateCustomerMetadata(customer, metadata)`
+- `leaseCustomerMedatadata(customer, key)`
+- `deleteCustomerMedata(customer, keys)`
+- `sendMessage(customer, channelNumber, body)`
+- `sendMessageByTag(tag, channelNumber, body)`
+- `repyToMessage(customer, replyToMessageId, body)`
+- `messagingConsent(customer, channelNumber, action)`
+- `initiatePayment(debitParty, creditParty, value)`
+- `replyToUssdSession(sessionId, menu)`
+- `makeVoiceCall(customer, channelNumber)`
+- `replyToVoiceCall(sessionId, actions)`
 
-updateCustomerTag(UpdateCustomerTagRequest) -> UpdateCustomerStateReply
-deleteCustomerTag(DeleteCustomerTagRequest) -> UpdateCustomerStateReply
+The `Elarian.Customer` has the following methods:
 
-updateCustomerSecondaryId(UpdateCustomerSecondaryIdRequest) -> UpdateCustomerStateReply
-deleteCustomerSecondaryId(DeleteCustomerSecondaryIdRequest) -> UpdateCustomerStateReply
+- `getState()`
+- `adoptState(otherCustomer)`
+- `updateTags(tags)`
+- `deleteTags(tags)`
+- `updateSecondaryId(secondaryIds)`
+- `deleteSecondaryId(secondaryId)`
+- `addReminder(reminder)`
+- `cancelReminder(key)`
+- `updateMetadata(metadata)`
+- `leaseMetadata(key)`
+- `deleteMedata(keys)`
+- `sendMessage(channelNumber, body)`
 
-leaseCustomerMetadata(LeaseCustomerMetadataRequest) -> LeaseCustomerMetadataReply
-updateCustomerMetadata(UpdateCustomerMetadataRequest) -> UpdateCustomerStateReply
-deleteCustomerMetadata(DeleteCustomerMetadataRequest) -> UpdateCustomerStateReply
+##  Events
 
-sendMessage(SendMessageRequest) -> SendMessageReply
-sendMessageByTag(SendMessageTagRequest) -> TagCommandReply
-replyToMessage(ReplyToMessageRequest) -> SendMessageReply
-messagingConsent(MessagingConsentRequest) -> MessagingConsentReply
+The elarian client can listen for the following events
 
-sendPayment(SendPaymentRequest) -> InitiatePaymentReply
-checkoutPayment(CheckoutPaymentRequest) -> InitiatePaymentReply
-customerWalletPayment(CustomerWalletPaymentRequest) -> InitiatePaymentReply
-
-makeVoiceCall(MakeVoiceCallRequest) -> MakeVoiceCallReply
-
-streamNotifications(StreamNotificationRequest) -> WebhookRequest
-sendWebhookResponse(WebhookResponse) -> WebhookResponseReply
-```
+- `reminder`
+- `voiceCall`
+- `ussdSession`
+- `paymentStatus`
+- `messageStatus`
+- `receivedMessage`
+- `receivedPayment`
+- `walletPaymentStatus`
+- `messagingSessionStatus`
+- `messagingConsentStatus`
 
 ## Development
 
