@@ -117,8 +117,8 @@ const kamau = new client.Customer(options);
   - `customerNumber`: An object containing the customer's phone number and provider.
     - `number`: A phone number string
     - `provider`: Must be one of `[telco, telegram, facebook]`
-  - `secondaryId`: An object containining a customer secondary id.
-    - `key`: A string idenifying the type of id. e.g. `passportNumber`
+  - `secondaryId`: An object containing a customer secondary id.
+    - `key`: A string identifying the type of id. e.g. `passportNumber`
     - `value`: A string value of the secondary id. e.g. `OP00332`
 
 ## Methods

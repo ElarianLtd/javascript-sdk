@@ -18,7 +18,7 @@ describe('Payment', () => {
                 customer: {
                     customerNumber: customer.customerNumber,
                     channelNumber: {
-                        number: '+254700000000',
+                        number: '525900', // paybill
                         provider: 'telco',
                     },
                 },
@@ -34,6 +34,7 @@ describe('Payment', () => {
                 currencyCode: 'KES',
             },
         );
+        console.error(resp);
         resp.should.have.properties([
             'status',
             'description',
@@ -57,6 +58,7 @@ describe('Payment', () => {
                 currencyCode: 'KES',
             },
         );
+        console.error(resp);
         resp.should.have.properties([
             'status',
             'description',

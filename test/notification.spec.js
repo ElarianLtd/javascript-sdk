@@ -220,7 +220,10 @@ describe('Notification', function fx() {
                 channel: 1,
                 number: '525900',
             },
-            value: 'KES 300',
+            value: {
+                currencyCode: 'KES',
+                amount: 300,
+            },
         };
         simulator.submit(sendPaymentData)
             .catch((err) => done(err));
