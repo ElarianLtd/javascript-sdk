@@ -20,7 +20,18 @@ describe('Notification', function fx() {
                 log.warn('Simulator: ', notif.data.type);
 
                 if (notif.data.type === 'CheckoutPayment') {
-                    // TODO: Respond to a checkout
+                    const ussdData = {
+                        type: 'UssdRequest',
+                        customerNumber: {
+                            provider: 2,
+                            number: bob.customerNumber.number,
+                        },
+                        channelNumber: notif.data.channelNumber,
+                        input: '1',
+                        sessionId: notif.data.transactionId,
+                    };
+                    simulator.submit(ussdData)
+                        .catch((ex) => log.error(ex));
                 }
             },
         });
@@ -82,33 +93,8 @@ describe('Notification', function fx() {
             .catch((err) => done(err));
     });
 
-    it('messagingSessionStatus', (done) => {
-        client.on('messagingSessionStatus', async (data, customer) => {
-            data.should.have.properties([
-                'messageId',
-                'status',
-            ]);
-            should.exist(customer);
-            done();
-        });
-        // TODO: Trigger a message
-    });
-
-    it('messagingConsentStatus', (done) => {
-        client.on('messagingConsentStatus', async (data, customer) => {
-            data.should.have.properties([
-                'messageId',
-                'status',
-            ]);
-            should.exist(customer);
-            done();
-        });
-        // TODO: Trigger a message
-    });
-
     it('receivedMessage', (done) => {
         client.on('receivedMessage', async (data, customer) => {
-            console.log(data);
             data.should.have.properties([
                 'messageId',
                 'text',
@@ -132,6 +118,42 @@ describe('Notification', function fx() {
             text: 'test receivedMessage',
         };
         simulator.submit(sendMessageData)
+            .catch((err) => done(err));
+    });
+
+    it('messagingSessionStatus', (done) => {
+        client.on('messagingSessionStatus', async (data, customer) => {
+            data.should.have.properties([
+                'messageId',
+                'status',
+            ]);
+            should.exist(customer);
+            done();
+        });
+        // TODO: Trigger a message
+    });
+
+    it('messagingConsentStatus', (done) => {
+        client.on('messagingConsentStatus', async (data, customer) => {
+            console.log(data);
+            data.should.have.properties([
+                'messageId',
+                'status',
+            ]);
+            should.exist(customer);
+            done();
+        });
+        client.messagingConsent(
+            bob,
+            {
+                number: 'Elarian',
+                provider: 'sms',
+            },
+            'opt-out',
+        )
+            .then((resp) => {
+                resp.status.should.equal(301);
+            })
             .catch((err) => done(err));
     });
 
@@ -239,7 +261,31 @@ describe('Notification', function fx() {
             should.exist(customer);
             done();
         });
-        // TODO: Trigger a payment?
+        client.initiatePayment(
+            {
+                customer: {
+                    customerNumber: bob.customerNumber,
+                    channelNumber: {
+                        number: '525900',
+                        provider: 'telco',
+                    },
+                },
+            },
+            {
+                wallet: {
+                    customerId: bob.customerId,
+                    walletId: 'test_wallet',
+                },
+            },
+            {
+                amount: 100,
+                currencyCode: 'KES',
+            },
+        )
+            .then((resp) => {
+                resp.status.should.equal(102);
+            })
+            .catch((err) => done(err));
     });
 
     it('walletPaymentStatus', (done) => {

@@ -34,7 +34,6 @@ describe('Payment', () => {
                 currencyCode: 'KES',
             },
         );
-        console.error(resp);
         resp.should.have.properties([
             'status',
             'description',
@@ -58,7 +57,6 @@ describe('Payment', () => {
                 currencyCode: 'KES',
             },
         );
-        console.error(resp);
         resp.should.have.properties([
             'status',
             'description',
