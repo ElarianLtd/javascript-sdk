@@ -18,7 +18,7 @@ describe('Payment', () => {
                 customer: {
                     customerNumber: customer.customerNumber,
                     channelNumber: {
-                        number: '+254700000000',
+                        number: '525900', // paybill
                         provider: 'telco',
                     },
                 },

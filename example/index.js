@@ -1,5 +1,7 @@
 // Simple SMS+USSD app
-const Elarian = require('..');
+const Elarian = require('../lib');
+
+const log = console;
 
 const client = new Elarian({
     apiKey: 'test_api_key',
@@ -19,7 +21,7 @@ client.sendMessageByTag(
     {
         text: 'Hey There! Wanna see something cool? Dial *384#!',
     },
-);
+).catch((ex) => log.error(ex));
 
 client.on('ussdSession', async (data, customer) => {
     const {
