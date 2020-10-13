@@ -30,7 +30,7 @@ const client = new Elarian({
     appId: 'test_app_id',
 });
 
-aclient.sendMessageByTag(
+client.sendMessageByTag(
     {
         key: 'userSegment',
         value: 'testers',
