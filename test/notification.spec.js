@@ -36,6 +36,9 @@ describe('Notification', function fx() {
             },
         });
         await bob.getState();
+        client.on('data', (/* data */) => {
+            log.info('Got some notification data...');
+        });
     });
 
     after(async () => {

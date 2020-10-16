@@ -168,6 +168,7 @@ The `Elarian.Customer` has the following methods:
 
 The elarian client can listen for the following events
 
+- `data`
 - `reminder`
 - `voiceCall`
 - `ussdSession`
