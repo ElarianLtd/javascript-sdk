@@ -103,11 +103,15 @@ const kamau = new client.Customer(options);
   - `apiKey`: Your organization's API key
   - `authToken`: An short-lived auth token that can be used instead of the API key.
 
-The optional `configOptions` can have the following keys:
-  - `serializer`:
-        - `type`: **text** or **binary**
-        - `serialize(data)`: A function that returns the serialized object.
-        - `deserialize(data)`: A function that returns a deserialized object.
+> The optional `configOptions` can have the following keys:
+>
+> - `serializer`:
+>   - `type`: **text** or **binary**
+>   - `serialize(data)`: A function that returns the serialized object.
+>   - `deserialize(data)`: A function that returns a deserialized object.
+
+```
+```
 
 - `Elarian.Customer(options)`: Customer class. `options` must have **one** the following keys:
   - `customerId`: An elarian-generated customer id.
@@ -118,33 +122,13 @@ The optional `configOptions` can have the following keys:
     - `key`: A string identifying the type of id. e.g. `passportNumber`
     - `value`: A string value of the secondary id. e.g. `OP00332`
 
-## Objects
-
-
-- `tag`:
-    - `key`
-    - `value`
-    - `expiration`
-
-- `secondaryId`:
-    - `key`
-    - `value`
-    - `expiration`
-
-- `customerNumber`:
-    - `number`
-    - `provider`: telco, telegram or facebook
-    - `partition`:
-
-- `channelNumber`:
-    - `number`
-    - `provider`: telco (for payment, ussd and voice), sms, telegram, google_rcs, fb_messenger, whatsapp(for messaging)
-
 ## Methods
 
 The `Elarian` class has the following methods
 
 - `authToken()`: Generate a short-lived auth token to use instead of `apiKey`. Used for browser and mobile clients.
+```
+```
 - `getCustomerState(customer)`: Fetch the customer's state. The following object will be returned on success:
 ```js
 {
@@ -274,11 +258,23 @@ Values in the `metadata` object can either be strings or buffers. The following 
 }
 ```
 - `sendMessage(customer, channelNumber, body)`: Send a message to the customer from the specified channel number.
+```
+```
 - `sendMessageByTag(tag, channelNumber, body)`: Send a message to customers with tag `tag` from the specified channel number.
+```
+```
 - `repyToMessage(customer, replyToMessageId, body)`: Reply to a recieved message.
+```
+```
 - `messagingConsent(customer, channelNumber, action)`: Initiate messaging consent for this customer for this channel number. `action` can either be `opt-in` or `opt-out`.
+```
+```
 - `initiatePayment(debitParty, creditParty, value)`: Initiate a payment.
+```
+```
 - `replyToUssdSession(sessionId, menu)`: Respond to a ussd notification with a menu.
+```
+```
 - `makeVoiceCall(customer, channelNumber)`: Initiate a voice call to the customer from the specified channel number. The following object will be returned:
 ```js
 {
@@ -394,24 +390,48 @@ Values in the `metadata` object can either be strings or buffers. The following 
 The `Elarian.Customer` has the following methods:
 
 - `getState()`: Similar to `client.getCustomerState()`.
+```
+```
 - `adoptState(otherCustomer)`: Similar to `client.adoptCustomerState()`.
+```
+```
 - `updateTags(tags)`: Similar to `client.updateCustomerTags()`.
+```
+```
 - `deleteTags(tags)`: Similar to `client.deleteCustomerTags()`.
+```
+```
 - `updateSecondaryId(secondaryIds)`: Similar to `client.updateCustomerSecondaryIds()`.
+```
+```
 - `deleteSecondaryId(secondaryId)`: Similar to `client.deleteCustomerSecondaryIds()`.
+```
+```
 - `addReminder(reminder)`:  Similar to `client.addCustomerReminder()`.
+```
+```
 - `cancelReminder(key)`:  Similar to `client.cancelCustomerReminder()`.
+```
+```
 - `updateMetadata(metadata)`:  Similar to `client.updateCustomerMetadata()`.
+```
+```
 - `leaseMetadata(key)`: Similar to `client.leaseCustomerMedatadata()`.
+```
+```
 - `deleteMetadata(keys)`:  Similar to `client.deleteCustomerMedata()`.
+```
+```
 - `sendMessage(channelNumber, body)`: Similar to `client.sendMessage()`.
+```
+```
 
 ##  Events
 
 The elarian client can listen for the following events:
 
 - `data`: This event is fired everytime Elarian has something to notify your app about. Can be used for debugging. You should be listeneing for the specific events shown below.
-- `reminder`: When a reminder reaches it's `expiration` time( and every `interval` repeat), this event is fired.
+- `reminder`: When a reminder reaches it's `expiration` time(and every `interval` repeat), this event is fired.
 - `voiceCall`: Fired when a voice interaction is needed.
 - `ussdSession`: Fired when a USSD interaction needs to be handled
 - `paymentStatus`: Fired when the status of a payment has changed. e.g. failed payment
@@ -421,6 +441,26 @@ The elarian client can listen for the following events:
 - `walletPaymentStatus`: Fired when the status of a wallet payment changes.
 - `messagingSessionStatus`: 
 - `messagingConsentStatus`:
+
+## Objects
+
+- `tag`:
+    - `key`
+    - `value`
+    - `expiration`
+
+- `secondaryId`:
+    - `key`
+    - `value`
+
+- `customerNumber`:
+    - `number`
+    - `provider`: **telco**, **telegram** or **facebook**
+    - `partition`:
+
+- `channelNumber`:
+    - `number`
+    - `provider`: **telco** (for payment, ussd and voice), **sms**, **telegram**, **google_rcs**, **fb_messenger**, **whatsapp** (for messaging)
 
 ## Development
 
