@@ -1,27 +1,11 @@
 // Simple SMS+USSD app
-const Elarian = require('../lib');
-
-const log = console;
+const Elarian = require('..');
 
 const client = new Elarian({
     apiKey: 'test_api_key',
-    orgId: 'test_org_id',
-    appId: 'test_app_id',
+    orgId: 'test_org',
+    appId: 'test_app',
 });
-
-client.sendMessageByTag(
-    {
-        key: 'userSegment',
-        value: 'testers',
-    },
-    {
-        number: 21414,
-        provider: 'sms',
-    },
-    {
-        text: 'Hey There! Wanna see something cool? Dial *384#!',
-    },
-).catch((ex) => log.error(ex));
 
 client.on('ussdSession', async (data, customer) => {
     const {
@@ -29,11 +13,11 @@ client.on('ussdSession', async (data, customer) => {
         sessionId,
     } = data;
 
-    const metadata = await customer.leaseMetadata('awesomeSurvey');
+    const metadata = await customer.leaseMetadata('awesomeNameSurvey');
     let {
         name,
         state = 'newbie',
-    } = metadata.value;
+    } = metadata.value || {};
 
     const menu = {
         text: null,
@@ -46,9 +30,13 @@ client.on('ussdSession', async (data, customer) => {
             menu.text = `Welcome back ${name}! What's your new name?`;
             menu.isTerminal = false;
         } else {
-            name = input;
+            name = input.value;
             menu.text = `Thank you for trying Elarian, ${name}!`;
             menu.isTerminal = true;
+            await customer.sendMessage(
+                { number: 'Elarian', provider: 'sms' },
+                { text: `Hey ${name}! Thank you for trying out Elarian` },
+            );
         }
         break;
     case 'newbie':
@@ -60,10 +48,12 @@ client.on('ussdSession', async (data, customer) => {
     }
 
     await customer.updateMetadata({
-        awesomeSurvey: {
+        awesomeNameSurvey: {
             state,
             name,
         },
     });
     await client.replyToUssdSession(sessionId, menu);
 });
+
+console.log('App running, waiting for notifications!\n');

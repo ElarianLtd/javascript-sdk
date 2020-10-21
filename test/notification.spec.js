@@ -102,7 +102,7 @@ describe('Notification', function fx() {
                 'location',
                 'channelNumber',
                 'customerNumber',
-                'customerId'
+                'customerId',
             ]);
             should.exist(customer);
             done();
@@ -205,7 +205,7 @@ describe('Notification', function fx() {
             direction: 0,
             input: {
                 status: 102,
-                startedAt: Math.floor(Date.now()/1000)
+                startedAt: Math.floor(Date.now() / 1000),
             },
             isActive: false,
         };

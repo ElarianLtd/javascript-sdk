@@ -12,7 +12,7 @@ describe('Payment', () => {
 
     it('initiatePayment()', async () => {
         let resp = await customer.getState();
-        const { customerId } = resp.data;
+        const { customerId } = resp;
         resp = await client.initiatePayment(
             {
                 customer: {
