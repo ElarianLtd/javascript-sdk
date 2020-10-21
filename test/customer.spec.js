@@ -14,16 +14,33 @@ describe('Customer', function fx() {
 
     it('getCustomerState()', async () => {
         let resp = await client.getCustomerState(customer);
-        resp.should.have.properties(['status', 'description', 'data']);
+        resp.should.have.properties([
+            'customerId',
+            'messagingState',
+            'ussdState',
+            'voiceState',
+            'paymentState',
+            'tags',
+            'metadata',
+            'secondaryIds',
+        ]);
 
         resp = await client.getCustomerState(new client.Customer({
-            customerId: resp.data.customerId,
+            customerId: resp.customerId,
         }));
-        resp.should.have.properties(['status', 'description', 'data']);
+        resp.should.have.properties([
+            'customerId',
+            'messagingState',
+            'ussdState',
+            'voiceState',
+            'paymentState',
+            'tags',
+            'metadata',
+            'secondaryIds',
+        ]);
 
         resp = await customer.getState();
-        resp.should.have.properties(['status', 'description', 'data']);
-        resp.data.should.have.properties([
+        resp.should.have.properties([
             'customerId',
             'messagingState',
             'ussdState',
@@ -84,7 +101,7 @@ describe('Customer', function fx() {
         resp.should.have.properties(['status', 'description', 'customerId']);
 
         resp = await customer.getState();
-        resp.data.tags.map((i) => i.key).should.containDeep(['kind', 'type']);
+        resp.tags.map((i) => i.key).should.containDeep(['kind', 'type']);
     });
 
     it('deleteCustomerTag()', async () => {
@@ -95,7 +112,7 @@ describe('Customer', function fx() {
         resp.should.have.properties(['status', 'description', 'customerId']);
 
         resp = await customer.getState();
-        resp.data.tags.map((i) => i.key).should.not.containDeep(['kind', 'type']);
+        resp.tags.map((i) => i.key).should.not.containDeep(['kind', 'type']);
     });
 
     it('updateCustomerSecondaryId()', async () => {
@@ -123,7 +140,7 @@ describe('Customer', function fx() {
         resp.should.have.properties(['status', 'description', 'customerId']);
 
         resp = await customer.getState();
-        resp.data.secondaryIds.map((i) => i.key).should.containDeep(['passport', 'huduma']);
+        resp.secondaryIds.map((i) => i.key).should.containDeep(['passport', 'huduma']);
     });
 
     it('deleteCustomerSecondaryId()', async () => {
@@ -134,7 +151,7 @@ describe('Customer', function fx() {
         resp.should.have.properties(['status', 'description', 'customerId']);
 
         resp = await customer.getState();
-        resp.data.secondaryIds.map((i) => i.key).should.not.containDeep(['huduma', 'passport']);
+        resp.secondaryIds.map((i) => i.key).should.not.containDeep(['huduma', 'passport']);
     });
 
     it('addCustomerReminder()', async () => {
@@ -213,6 +230,6 @@ describe('Customer', function fx() {
         resp = await customer.deleteMetadata(['def']);
         resp.should.have.properties(['status', 'description']);
         resp = await customer.getState();
-        Object.keys(resp.data.metadata).should.not.containDeep(['abc', 'def']);
+        Object.keys(resp.metadata).should.not.containDeep(['abc', 'def']);
     });
 });

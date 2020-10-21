@@ -19,16 +19,13 @@ describe('Notification', function fx() {
             cb: (notif) => {
                 log.warn('Simulator: ', notif.data.type);
 
-                if (notif.data.type === 'CheckoutPayment') {
+                if (notif.data.type === 'UssdMenu' && !notif.data.menu.isTerminal) {
                     const ussdData = {
                         type: 'UssdRequest',
-                        customerNumber: {
-                            provider: 2,
-                            number: bob.customerNumber.number,
-                        },
+                        customerNumber: bob.customerNumber.number,
                         channelNumber: notif.data.channelNumber,
                         input: '1',
-                        sessionId: notif.data.transactionId,
+                        sessionId: notif.data.sessionId,
                     };
                     simulator.submit(ussdData)
                         .catch((ex) => log.error(ex));
@@ -36,6 +33,9 @@ describe('Notification', function fx() {
             },
         });
         await bob.getState();
+        client.on('data', (/* data */) => {
+            log.info('Got some notification data...');
+        });
     });
 
     after(async () => {
@@ -98,19 +98,18 @@ describe('Notification', function fx() {
             data.should.have.properties([
                 'messageId',
                 'text',
-                'media',
+                'mediaList',
                 'location',
                 'channelNumber',
+                'customerNumber',
+                'customerId',
             ]);
             should.exist(customer);
             done();
         });
         const sendMessageData = {
             type: 'MessageRequest',
-            customerNumber: {
-                provider: 2,
-                number: bob.customerNumber.number,
-            },
+            customerNumber: bob.customerNumber.number,
             channelNumber: {
                 channel: 3,
                 number: '21414',
@@ -159,8 +158,9 @@ describe('Notification', function fx() {
 
     it('ussdSession', (done) => {
         client.on('ussdSession', async (data, customer) => {
-            console.log(data);
             data.should.have.properties([
+                'customerId',
+                'customerNumber',
                 'input',
                 'sessionId',
                 'channelNumber',
@@ -171,10 +171,7 @@ describe('Notification', function fx() {
 
         const ussdRequest = {
             type: 'UssdRequest',
-            customerNumber: {
-                provider: 2,
-                number: bob.customerNumber.number,
-            },
+            customerNumber: bob.customerNumber.number,
             channelNumber: {
                 channel: 1,
                 number: '*384#',
@@ -200,18 +197,15 @@ describe('Notification', function fx() {
         });
         const callData = {
             type: 'VoiceRequest',
-            customerNumber: {
-                provider: 2,
-                number: bob.customerNumber.number,
-            },
+            customerNumber: bob.customerNumber.number,
             channelNumber: {
                 channel: 1,
                 number: '+254711082000',
             },
-            direction: 1,
+            direction: 0,
             input: {
                 status: 102,
-                callStartTime: new Date().getTime(),
+                startedAt: Math.floor(Date.now() / 1000),
             },
             isActive: false,
         };
@@ -225,6 +219,8 @@ describe('Notification', function fx() {
                 'purseId',
                 'transactionId',
                 'channelNumber',
+                'customerId',
+                'customerNumber',
                 'value',
                 'status',
             ]);
@@ -234,10 +230,7 @@ describe('Notification', function fx() {
 
         const sendPaymentData = {
             type: 'PaymentRequest',
-            customerNumber: {
-                provider: 2,
-                number: bob.customerNumber.number,
-            },
+            customerNumber: bob.customerNumber.number,
             channelNumber: {
                 channel: 1,
                 number: '525900',
@@ -278,7 +271,7 @@ describe('Notification', function fx() {
                 },
             },
             {
-                amount: 100,
+                amount: 567,
                 currencyCode: 'KES',
             },
         )
