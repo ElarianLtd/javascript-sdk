@@ -97,11 +97,18 @@ const kamau = new client.Customer(options);
 
 ## Classes
 
-- `Elarian(options)`: Elarian client class. `options` has the following keys:
+- `Elarian(options, configs)`: Elarian client class. `options` has the following keys:
   - `orgId`: The id of your registered organization
   - `appId`: The id of your app
   - `apiKey`: Your organization's API key
   - `authToken`: An short-lived auth token that can be used instead of the API key.
+
+The optional `configOptions` can have the following keys:
+  - `serializer`:
+        - `type`: **text** or **binary**
+        - `serialize(data)`: A function that returns the serialized object.
+        - `deserialize(data)`: A function that returns a deserialized object.
+
 - `Elarian.Customer(options)`: Customer class. `options` must have **one** the following keys:
   - `customerId`: An elarian-generated customer id.
   - `customerNumber`: An object containing the customer's phone number and provider.
@@ -110,6 +117,28 @@ const kamau = new client.Customer(options);
   - `secondaryId`: An object containing a customer secondary id.
     - `key`: A string identifying the type of id. e.g. `passportNumber`
     - `value`: A string value of the secondary id. e.g. `OP00332`
+
+## Objects
+
+
+- `tag`:
+    - `key`
+    - `value`
+    - `expiration`
+
+- `secondaryId`:
+    - `key`
+    - `value`
+    - `expiration`
+
+- `customerNumber`:
+    - `number`
+    - `provider`: telco, telegram or facebook
+    - `partition`:
+
+- `channelNumber`:
+    - `number`
+    - `provider`: telco (for payment, ussd and voice), sms, telegram, google_rcs, fb_messenger, whatsapp(for messaging)
 
 ## Methods
 
@@ -194,7 +223,7 @@ The following object will be returned:
     customerId
 }
 ```
-- `cancelCustomerReminder(customer, key)`: Cancels a previously set reminder with the key `key`. The following object will be returned:
+- `cancelCustomerReminder(customer, key)`: Cancels a previously set reminder with the key `key` on the customer. The following object will be returned:
 ```js
 {
     status,
@@ -202,19 +231,165 @@ The following object will be returned:
     customerId
 }
 ```
-- `addCustomerReminderByTag(tag, reminder)`
-- `cancelCustomerReminderByTag(tag, key)`
-- `updateCustomerMetadata(customer, metadata)`
-- `leaseCustomerMedatadata(customer, key)`
-- `deleteCustomerMedata(customer, keys)`
-- `sendMessage(customer, channelNumber, body)`
-- `sendMessageByTag(tag, channelNumber, body)`
-- `repyToMessage(customer, replyToMessageId, body)`
-- `messagingConsent(customer, channelNumber, action)`
-- `initiatePayment(debitParty, creditParty, value)`
-- `replyToUssdSession(sessionId, menu)`
-- `makeVoiceCall(customer, channelNumber)`
-- `replyToVoiceCall(sessionId, actions)`
+- `addCustomerReminderByTag(tag, reminder)`: Set a reminder to be triggered at the specified time for customers with the particular tag. The following object will be returned:
+```js
+{
+    status,
+    description,
+    workId
+}
+```
+- `cancelCustomerReminderByTag(tag, key)`: Cancels a previously set reminder with tag `tag` and key `key`. The following object will be returned:
+```js
+{
+    status,
+    description,
+    workId
+}
+```
+- `updateCustomerMetadata(customer, metadata)`: Sets some metadata on the customer.
+Values in the `metadata` object can either be strings or buffers. The following object will be returned:
+```js
+{
+    status,
+    description,
+    customerId
+}
+```
+- `leaseCustomerMedatadata(customer, key)`: Fetches the value of `key` from the customer's metdata and locks metadata fetching(for up to `90s`) until next call to update metadata. The following object will be returned:
+```js
+{
+    status,
+    description,
+    customerId,
+    value, // Value of `key` in the metadata object
+}
+```
+- `deleteCustomerMedata(customer, keys)`: Remove some metadata from a customer. `keys` is an array of strings. The following object will be returned:
+```js
+{
+    status,
+    description,
+    customerId
+}
+```
+- `sendMessage(customer, channelNumber, body)`: Send a message to the customer from the specified channel number.
+- `sendMessageByTag(tag, channelNumber, body)`: Send a message to customers with tag `tag` from the specified channel number.
+- `repyToMessage(customer, replyToMessageId, body)`: Reply to a recieved message.
+- `messagingConsent(customer, channelNumber, action)`: Initiate messaging consent for this customer for this channel number. `action` can either be `opt-in` or `opt-out`.
+- `initiatePayment(debitParty, creditParty, value)`: Initiate a payment.
+- `replyToUssdSession(sessionId, menu)`: Respond to a ussd notification with a menu.
+- `makeVoiceCall(customer, channelNumber)`: Initiate a voice call to the customer from the specified channel number. The following object will be returned:
+```js
+{
+    status,
+    description,
+    sessionId,
+    customerId,
+}
+```
+- `replyToVoiceCall(sessionId, actions)`: Respond to a voice call with voice actions. `actions` is an array of one or more of the following objects:
+
+    -  **say** action:
+    ```js
+    {
+        say: {
+            text: 'Some english text',
+            playBeep: true,
+            voice: 'female', // or male
+        }
+    }
+    ```
+    -  **play** action:
+    ```js
+    {
+        play: {
+            url: 'https://some/url/with/an/audio/file/to/play.mp3'
+        }
+    }
+    ```
+    -  **getDigits** action:
+    ```js
+    {
+        getDigits: {
+            timeout: 60,
+            finishOnKey: '#',
+            numDigits: 2,
+
+            play: {...},
+            // or
+            say: {...},
+        }
+    }
+    ```
+    -  **dial** action:
+    ```js
+    {
+        dial: {
+            customerNumbers: [],
+            record: false,
+            sequential: true,
+            ringbackTone: 'https://some/url/with/an/audio/file/to/play.mp3',
+            callerId: 'ABC1334',
+            maxDuration: 12,
+        }
+    }
+    ```
+    -  **recordSession** action:
+    ```js
+    {
+        recordSession: true,
+    }
+    ```
+    -  **getRecording** action:
+    ```js
+    {
+        getRecording: {
+            timeout: 60,
+            maxLength: 10,
+            finishOnKey: '#',
+            playBeep: true,
+            trimSilence: false,
+
+            play: {...},
+            // or
+            say: {...},
+        }
+    }
+    ```
+    -  **enqueue** action:
+    ```js
+    {
+        enqueue: {
+            holdMusic: 'http://music.mp3',
+            queueName: 'abcqueue',
+        },
+    }
+    ```
+    -  **dequeue** action:
+    ```js
+    {
+        dequeue: {
+            channelNumber: {...},
+            record: true,
+            queueName: 'abcqueue',
+        },
+    }
+    ```
+    -  **reject** action:
+    ```js
+    {
+        reject: true
+    }
+    ```
+    -  **redirect** action:
+    ```js
+    {
+        redirect: {
+            url: 'https://awesome.xml'
+        }
+    }
+    ```
 
 The `Elarian.Customer` has the following methods:
 
