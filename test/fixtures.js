@@ -6,12 +6,17 @@ module.exports = {
     },
 
     customerNumber: {
-        number: '+254720000000',
+        number: '+254700000009',
+        provider: 'telco',
+    },
+
+    adoptedCustomer: {
+        number: '+254700000008',
         provider: 'telco',
     },
 
     notifCustomerNumber: {
-        number: '+254710000000',
+        number: '+254700000007',
         provider: 'telco',
     },
 

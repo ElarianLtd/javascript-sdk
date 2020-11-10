@@ -54,10 +54,7 @@ describe('Customer', function fx() {
 
     it('adoptCustomerState()', async () => {
         const otherCustomer = new client.Customer({
-            customerNumber: {
-                number: '+254710000001',
-                provider: 'telegram',
-            },
+            customerNumber: fixtures.adoptedCustomer,
         });
         let resp = await client.adoptCustomerState(customer, otherCustomer);
         resp.should.have.properties(['status', 'description', 'customerId']);
