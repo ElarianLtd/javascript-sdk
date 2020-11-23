@@ -1,15 +1,19 @@
 // eslint-disable-next-line no-unused-vars
 const should = require('should');
 
-const Elarian = require('..');
+const { Client, Customer } = require('..');
 const fixtures = require('./fixtures');
 
 describe('Customer', function fx() {
     this.timeout(10000);
 
-    const client = new Elarian(fixtures.clientParams);
-    const customer = new client.Customer({
+    const client = new Client(fixtures.clientParams);
+    const customer = new Customer({
         customerNumber: fixtures.customerNumber,
+    });
+
+    before(async () => {
+        await client.connect();
     });
 
     it('getCustomerState()', async () => {
@@ -25,7 +29,7 @@ describe('Customer', function fx() {
             'secondaryIds',
         ]);
 
-        resp = await client.getCustomerState(new client.Customer({
+        resp = await client.getCustomerState(new Customer({
             customerId: resp.customerId,
         }));
         resp.should.have.properties([
@@ -53,7 +57,7 @@ describe('Customer', function fx() {
     });
 
     it('adoptCustomerState()', async () => {
-        const otherCustomer = new client.Customer({
+        const otherCustomer = new Customer({
             customerNumber: fixtures.adoptedCustomer,
         });
         let resp = await client.adoptCustomerState(customer, otherCustomer);

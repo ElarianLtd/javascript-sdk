@@ -1,7 +1,7 @@
 // Simple SMS+USSD app
-const Elarian = require('..');
+const { Client, Customer } = require('..');
 
-const client = new Elarian({
+const client = new Client({
     apiKey: 'test_api_key',
     orgId: 'test_org',
     appId: 'test_app',
@@ -58,15 +58,13 @@ client.on('ussdSession', async (data, customer) => {
     await client.replyToUssdSession(sessionId, menu);
 });
 
-console.log('App running, waiting for notifications!\n');
-
-async function test() {
-    const customer = new client.Customer({
-        // customerNumber: {
-        //     number: '+254712769882',
-        //     provider: 'telco',
-        // },
-        customerId: 'el_cst_c4d48f1f0247ec341e47b6d6c8a3ac7e',
+async function testSend() {
+    const customer = new Customer({
+        customerNumber: {
+            number: '+254712769882',
+            provider: 'telco',
+        },
+        // customerId: 'el_cst_c4d48f1f0247ec341e47b6d6c8a3ac7e',
     });
 
     let st = await customer.getState();
@@ -88,12 +86,10 @@ async function test() {
     console.log(JSON.stringify(st, null, 2));
 }
 
-test().catch(ex => console.log(ex));
-
-
-
-
-
-
-
-
+client
+    .connect()
+    .then(() => {
+        console.log('App running, waiting for notifications!\n');
+        return testSend();
+    })
+    .catch((ex) => console.log(ex));

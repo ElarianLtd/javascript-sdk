@@ -1,6 +1,6 @@
 const should = require('should');
 
-const Elarian = require('..');
+const { Client, Customer } = require('..');
 const fixtures = require('./fixtures');
 const simulator = require('./simulator');
 const { log } = require('../lib/utils');
@@ -8,12 +8,13 @@ const { log } = require('../lib/utils');
 describe('Notification', function fx() {
     this.timeout(10000);
 
-    const client = new Elarian(fixtures.clientParams);
-    const bob = new client.Customer({
+    const client = new Client(fixtures.clientParams);
+    const bob = new Customer({
         customerNumber: fixtures.notifCustomerNumber,
     });
 
     before(async () => {
+        await client.connect();
         await simulator.startSession({
             phoneNumber: bob.customerNumber.number,
             cb: (notif) => {
@@ -167,6 +168,10 @@ describe('Notification', function fx() {
             ]);
             should.exist(customer);
             done();
+            return {
+                text: 'Thank you for dialing our USSD code',
+                isTerminal: true,
+            };
         });
 
         const ussdRequest = {
@@ -194,6 +199,7 @@ describe('Notification', function fx() {
             ]);
             should.exist(customer);
             done();
+            return fixtures.dialPlan;
         });
         const callData = {
             type: 'VoiceRequest',
