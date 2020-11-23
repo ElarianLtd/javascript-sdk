@@ -2,7 +2,7 @@
 /* eslint-disable no-new */
 const should = require('should');
 
-const Elarian = require('..');
+const { Client, Customer } = require('..');
 const fixtures = require('./fixtures');
 
 describe('Authentication', () => {
@@ -14,22 +14,22 @@ describe('Authentication', () => {
         };
 
         (function () {
-            new Elarian(options);
+            new Client(options);
         }).should.throw();
 
         delete options.apiKey;
         (function () {
-            new Elarian(options);
+            new Client(options);
         }).should.throw();
 
-        client = new Elarian(fixtures.clientParams);
+        client = new Client(fixtures.clientParams);
         should.exist(client);
 
         (function () {
-            new client.Customer();
+            new Customer();
         }).should.throw();
 
-        const customer = new client.Customer({
+        const customer = new Customer({
             customerNumber: {
                 number: '0700000000',
                 provider: 'telco',
@@ -40,6 +40,7 @@ describe('Authentication', () => {
     });
 
     it('authToken()', async () => {
+        await client.connect();
         const resp = await client.authToken();
         resp.should.have.properties(['token', 'lifetime']);
     });

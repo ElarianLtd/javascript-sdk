@@ -1,7 +1,7 @@
 // Simple SMS+USSD app
-const Elarian = require('..');
+const { Client, Customer } = require('..');
 
-const client = new Elarian({
+const client = new Client({
     apiKey: 'test_api_key',
     orgId: 'test_org',
     appId: 'test_app',
@@ -26,9 +26,10 @@ client.on('ussdSession', async (data, customer) => {
 
     switch (state) {
     case 'veteran':
-        if (name) {
+        if (name || name === '') {
             menu.text = `Welcome back ${name}! What's your new name?`;
             menu.isTerminal = false;
+            name = null;
         } else {
             name = input.value;
             menu.text = `Thank you for trying Elarian, ${name}!`;
@@ -53,7 +54,42 @@ client.on('ussdSession', async (data, customer) => {
             name,
         },
     });
+
     await client.replyToUssdSession(sessionId, menu);
 });
 
-console.log('App running, waiting for notifications!\n');
+async function testSend() {
+    const customer = new Customer({
+        customerNumber: {
+            number: '+254712769882',
+            provider: 'telco',
+        },
+        // customerId: 'el_cst_c4d48f1f0247ec341e47b6d6c8a3ac7e',
+    });
+
+    let st = await customer.getState();
+    console.log(st);
+    // console.log(JSON.stringify(st, null, 2));
+
+    const resp = await customer.sendMessage(
+        {
+            number: 'Elarian',
+            provider: 'sms',
+        },
+        {
+            text: 'node customer messaging test',
+        },
+    );
+    console.log(resp);
+
+    st = await customer.getState();
+    console.log(JSON.stringify(st, null, 2));
+}
+
+client
+    .connect()
+    .then(() => {
+        console.log('App running, waiting for notifications!\n');
+        return testSend();
+    })
+    .catch((ex) => console.log(ex));
