@@ -14,6 +14,10 @@ describe('Messaging', () => {
         await client.connect();
     });
 
+    after(async () => {
+        await client.disconnect();
+    });
+
     it('sendMessage()', async () => {
         let resp = await client.sendMessage(
             customer,

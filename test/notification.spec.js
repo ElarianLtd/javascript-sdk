@@ -15,6 +15,10 @@ describe('Notification', function fx() {
 
     before(async () => {
         await client.connect();
+        client.on('data', (/* data */) => {
+            log.info('Got some notification data...');
+        });
+
         await simulator.startSession({
             phoneNumber: bob.customerNumber.number,
             cb: (notif) => {
@@ -34,9 +38,6 @@ describe('Notification', function fx() {
             },
         });
         await bob.getState();
-        client.on('data', (/* data */) => {
-            log.info('Got some notification data...');
-        });
     });
 
     after(async () => {

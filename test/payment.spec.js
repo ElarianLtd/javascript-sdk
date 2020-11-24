@@ -14,6 +14,10 @@ describe('Payment', () => {
         await client.connect();
     });
 
+    after(async () => {
+        await client.disconnect();
+    });
+
     it('initiatePayment()', async () => {
         let resp = await customer.getState();
         const { customerId } = resp;

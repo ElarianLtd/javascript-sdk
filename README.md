@@ -48,7 +48,7 @@ client.on('ussdSession', async (data, customer) => {
     switch (state) {
     case 'veteran':
         if (name) {
-            menu.text = `Welcome back ${name}! What's your new name?`;
+            menu.text = `Welcome back ${name}! What is your new name?`;
             menu.isTerminal = false;
         } else {
             name = input.value;

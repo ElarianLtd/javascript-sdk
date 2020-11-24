@@ -14,6 +14,10 @@ describe('Voice', () => {
         await client.connect();
     });
 
+    after(async () => {
+        await client.disconnect();
+    });
+
     it('makeVoiceCall()', async () => {
         const resp = await client.makeVoiceCall(customer, {
             number: '+254711082000',
