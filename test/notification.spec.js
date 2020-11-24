@@ -15,9 +15,12 @@ describe('Notification', function fx() {
 
     before(async () => {
         await client.connect();
-        client.on('data', (/* data */) => {
-            log.info('Got some notification data...');
+
+        /*
+        client.on('data', (data) => {
+            log.info('Got some notification data...', data);
         });
+        */
 
         await simulator.startSession({
             phoneNumber: bob.customerNumber.number,
@@ -263,19 +266,15 @@ describe('Notification', function fx() {
         });
         client.initiatePayment(
             {
-                customer: {
-                    customerNumber: bob.customerNumber,
-                    channelNumber: {
-                        number: '525900',
-                        provider: 'telco',
-                    },
+                customerNumber: bob.customerNumber,
+                channelNumber: {
+                    number: '525900',
+                    provider: 'telco',
                 },
             },
             {
-                wallet: {
-                    customerId: bob.customerId,
-                    walletId: 'test_wallet',
-                },
+                customerId: bob.customerId,
+                walletId: 'test_wallet',
             },
             {
                 amount: 567,
@@ -290,7 +289,6 @@ describe('Notification', function fx() {
 
     it('walletPaymentStatus', (done) => {
         client.on('walletPaymentStatus', async (data, customer) => {
-            console.log(data);
             data.should.have.properties([
                 'walletId',
                 'transactionId',
@@ -301,19 +299,15 @@ describe('Notification', function fx() {
         });
         client.initiatePayment(
             {
-                customer: {
-                    customerNumber: bob.customerNumber,
-                    channelNumber: {
-                        number: '525900',
-                        provider: 'telco',
-                    },
+                customerNumber: bob.customerNumber,
+                channelNumber: {
+                    number: '525900',
+                    provider: 'telco',
                 },
             },
             {
-                wallet: {
-                    customerId: bob.customerId,
-                    walletId: 'test_wallet',
-                },
+                customerId: bob.customerId,
+                walletId: 'test_wallet',
             },
             {
                 amount: 100,

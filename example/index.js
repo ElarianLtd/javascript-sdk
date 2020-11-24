@@ -67,9 +67,8 @@ async function testSend() {
         // customerId: 'el_cst_c4d48f1f0247ec341e47b6d6c8a3ac7e',
     });
 
-    // let st = await customer.getState();
-    // console.log(st);
-    // console.log(JSON.stringify(st, null, 2));
+    let st = await customer.getState();
+    console.log(st);
 
     const resp = await customer.sendMessage(
         {
@@ -82,7 +81,7 @@ async function testSend() {
     );
     console.log(resp);
 
-    let st = await customer.getState();
+    st = await customer.getState();
     console.log(JSON.stringify(st, null, 2));
 }
 

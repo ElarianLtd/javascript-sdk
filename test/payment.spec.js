@@ -23,19 +23,15 @@ describe('Payment', () => {
         const { customerId } = resp;
         resp = await client.initiatePayment(
             {
-                customer: {
-                    customerNumber: customer.customerNumber,
-                    channelNumber: {
-                        number: '525900', // paybill
-                        provider: 'telco',
-                    },
+                customerNumber: customer.customerNumber,
+                channelNumber: {
+                    number: '525900', // paybill
+                    provider: 'telco',
                 },
             },
             {
-                wallet: {
-                    customerId,
-                    walletId: 'test_wallet',
-                },
+                customerId,
+                walletId: 'test_wallet',
             },
             {
                 amount: 5456.78,
@@ -52,19 +48,67 @@ describe('Payment', () => {
 
         resp = await client.initiatePayment(
             {
-                wallet: {
-                    customerId,
-                    walletId: 'test_wallet',
-                },
+                customerId,
+                walletId: 'test_wallet',
             },
             {
-                purse: 'test_purse',
+                purseId: 'test_purse',
             },
             {
-                amount: 5456.78,
+                amount: 1.78,
                 currencyCode: 'KES',
             },
         );
+        resp.should.have.properties([
+            'status',
+            'description',
+            'transactionId',
+            'debitCustomerId',
+            'creditCustomerId',
+        ]);
+
+        resp = await client.initiatePayment(
+            {
+                customerNumber: customer.customerNumber,
+                channelNumber: {
+                    number: '525900', // paybill
+                    provider: 'telco',
+                },
+            },
+            {
+                purseId: 'test_purse',
+            },
+            {
+                amount: 1.78,
+                currencyCode: 'KES',
+            },
+        );
+
+        resp.should.have.properties([
+            'status',
+            'description',
+            'transactionId',
+            'debitCustomerId',
+            'creditCustomerId',
+        ]);
+
+        resp = await client.initiatePayment(
+            {
+                purseId: 'test_purse',
+            },
+            {
+                customerNumber: customer.customerNumber,
+                channelNumber: {
+                    number: '525900', // paybill
+                    provider: 'telco',
+                },
+            },
+            {
+                amount: 1.78,
+                currencyCode: 'KES',
+            },
+        );
+
         resp.should.have.properties([
             'status',
             'description',

@@ -1,3 +1,5 @@
+const _ = require('lodash');
+
 module.exports = {
     clientParams: {
         appId: 'test_app',
@@ -6,17 +8,17 @@ module.exports = {
     },
 
     customerNumber: {
-        number: '+254700100009',
+        number: `+254720${_.random(100000, 999999)}`,
         provider: 'telco',
     },
 
     adoptedCustomer: {
-        number: '+254700200008',
+        number: `+254721${_.random(100000, 999999)}`,
         provider: 'telco',
     },
 
     notifCustomerNumber: {
-        number: '+254700300007',
+        number: `+254722${_.random(100000, 999999)}`,
         provider: 'telco',
     },
 
