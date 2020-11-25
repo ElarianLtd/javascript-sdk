@@ -38,7 +38,7 @@ client.on('ussdSession', async (data, customer) => {
     let {
         name,
         state = 'newbie',
-    } = metadata.value;
+    } = metadata;
 
     const menu = {
         text: null,
