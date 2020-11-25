@@ -6,7 +6,7 @@
   "scripts": {
     "test": "nyc mocha ./test",
     "lint": "eslint .",
-    "build": "rm -rf doc && jsdoc -c .jsdoc -R README.md -r lib/"
+    "build": "rm -rf doc && jsdoc -c .jsdoc -R README.md -r lib/ && jsdoc2md -c .jsdoc --files lib/** > doc/README.md"
   },
   "author": "Elarian <sdk@elarian.com>",
   "license": "MIT",
@@ -29,9 +29,6 @@
     "rsocket-core": "0.0.19",
     "rsocket-flowable": "0.0.14",
     "rsocket-tcp-client": "0.0.19",
-    "rsocket-tcp-server": "0.0.19",
-    "rsocket-websocket-client": "0.0.19",
-    "rsocket-websocket-server": "0.0.19",
     "signale": "^1.4.0",
     "validate.js": "^0.13.1"
   },
@@ -43,6 +40,7 @@
     "eslint-plugin-security": "^1.4.0",
     "ink-docstrap": "^1.3.2",
     "jsdoc": "^3.6.6",
+    "jsdoc-to-markdown": "^6.0.1",
     "mocha": "^8.1.3",
     "nyc": "^15.1.0",
     "should": "^13.2.3",

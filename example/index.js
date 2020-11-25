@@ -69,7 +69,6 @@ async function testSend() {
 
     let st = await customer.getState();
     console.log(st);
-    // console.log(JSON.stringify(st, null, 2));
 
     const resp = await customer.sendMessage(
         {
@@ -92,4 +91,4 @@ client
         console.log('App running, waiting for notifications!\n');
         return testSend();
     })
-    .catch((ex) => console.log(ex));
+    .catch((ex) => console.log('wed', ex));
