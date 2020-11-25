@@ -1,4 +1,4 @@
-# Node SDK
+# Javascript SDK
 
 [![NPM](https://nodei.co/npm/elarian.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.org/package/elarian)
 
@@ -17,11 +17,19 @@ $ npm install elarian
 ## Usage
 
 ```javascript
-// Simple SMS+USSD app
+
+// on node
 const { Client, Customer }  = require('elarian');
+// or in the browser
+<script src="dist/elarian.min.js"></script>
+// ...
+const { Client, Customer }  = Elarian;
+
+// ...
 
 const client = new Client({
-    apiKey: 'test_api_key',
+    apiKey: 'test_api_key', // not needed in the browser
+    authToken: 'test_auth_token', // required in the browser
     orgId: 'test_org_id',
     appId: 'test_app_id',
 });
@@ -94,4 +102,4 @@ $ npm test
 
 ## Issues
 
-If you find a bug, please file an issue on [our issue tracker on GitHub](https://github.com/ElarianLtd/node-sdk/issues).
+If you find a bug, please file an issue on [our issue tracker on GitHub](https://github.com/ElarianLtd/javascript-sdk/issues).
