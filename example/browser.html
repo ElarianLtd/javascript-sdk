@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Elarian</title>
+    <script src="../dist/elarian.min.js"></script>
+</head>
+<body>
+    <script>
+        async function test() {
+            const { Client, Customer } = Elarian;
+            const client = new Client({
+                authToken: 'test_auth_token',
+                orgId: 'test_org',
+                appId: 'test_app',
+            });
+            console.log('Connecting...');
+            await client.connect();
+            console.log('Connected!');
+            const customer = new Customer({
+                customerNumber: {
+                    number: '+2547XXXXXXXX',
+                    provider: 'telco',
+                },
+            });
+            console.log('Gettting customer state...');
+            const state = await customer.getState();
+            console.log(state);
+        };
+        window.onload = (event) => {
+            test().catch(console.error);
+        };
+    </script>
+</body>
+</html>

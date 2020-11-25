@@ -1,6 +1,5 @@
 // eslint-disable-next-line no-unused-vars
 const should = require('should');
-const { await } = require('signale');
 
 const { Client, Customer } = require('..');
 const fixtures = require('./fixtures');
