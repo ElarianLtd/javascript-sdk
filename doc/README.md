@@ -14,18 +14,18 @@
 
 * [Customer](#Customer)
     * [new Customer(params)](#new_Customer_new)
-    * [.getState()](#Customer+getState) ⇒
-    * [.adoptState(otherCustomer)](#Customer+adoptState)
-    * [.updateTag(tags)](#Customer+updateTag)
-    * [.deleteTag(tags)](#Customer+deleteTag)
-    * [.updateSecondaryId(secondaryIds)](#Customer+updateSecondaryId)
-    * [.deleteSecondaryId(secondaryIds)](#Customer+deleteSecondaryId)
-    * [.addReminder(reminder)](#Customer+addReminder)
-    * [.cancelReminder(key)](#Customer+cancelReminder)
-    * [.updateMetadata(metadata)](#Customer+updateMetadata)
-    * [.leaseMetadata(key)](#Customer+leaseMetadata)
-    * [.deleteMetadata(keys)](#Customer+deleteMetadata)
-    * [.sendMessage(channelNumber, body)](#Customer+sendMessage)
+    * [.getState()](#Customer+getState) ⇒ <code>CustomerState</code>
+    * [.adoptState(otherCustomer)](#Customer+adoptState) ⇒ <code>UpdateStatus</code>
+    * [.updateTag(tags)](#Customer+updateTag) ⇒ <code>UpdateStatus</code>
+    * [.deleteTag(tags)](#Customer+deleteTag) ⇒ <code>UpdateStatus</code>
+    * [.updateSecondaryId(secondaryIds)](#Customer+updateSecondaryId) ⇒ <code>UpdateStatus</code>
+    * [.deleteSecondaryId(secondaryIds)](#Customer+deleteSecondaryId) ⇒ <code>UpdateStatus</code>
+    * [.addReminder(reminder)](#Customer+addReminder) ⇒ <code>UpdateStatus</code>
+    * [.cancelReminder(key)](#Customer+cancelReminder) ⇒ <code>UpdateStatus</code>
+    * [.updateMetadata(metadata)](#Customer+updateMetadata) ⇒ <code>UpdateStatus</code>
+    * [.leaseMetadata(key)](#Customer+leaseMetadata) ⇒ <code>LeasedMetadata</code>
+    * [.deleteMetadata(keys)](#Customer+deleteMetadata) ⇒ <code>UpdateStatus</code>
+    * [.sendMessage(channelNumber, body)](#Customer+sendMessage) ⇒ <code>MessageStatus</code>
 
 <a name="new_Customer_new"></a>
 
@@ -39,13 +39,13 @@
 
 <a name="Customer+getState"></a>
 
-### customer.getState() ⇒
+### customer.getState() ⇒ <code>CustomerState</code>
 <p>Fetch the customer's state</p>
 
 **Kind**: instance method of [<code>Customer</code>](#Customer)  
 <a name="Customer+adoptState"></a>
 
-### customer.adoptState(otherCustomer)
+### customer.adoptState(otherCustomer) ⇒ <code>UpdateStatus</code>
 <p>Merge otherCustomer's state into this customer's state and discard otherCustomer</p>
 
 **Kind**: instance method of [<code>Customer</code>](#Customer)  
@@ -56,7 +56,7 @@
 
 <a name="Customer+updateTag"></a>
 
-### customer.updateTag(tags)
+### customer.updateTag(tags) ⇒ <code>UpdateStatus</code>
 <p>Update a customer's tag list.</p>
 
 **Kind**: instance method of [<code>Customer</code>](#Customer)  
@@ -67,7 +67,7 @@
 
 <a name="Customer+deleteTag"></a>
 
-### customer.deleteTag(tags)
+### customer.deleteTag(tags) ⇒ <code>UpdateStatus</code>
 <p>Remove some tags from a customer</p>
 
 **Kind**: instance method of [<code>Customer</code>](#Customer)  
@@ -78,7 +78,7 @@
 
 <a name="Customer+updateSecondaryId"></a>
 
-### customer.updateSecondaryId(secondaryIds)
+### customer.updateSecondaryId(secondaryIds) ⇒ <code>UpdateStatus</code>
 <p>Update a customer's secondary Ids</p>
 
 **Kind**: instance method of [<code>Customer</code>](#Customer)  
@@ -89,7 +89,7 @@
 
 <a name="Customer+deleteSecondaryId"></a>
 
-### customer.deleteSecondaryId(secondaryIds)
+### customer.deleteSecondaryId(secondaryIds) ⇒ <code>UpdateStatus</code>
 <p>Remove some secondary Ids from a customer</p>
 
 **Kind**: instance method of [<code>Customer</code>](#Customer)  
@@ -100,7 +100,7 @@
 
 <a name="Customer+addReminder"></a>
 
-### customer.addReminder(reminder)
+### customer.addReminder(reminder) ⇒ <code>UpdateStatus</code>
 <p>Set a reminder to be triggered at the specified time for a particular customer</p>
 
 **Kind**: instance method of [<code>Customer</code>](#Customer)  
@@ -111,7 +111,7 @@
 
 <a name="Customer+cancelReminder"></a>
 
-### customer.cancelReminder(key)
+### customer.cancelReminder(key) ⇒ <code>UpdateStatus</code>
 <p>Cancels a previously set reminder with the key <code>key</code> on the customer</p>
 
 **Kind**: instance method of [<code>Customer</code>](#Customer)  
@@ -122,7 +122,7 @@
 
 <a name="Customer+updateMetadata"></a>
 
-### customer.updateMetadata(metadata)
+### customer.updateMetadata(metadata) ⇒ <code>UpdateStatus</code>
 <p>Sets some metadata on the customer.
 Values in the metadata object can either be strings or buffers,
 depending on the set serializer</p>
@@ -131,11 +131,11 @@ depending on the set serializer</p>
 
 | Param | Type |
 | --- | --- |
-| metadata | <code>\*</code> | 
+| metadata | <code>Object</code> | 
 
 <a name="Customer+leaseMetadata"></a>
 
-### customer.leaseMetadata(key)
+### customer.leaseMetadata(key) ⇒ <code>LeasedMetadata</code>
 <p>Fetches the value of <code>key</code> from the customer's metdata
 and locks metadata fetching(for up to <b>90s</b>) until next call to update metadata.</p>
 
@@ -147,7 +147,7 @@ and locks metadata fetching(for up to <b>90s</b>) until next call to update meta
 
 <a name="Customer+deleteMetadata"></a>
 
-### customer.deleteMetadata(keys)
+### customer.deleteMetadata(keys) ⇒ <code>UpdateStatus</code>
 <p>Remove some metadata from a customer. <code>keys</code> is an array of strings</p>
 
 **Kind**: instance method of [<code>Customer</code>](#Customer)  
@@ -158,7 +158,7 @@ and locks metadata fetching(for up to <b>90s</b>) until next call to update meta
 
 <a name="Customer+sendMessage"></a>
 
-### customer.sendMessage(channelNumber, body)
+### customer.sendMessage(channelNumber, body) ⇒ <code>MessageStatus</code>
 <p>Send a message to the customer from the specified channel number.</p>
 
 **Kind**: instance method of [<code>Customer</code>](#Customer)  
@@ -175,32 +175,32 @@ and locks metadata fetching(for up to <b>90s</b>) until next call to update meta
 
 * [Client](#Client)
     * [new Client(params, [configOptions])](#new_Client_new)
-    * [.authToken()](#Client+authToken) ⇒ <code>Promise</code>
-    * [.getCustomerState(customer)](#Client+getCustomerState) ⇒ <code>Promise</code>
-    * [.adoptCustomerState(customer, otherCustomer)](#Client+adoptCustomerState) ⇒ <code>Promise</code>
-    * [.updateCustomerTag(customer, tags)](#Client+updateCustomerTag) ⇒ <code>Promise</code>
-    * [.deleteCustomerTag(customer, tags)](#Client+deleteCustomerTag) ⇒ <code>Promise</code>
-    * [.updateCustomerSecondaryId(customer, secondaryIds)](#Client+updateCustomerSecondaryId) ⇒ <code>Promise</code>
-    * [.deleteCustomerSecondaryId(customer, secondaryIds)](#Client+deleteCustomerSecondaryId) ⇒ <code>Promise</code>
-    * [.addCustomerReminder(customer, reminder)](#Client+addCustomerReminder) ⇒ <code>Promise</code>
-    * [.cancelCustomerReminder(customer, key)](#Client+cancelCustomerReminder) ⇒ <code>Promise</code>
-    * [.addCustomerReminderByTag(tag, reminder)](#Client+addCustomerReminderByTag) ⇒ <code>Promise</code>
-    * [.cancelCustomerReminderByTag(tag, key)](#Client+cancelCustomerReminderByTag) ⇒ <code>Promise</code>
-    * [.updateCustomerMetadata(customer, metadata)](#Client+updateCustomerMetadata) ⇒ <code>Promise</code>
-    * [.leaseCustomerMetadata(customer, key)](#Client+leaseCustomerMetadata) ⇒ <code>Promise</code>
-    * [.deleteCustomerMetadata(customer, keys)](#Client+deleteCustomerMetadata) ⇒ <code>Promise</code>
+    * [.authToken()](#Client+authToken) ⇒ <code>AuthToken</code>
+    * [.getCustomerState(customer)](#Client+getCustomerState) ⇒ <code>CustomerState</code>
+    * [.adoptCustomerState(customer, otherCustomer)](#Client+adoptCustomerState) ⇒ <code>UpdateStatus</code>
+    * [.updateCustomerTag(customer, tags)](#Client+updateCustomerTag) ⇒ <code>UpdateStatus</code>
+    * [.deleteCustomerTag(customer, tags)](#Client+deleteCustomerTag) ⇒ <code>UpdateStatus</code>
+    * [.updateCustomerSecondaryId(customer, secondaryIds)](#Client+updateCustomerSecondaryId) ⇒ <code>UpdateStatus</code>
+    * [.deleteCustomerSecondaryId(customer, secondaryIds)](#Client+deleteCustomerSecondaryId) ⇒ <code>UpdateStatus</code>
+    * [.addCustomerReminder(customer, reminder)](#Client+addCustomerReminder) ⇒ <code>UpdateStatus</code>
+    * [.cancelCustomerReminder(customer, key)](#Client+cancelCustomerReminder) ⇒ <code>UpdateStatus</code>
+    * [.addCustomerReminderByTag(tag, reminder)](#Client+addCustomerReminderByTag) ⇒ <code>WorkStatus</code>
+    * [.cancelCustomerReminderByTag(tag, key)](#Client+cancelCustomerReminderByTag) ⇒ <code>WorkStatus</code>
+    * [.updateCustomerMetadata(customer, metadata)](#Client+updateCustomerMetadata) ⇒ <code>UpdateStatus</code>
+    * [.leaseCustomerMetadata(customer, key)](#Client+leaseCustomerMetadata) ⇒ <code>LeasedMetadata</code>
+    * [.deleteCustomerMetadata(customer, keys)](#Client+deleteCustomerMetadata) ⇒ <code>UpdateStatus</code>
     * [.connect()](#Client+connect)
     * [.disconnect()](#Client+disconnect)
-    * [.sendMessage(customer, channelNumber, body)](#Client+sendMessage) ⇒ <code>Promise</code>
-    * [.sendMessageByTag(tag, channelNumber, body)](#Client+sendMessageByTag) ⇒ <code>Promise</code>
-    * [.replyToMessage(customer, replyToMessageId, body)](#Client+replyToMessage) ⇒ <code>Promise</code>
-    * [.messagingConsent(customer, channelNumber, action)](#Client+messagingConsent) ⇒ <code>Promise</code>
+    * [.sendMessage(customer, channelNumber, body)](#Client+sendMessage) ⇒ <code>MessageStatus</code>
+    * [.sendMessageByTag(tag, channelNumber, body)](#Client+sendMessageByTag) ⇒ <code>WorkStatus</code>
+    * [.replyToMessage(customer, replyToMessageId, body)](#Client+replyToMessage) ⇒ <code>MessageStatus</code>
+    * [.messagingConsent(customer, channelNumber, action)](#Client+messagingConsent) ⇒ <code>ConsentStatus</code>
     * [.registerListerner(event, listener)](#Client+registerListerner)
     * [.on(event, listener)](#Client+on)
     * [.removeListener(event)](#Client+removeListener)
     * [.off(event)](#Client+off)
-    * [.initiatePayment(debitParty, creditParty, value)](#Client+initiatePayment) ⇒ <code>Promise</code>
-    * [.makeVoiceCall(customer, channelNumber)](#Client+makeVoiceCall) ⇒ <code>Promise</code>
+    * [.initiatePayment(debitParty, creditParty, value)](#Client+initiatePayment) ⇒ <code>PaymentStatus</code>
+    * [.makeVoiceCall(customer, channelNumber)](#Client+makeVoiceCall) ⇒ <code>VoiceStatus</code>
 
 <a name="new_Client_new"></a>
 
@@ -215,13 +215,13 @@ and locks metadata fetching(for up to <b>90s</b>) until next call to update meta
 
 <a name="Client+authToken"></a>
 
-### client.authToken() ⇒ <code>Promise</code>
+### client.authToken() ⇒ <code>AuthToken</code>
 <p>Generate a short-lived auth token to use instead of apiKey. Used for browser and mobile clients.</p>
 
 **Kind**: instance method of [<code>Client</code>](#Client)  
 <a name="Client+getCustomerState"></a>
 
-### client.getCustomerState(customer) ⇒ <code>Promise</code>
+### client.getCustomerState(customer) ⇒ <code>CustomerState</code>
 <p>Get customer state</p>
 
 **Kind**: instance method of [<code>Client</code>](#Client)  
@@ -232,7 +232,7 @@ and locks metadata fetching(for up to <b>90s</b>) until next call to update meta
 
 <a name="Client+adoptCustomerState"></a>
 
-### client.adoptCustomerState(customer, otherCustomer) ⇒ <code>Promise</code>
+### client.adoptCustomerState(customer, otherCustomer) ⇒ <code>UpdateStatus</code>
 <p>Adopt another customer's state</p>
 
 **Kind**: instance method of [<code>Client</code>](#Client)  
@@ -244,7 +244,7 @@ and locks metadata fetching(for up to <b>90s</b>) until next call to update meta
 
 <a name="Client+updateCustomerTag"></a>
 
-### client.updateCustomerTag(customer, tags) ⇒ <code>Promise</code>
+### client.updateCustomerTag(customer, tags) ⇒ <code>UpdateStatus</code>
 <p>Update a customer's tag list</p>
 
 **Kind**: instance method of [<code>Client</code>](#Client)  
@@ -256,7 +256,7 @@ and locks metadata fetching(for up to <b>90s</b>) until next call to update meta
 
 <a name="Client+deleteCustomerTag"></a>
 
-### client.deleteCustomerTag(customer, tags) ⇒ <code>Promise</code>
+### client.deleteCustomerTag(customer, tags) ⇒ <code>UpdateStatus</code>
 <p>Remove tags from a customer</p>
 
 **Kind**: instance method of [<code>Client</code>](#Client)  
@@ -268,7 +268,7 @@ and locks metadata fetching(for up to <b>90s</b>) until next call to update meta
 
 <a name="Client+updateCustomerSecondaryId"></a>
 
-### client.updateCustomerSecondaryId(customer, secondaryIds) ⇒ <code>Promise</code>
+### client.updateCustomerSecondaryId(customer, secondaryIds) ⇒ <code>UpdateStatus</code>
 <p>Update a customer's secondary Ids</p>
 
 **Kind**: instance method of [<code>Client</code>](#Client)  
@@ -280,7 +280,7 @@ and locks metadata fetching(for up to <b>90s</b>) until next call to update meta
 
 <a name="Client+deleteCustomerSecondaryId"></a>
 
-### client.deleteCustomerSecondaryId(customer, secondaryIds) ⇒ <code>Promise</code>
+### client.deleteCustomerSecondaryId(customer, secondaryIds) ⇒ <code>UpdateStatus</code>
 <p>Delete a customer's secondary Ids</p>
 
 **Kind**: instance method of [<code>Client</code>](#Client)  
@@ -292,7 +292,7 @@ and locks metadata fetching(for up to <b>90s</b>) until next call to update meta
 
 <a name="Client+addCustomerReminder"></a>
 
-### client.addCustomerReminder(customer, reminder) ⇒ <code>Promise</code>
+### client.addCustomerReminder(customer, reminder) ⇒ <code>UpdateStatus</code>
 <p>Set a reminder to be triggered at the specified time for a particular customer</p>
 
 **Kind**: instance method of [<code>Client</code>](#Client)  
@@ -304,7 +304,7 @@ and locks metadata fetching(for up to <b>90s</b>) until next call to update meta
 
 <a name="Client+cancelCustomerReminder"></a>
 
-### client.cancelCustomerReminder(customer, key) ⇒ <code>Promise</code>
+### client.cancelCustomerReminder(customer, key) ⇒ <code>UpdateStatus</code>
 <p>Cancels a previously set reminder with the key <code>key</code> on the customer</p>
 
 **Kind**: instance method of [<code>Client</code>](#Client)  
@@ -316,7 +316,7 @@ and locks metadata fetching(for up to <b>90s</b>) until next call to update meta
 
 <a name="Client+addCustomerReminderByTag"></a>
 
-### client.addCustomerReminderByTag(tag, reminder) ⇒ <code>Promise</code>
+### client.addCustomerReminderByTag(tag, reminder) ⇒ <code>WorkStatus</code>
 <p>Set a reminder to be triggered at the specified time for customers with the particular tag</p>
 
 **Kind**: instance method of [<code>Client</code>](#Client)  
@@ -328,7 +328,7 @@ and locks metadata fetching(for up to <b>90s</b>) until next call to update meta
 
 <a name="Client+cancelCustomerReminderByTag"></a>
 
-### client.cancelCustomerReminderByTag(tag, key) ⇒ <code>Promise</code>
+### client.cancelCustomerReminderByTag(tag, key) ⇒ <code>WorkStatus</code>
 <p>Cancels a previously set reminder with tag <code>tag</code> and key <code>key</code></p>
 
 **Kind**: instance method of [<code>Client</code>](#Client)  
@@ -340,7 +340,7 @@ and locks metadata fetching(for up to <b>90s</b>) until next call to update meta
 
 <a name="Client+updateCustomerMetadata"></a>
 
-### client.updateCustomerMetadata(customer, metadata) ⇒ <code>Promise</code>
+### client.updateCustomerMetadata(customer, metadata) ⇒ <code>UpdateStatus</code>
 <p>Sets some metadata on the customer.
 Values in the metadata object can either be strings or buffers,
 depending on your serializer. @see [Client](#Client)</p>
@@ -354,7 +354,7 @@ depending on your serializer. @see [Client](#Client)</p>
 
 <a name="Client+leaseCustomerMetadata"></a>
 
-### client.leaseCustomerMetadata(customer, key) ⇒ <code>Promise</code>
+### client.leaseCustomerMetadata(customer, key) ⇒ <code>LeasedMetadata</code>
 <p>Fetches the value of <code>key</code> from the customer's metdata
 and locks metadata fetching(for up to <b>90s</b>) until next call to update metadata.</p>
 
@@ -367,7 +367,7 @@ and locks metadata fetching(for up to <b>90s</b>) until next call to update meta
 
 <a name="Client+deleteCustomerMetadata"></a>
 
-### client.deleteCustomerMetadata(customer, keys) ⇒ <code>Promise</code>
+### client.deleteCustomerMetadata(customer, keys) ⇒ <code>UpdateStatus</code>
 <p>Remove some metadata from a customer.</p>
 
 **Kind**: instance method of [<code>Client</code>](#Client)  
@@ -391,7 +391,7 @@ and locks metadata fetching(for up to <b>90s</b>) until next call to update meta
 **Kind**: instance method of [<code>Client</code>](#Client)  
 <a name="Client+sendMessage"></a>
 
-### client.sendMessage(customer, channelNumber, body) ⇒ <code>Promise</code>
+### client.sendMessage(customer, channelNumber, body) ⇒ <code>MessageStatus</code>
 <p>Send a message</p>
 
 **Kind**: instance method of [<code>Client</code>](#Client)  
@@ -404,7 +404,7 @@ and locks metadata fetching(for up to <b>90s</b>) until next call to update meta
 
 <a name="Client+sendMessageByTag"></a>
 
-### client.sendMessageByTag(tag, channelNumber, body) ⇒ <code>Promise</code>
+### client.sendMessageByTag(tag, channelNumber, body) ⇒ <code>WorkStatus</code>
 <p>Send message by tag</p>
 
 **Kind**: instance method of [<code>Client</code>](#Client)  
@@ -417,7 +417,7 @@ and locks metadata fetching(for up to <b>90s</b>) until next call to update meta
 
 <a name="Client+replyToMessage"></a>
 
-### client.replyToMessage(customer, replyToMessageId, body) ⇒ <code>Promise</code>
+### client.replyToMessage(customer, replyToMessageId, body) ⇒ <code>MessageStatus</code>
 <p>Reply to a received message</p>
 
 **Kind**: instance method of [<code>Client</code>](#Client)  
@@ -430,7 +430,7 @@ and locks metadata fetching(for up to <b>90s</b>) until next call to update meta
 
 <a name="Client+messagingConsent"></a>
 
-### client.messagingConsent(customer, channelNumber, action) ⇒ <code>Promise</code>
+### client.messagingConsent(customer, channelNumber, action) ⇒ <code>ConsentStatus</code>
 <p>Opt in or out a customer from receiving messages from a channel</p>
 
 **Kind**: instance method of [<code>Client</code>](#Client)  
@@ -489,7 +489,7 @@ and locks metadata fetching(for up to <b>90s</b>) until next call to update meta
 
 <a name="Client+initiatePayment"></a>
 
-### client.initiatePayment(debitParty, creditParty, value) ⇒ <code>Promise</code>
+### client.initiatePayment(debitParty, creditParty, value) ⇒ <code>PaymentStatus</code>
 <p>Initiate a payment transaction</p>
 
 **Kind**: instance method of [<code>Client</code>](#Client)  
@@ -502,7 +502,7 @@ and locks metadata fetching(for up to <b>90s</b>) until next call to update meta
 
 <a name="Client+makeVoiceCall"></a>
 
-### client.makeVoiceCall(customer, channelNumber) ⇒ <code>Promise</code>
+### client.makeVoiceCall(customer, channelNumber) ⇒ <code>VoiceStatus</code>
 <p>Initiate a voice call to customer</p>
 
 **Kind**: instance method of [<code>Client</code>](#Client)  

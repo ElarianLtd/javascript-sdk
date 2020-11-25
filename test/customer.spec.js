@@ -1,5 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 const should = require('should');
+const { await } = require('signale');
 
 const { Client, Customer } = require('..');
 const fixtures = require('./fixtures');
@@ -223,13 +224,15 @@ describe('Customer', function fx() {
 
     it('leaseCustomerMetadata()', async () => {
         let resp = await client.leaseCustomerMetadata(customer, 'abc');
-        resp.should.have.properties(['status', 'description', 'customerId', 'value']);
+        JSON.stringify(resp).should.equal(JSON.stringify({ name: 'fake' }));
 
         resp = await customer.updateMetadata({ abc: { name: 'updatedAfterLease' } });
         resp = await customer.leaseMetadata('abc');
-        resp.value.should.have.properties(['name']);
-        resp.value.name.should.equal('updatedAfterLease');
-        resp.should.have.properties(['status', 'description', 'customerId', 'value']);
+        resp.name.should.equal('updatedAfterLease');
+        resp = await customer.updateMetadata({ abc: { name: 'restored' } });
+        await customer.getState();
+        customer.metadata.should.have.properties(['abc']);
+        customer.metadata.abc.name.should.equal('restored');
     });
 
     it('deleteCustomerMetadata()', async () => {
