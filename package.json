@@ -8,9 +8,10 @@
     "posttest": "npm run build",
     "test": "nyc mocha ./test",
     "lint": "eslint .",
-    "build": "rm -rf doc/ dist/ && jsdoc -c .jsdoc -R README.md -r lib/ && jsdoc2md -c .jsdoc --files lib/** > doc/README.md && webpack"
+    "build": "rm -rf doc/ dist/ && jsdoc -c .jsdoc -R README.md -r lib/ && jsdoc2md -c .jsdoc --files lib/** > doc/README.md && webpack",
+    "prepublish": "npm run build"
   },
-  "author": "Elarian <sdk@elarian.com>",
+  "author": "Salama AB <aksalj@aksalj.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -23,7 +24,13 @@
     "ussd",
     "voice",
     "customer",
-    "payments"
+    "payments",
+    "rcs",
+    "google",
+    "facebook",
+    "whatsapp",
+    "instagram",
+    "telegram"
   ],
   "dependencies": {
     "google-protobuf": "^3.13.0",
