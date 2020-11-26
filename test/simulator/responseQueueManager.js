@@ -1,4 +1,9 @@
-const { log } = require('../../lib/utils');
+const { Signale } = require('signale');
+
+const log = new Signale({
+    interactive: false,
+    scope: 'elarian',
+});
 
 const RESPONSE_QUEUE = {};
 

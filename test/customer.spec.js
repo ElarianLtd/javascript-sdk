@@ -1,63 +1,63 @@
 // eslint-disable-next-line no-unused-vars
 const should = require('should');
 
-const Elarian = require('..');
+const { Client, Customer } = require('..');
 const fixtures = require('./fixtures');
 
 describe('Customer', function fx() {
     this.timeout(10000);
 
-    const client = new Elarian(fixtures.clientParams);
-    const customer = new client.Customer({
+    const client = new Client(fixtures.clientParams);
+    const customer = new Customer({
         customerNumber: fixtures.customerNumber,
+    });
+
+    before(async () => {
+        await client.connect();
+    });
+
+    after(async () => {
+        await client.disconnect();
     });
 
     it('getCustomerState()', async () => {
         let resp = await client.getCustomerState(customer);
         resp.should.have.properties([
             'customerId',
+            'nuclearState',
             'messagingState',
             'ussdState',
             'voiceState',
             'paymentState',
-            'tags',
-            'metadata',
-            'secondaryIds',
         ]);
 
-        resp = await client.getCustomerState(new client.Customer({
+        resp = await client.getCustomerState(new Customer({
             customerId: resp.customerId,
         }));
+
         resp.should.have.properties([
             'customerId',
+            'nuclearState',
             'messagingState',
             'ussdState',
             'voiceState',
             'paymentState',
-            'tags',
-            'metadata',
-            'secondaryIds',
         ]);
 
         resp = await customer.getState();
         resp.should.have.properties([
             'customerId',
+            'nuclearState',
             'messagingState',
             'ussdState',
             'voiceState',
             'paymentState',
-            'tags',
-            'metadata',
-            'secondaryIds',
         ]);
     });
 
     it('adoptCustomerState()', async () => {
-        const otherCustomer = new client.Customer({
-            customerNumber: {
-                number: '+254710000001',
-                provider: 'telegram',
-            },
+        const otherCustomer = new Customer({
+            customerNumber: fixtures.adoptedCustomer,
         });
         let resp = await client.adoptCustomerState(customer, otherCustomer);
         resp.should.have.properties(['status', 'description', 'customerId']);
@@ -100,8 +100,8 @@ describe('Customer', function fx() {
         ]);
         resp.should.have.properties(['status', 'description', 'customerId']);
 
-        resp = await customer.getState();
-        resp.tags.map((i) => i.key).should.containDeep(['kind', 'type']);
+        await customer.getState();
+        customer.tags.map((i) => i.key).should.containDeep(['kind', 'type']);
     });
 
     it('deleteCustomerTag()', async () => {
@@ -111,8 +111,8 @@ describe('Customer', function fx() {
         resp = await customer.deleteTag(['kind']);
         resp.should.have.properties(['status', 'description', 'customerId']);
 
-        resp = await customer.getState();
-        resp.tags.map((i) => i.key).should.not.containDeep(['kind', 'type']);
+        await customer.getState();
+        customer.tags.map((i) => i.key).should.not.containDeep(['kind', 'type']);
     });
 
     it('updateCustomerSecondaryId()', async () => {
@@ -139,8 +139,8 @@ describe('Customer', function fx() {
         ]);
         resp.should.have.properties(['status', 'description', 'customerId']);
 
-        resp = await customer.getState();
-        resp.secondaryIds.map((i) => i.key).should.containDeep(['passport', 'huduma']);
+        await customer.getState();
+        customer.secondaryIds.map((i) => i.key).should.containDeep(['passport', 'huduma']);
     });
 
     it('deleteCustomerSecondaryId()', async () => {
@@ -150,8 +150,8 @@ describe('Customer', function fx() {
         resp = await customer.deleteSecondaryId([{ key: 'huduma', value: '808082' }]);
         resp.should.have.properties(['status', 'description', 'customerId']);
 
-        resp = await customer.getState();
-        resp.secondaryIds.map((i) => i.key).should.not.containDeep(['huduma', 'passport']);
+        await customer.getState();
+        customer.secondaryIds.map((i) => i.key).should.not.containDeep(['huduma', 'passport']);
     });
 
     it('addCustomerReminder()', async () => {
@@ -169,6 +169,9 @@ describe('Customer', function fx() {
             payload: JSON.stringify({ a: 1, c: 'de' }),
         });
         resp.should.have.properties(['status', 'description']);
+
+        await customer.getState();
+        customer.reminders.map((i) => i.key).should.containDeep(['a', 'b']);
     });
 
     it('cancelCustomerReminder()', async () => {
@@ -177,6 +180,9 @@ describe('Customer', function fx() {
 
         resp = await customer.cancelReminder('b');
         resp.should.have.properties(['status', 'description']);
+
+        await customer.getState();
+        customer.reminders.map((i) => i.key).should.not.containDeep(['a', 'b']);
     });
 
     it('addCustomerReminderByTag()', async () => {
@@ -210,17 +216,22 @@ describe('Customer', function fx() {
             payload: JSON.stringify({ a: 1, c: 'de' }),
         });
         resp.should.have.properties(['status', 'description']);
+
+        await customer.getState();
+        customer.metadata.should.have.properties(['abc', 'def', 'key']);
     });
 
     it('leaseCustomerMetadata()', async () => {
         let resp = await client.leaseCustomerMetadata(customer, 'abc');
-        resp.should.have.properties(['status', 'description', 'customerId', 'value']);
+        JSON.stringify(resp).should.equal(JSON.stringify({ name: 'fake' }));
 
         resp = await customer.updateMetadata({ abc: { name: 'updatedAfterLease' } });
         resp = await customer.leaseMetadata('abc');
-        resp.value.should.have.properties(['name']);
-        resp.value.name.should.equal('updatedAfterLease');
-        resp.should.have.properties(['status', 'description', 'customerId', 'value']);
+        resp.name.should.equal('updatedAfterLease');
+        resp = await customer.updateMetadata({ abc: { name: 'restored' } });
+        await customer.getState();
+        customer.metadata.should.have.properties(['abc']);
+        customer.metadata.abc.name.should.equal('restored');
     });
 
     it('deleteCustomerMetadata()', async () => {
@@ -229,7 +240,7 @@ describe('Customer', function fx() {
 
         resp = await customer.deleteMetadata(['def']);
         resp.should.have.properties(['status', 'description']);
-        resp = await customer.getState();
-        Object.keys(resp.metadata).should.not.containDeep(['abc', 'def']);
+        await customer.getState();
+        Object.keys(customer.metadata).should.not.have.properties(['abc', 'def']);
     });
 });
