@@ -27,14 +27,12 @@ const { Client, Customer }  = Elarian;
 
 // ...
 
-const client = new Client({
+const client = await Client.newInstance({
     apiKey: 'test_api_key', // not needed in the browser
     authToken: 'test_auth_token', // required in the browser
     orgId: 'test_org_id',
     appId: 'test_app_id',
 });
-
-await client.connect();
 
 client.on('ussdSession', async (data, customer) => {
     const {
@@ -89,7 +87,7 @@ client.on('ussdSession', async (data, customer) => {
 
 ## Documentation
 
-Take a look at the [API docs here](http://docs.elarian.com). For detailed info on this SDK, see the [documentation](doc/Client.html).
+Take a look at the [API docs here](http://docs.elarian.com). For detailed info on this SDK, see the [documentation](doc/).
 
 ## Development
 

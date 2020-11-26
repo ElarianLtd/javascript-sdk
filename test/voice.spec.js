@@ -5,13 +5,13 @@ const { Client, Customer } = require('..');
 const fixtures = require('./fixtures');
 
 describe('Voice', () => {
-    const client = new Client(fixtures.clientParams);
+    let client;
     const customer = new Customer({
         customerNumber: fixtures.customerNumber,
     });
 
     before(async () => {
-        await client.connect();
+        client = await Client.newInstance(fixtures.clientParams);
     });
 
     after(async () => {

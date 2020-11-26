@@ -175,37 +175,40 @@ and locks metadata fetching(for up to <b>90s</b>) until next call to update meta
 
 * [Client](#Client)
     * [new Client(params, [configOptions])](#new_Client_new)
-    * [.authToken()](#Client+authToken) ⇒ <code>AuthToken</code>
-    * [.getCustomerState(customer)](#Client+getCustomerState) ⇒ <code>CustomerState</code>
-    * [.adoptCustomerState(customer, otherCustomer)](#Client+adoptCustomerState) ⇒ <code>UpdateStatus</code>
-    * [.updateCustomerTag(customer, tags)](#Client+updateCustomerTag) ⇒ <code>UpdateStatus</code>
-    * [.deleteCustomerTag(customer, tags)](#Client+deleteCustomerTag) ⇒ <code>UpdateStatus</code>
-    * [.updateCustomerSecondaryId(customer, secondaryIds)](#Client+updateCustomerSecondaryId) ⇒ <code>UpdateStatus</code>
-    * [.deleteCustomerSecondaryId(customer, secondaryIds)](#Client+deleteCustomerSecondaryId) ⇒ <code>UpdateStatus</code>
-    * [.addCustomerReminder(customer, reminder)](#Client+addCustomerReminder) ⇒ <code>UpdateStatus</code>
-    * [.cancelCustomerReminder(customer, key)](#Client+cancelCustomerReminder) ⇒ <code>UpdateStatus</code>
-    * [.addCustomerReminderByTag(tag, reminder)](#Client+addCustomerReminderByTag) ⇒ <code>WorkStatus</code>
-    * [.cancelCustomerReminderByTag(tag, key)](#Client+cancelCustomerReminderByTag) ⇒ <code>WorkStatus</code>
-    * [.updateCustomerMetadata(customer, metadata)](#Client+updateCustomerMetadata) ⇒ <code>UpdateStatus</code>
-    * [.leaseCustomerMetadata(customer, key)](#Client+leaseCustomerMetadata) ⇒ <code>LeasedMetadata</code>
-    * [.deleteCustomerMetadata(customer, keys)](#Client+deleteCustomerMetadata) ⇒ <code>UpdateStatus</code>
-    * [.connect()](#Client+connect)
-    * [.disconnect()](#Client+disconnect)
-    * [.sendMessage(customer, channelNumber, body)](#Client+sendMessage) ⇒ <code>MessageStatus</code>
-    * [.sendMessageByTag(tag, channelNumber, body)](#Client+sendMessageByTag) ⇒ <code>WorkStatus</code>
-    * [.replyToMessage(customer, replyToMessageId, body)](#Client+replyToMessage) ⇒ <code>MessageStatus</code>
-    * [.messagingConsent(customer, channelNumber, action)](#Client+messagingConsent) ⇒ <code>ConsentStatus</code>
-    * [.registerListerner(event, listener)](#Client+registerListerner)
-    * [.on(event, listener)](#Client+on)
-    * [.removeListener(event)](#Client+removeListener)
-    * [.off(event)](#Client+off)
-    * [.initiatePayment(debitParty, creditParty, value)](#Client+initiatePayment) ⇒ <code>PaymentStatus</code>
-    * [.makeVoiceCall(customer, channelNumber)](#Client+makeVoiceCall) ⇒ <code>VoiceStatus</code>
+    * _instance_
+        * [.authToken()](#Client+authToken) ⇒ <code>AuthToken</code>
+        * [.getCustomerState(customer)](#Client+getCustomerState) ⇒ <code>CustomerState</code>
+        * [.adoptCustomerState(customer, otherCustomer)](#Client+adoptCustomerState) ⇒ <code>UpdateStatus</code>
+        * [.updateCustomerTag(customer, tags)](#Client+updateCustomerTag) ⇒ <code>UpdateStatus</code>
+        * [.deleteCustomerTag(customer, tags)](#Client+deleteCustomerTag) ⇒ <code>UpdateStatus</code>
+        * [.updateCustomerSecondaryId(customer, secondaryIds)](#Client+updateCustomerSecondaryId) ⇒ <code>UpdateStatus</code>
+        * [.deleteCustomerSecondaryId(customer, secondaryIds)](#Client+deleteCustomerSecondaryId) ⇒ <code>UpdateStatus</code>
+        * [.addCustomerReminder(customer, reminder)](#Client+addCustomerReminder) ⇒ <code>UpdateStatus</code>
+        * [.cancelCustomerReminder(customer, key)](#Client+cancelCustomerReminder) ⇒ <code>UpdateStatus</code>
+        * [.addCustomerReminderByTag(tag, reminder)](#Client+addCustomerReminderByTag) ⇒ <code>WorkStatus</code>
+        * [.cancelCustomerReminderByTag(tag, key)](#Client+cancelCustomerReminderByTag) ⇒ <code>WorkStatus</code>
+        * [.updateCustomerMetadata(customer, metadata)](#Client+updateCustomerMetadata) ⇒ <code>UpdateStatus</code>
+        * [.leaseCustomerMetadata(customer, key)](#Client+leaseCustomerMetadata) ⇒ <code>LeasedMetadata</code>
+        * [.deleteCustomerMetadata(customer, keys)](#Client+deleteCustomerMetadata) ⇒ <code>UpdateStatus</code>
+        * [.connect()](#Client+connect)
+        * [.disconnect()](#Client+disconnect)
+        * [.sendMessage(customer, channelNumber, body)](#Client+sendMessage) ⇒ <code>MessageStatus</code>
+        * [.sendMessageByTag(tag, channelNumber, body)](#Client+sendMessageByTag) ⇒ <code>WorkStatus</code>
+        * [.replyToMessage(customer, replyToMessageId, body)](#Client+replyToMessage) ⇒ <code>MessageStatus</code>
+        * [.messagingConsent(customer, channelNumber, action)](#Client+messagingConsent) ⇒ <code>ConsentStatus</code>
+        * [.registerListerner(event, listener)](#Client+registerListerner)
+        * [.on(event, listener)](#Client+on)
+        * [.removeListener(event)](#Client+removeListener)
+        * [.off(event)](#Client+off)
+        * [.initiatePayment(debitParty, creditParty, value)](#Client+initiatePayment) ⇒ <code>PaymentStatus</code>
+        * [.makeVoiceCall(customer, channelNumber)](#Client+makeVoiceCall) ⇒ <code>VoiceStatus</code>
+    * _static_
+        * [.newInstance(params, [configOptions])](#Client.newInstance)
 
 <a name="new_Client_new"></a>
 
 ### new Client(params, [configOptions])
-<p>Elarian client</p>
+<p>Instantiate an elarian client. You have to call connect() on then client to start using it</p>
 
 
 | Param | Type |
@@ -511,4 +514,16 @@ and locks metadata fetching(for up to <b>90s</b>) until next call to update meta
 | --- | --- |
 | customer | [<code>Customer</code>](#Customer) | 
 | channelNumber | <code>ChannelNumber</code> | 
+
+<a name="Client.newInstance"></a>
+
+### Client.newInstance(params, [configOptions])
+<p>Instantiate and connect an elarian client</p>
+
+**Kind**: static method of [<code>Client</code>](#Client)  
+
+| Param | Type |
+| --- | --- |
+| params | <code>ClientParams</code> | 
+| [configOptions] | <code>ConfigOptions</code> | 
 
