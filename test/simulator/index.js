@@ -56,7 +56,7 @@ const submit = (payload) => new Promise((resolve, reject) => {
 
     const responseHandler = (res) => {
         if ((res.status >= 200 && res.status < 300)) {
-            resolve(res.message);
+            resolve(res);
         } else {
             reject(new Error(res.message));
         }
