@@ -31,8 +31,6 @@ describe('Notification', function fx() {
         await simulator.startSession({
             phoneNumber: bob.customerNumber.number,
             cb: (notif) => {
-                log.warn('Simulator: ', notif.data.type);
-
                 if (notif.data.type === 'UssdMenu' && !notif.data.menu.isTerminal) {
                     const ussdData = {
                         type: 'UssdRequest',
@@ -42,14 +40,7 @@ describe('Notification', function fx() {
                         channelNumber: notif.data.channelNumber,
                     };
                     simulator.submit(ussdData)
-                        .then((res) => {
-                            log.info('Simulator: ', res.data.menu.text);
-                        })
                         .catch((ex) => log.error(ex));
-                }
-
-                if (notif.data.type === 'SendMessageNotification') {
-                    log.info('Simulator: ', notif.data.body.text.text.value);
                 }
             },
         });
@@ -280,6 +271,7 @@ describe('Notification', function fx() {
             ]);
             should.exist(customer);
             data.transactionId.should.equal(transactionId);
+            client.off('paymentStatus');
             done();
         });
         client.initiatePayment(
@@ -292,19 +284,16 @@ describe('Notification', function fx() {
             },
             {
                 customerId: bob.customerId,
-                walletId: 'test_wallet',
+                walletId: 'bob_wallet',
             },
             {
-                amount: 100,
+                amount: _.random(100, 1000),
                 currencyCode: 'KES',
             },
         )
             .then(async (resp) => {
-                // console.log(resp);
                 resp.status.should.equal(102);
                 transactionId = resp.transactionId;
-                // const st = await bob.getState();
-                // console.log(JSON.stringify(st, null, 2));
             })
             .catch((err) => done(err));
     });
@@ -322,26 +311,27 @@ describe('Notification', function fx() {
             done();
         });
 
-        client.initiatePayment(
-            {
-                customerId: bob.customerId,
-                walletId: 'test_wallet',
-            },
-            {
-                customerNumber: {
-                    number: '+254718769882',
-                    provider: 'telco',
+        bob.getState()
+            .then(() => {
+                // console.log(JSON.stringify(state, null, 2));
+            })
+            .then(() => client.initiatePayment(
+                {
+                    customerId: bob.customerId,
+                    walletId: 'bob_wallet',
                 },
-                channelNumber: {
-                    number: '525900', // paybill
-                    provider: 'telco',
+                {
+                    customerNumber: bob.customerNumber,
+                    channelNumber: {
+                        number: '525900', // paybill
+                        provider: 'telco',
+                    },
                 },
-            },
-            {
-                amount: 10,
-                currencyCode: 'KES',
-            },
-        )
+                {
+                    amount: 100,
+                    currencyCode: 'KES',
+                },
+            ))
             .then((resp) => {
                 // console.log(resp);
                 resp.status.should.equal(102);
