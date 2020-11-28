@@ -1,12 +1,12 @@
 {
   "name": "elarian",
-  "version": "0.0.11",
+  "version": "0.0.13",
   "description": "Elrian JavaScript SDK",
   "main": "index.js",
   "scripts": {
     "pretest": "npm run lint",
     "posttest": "npm run build",
-    "test": "nyc mocha ./test",
+    "test": "nyc mocha ./test -t 5000 --slow 200 --exit",
     "lint": "eslint .",
     "build": "rm -rf doc/ dist/ && jsdoc -c .jsdoc -R README.md -r lib/ && jsdoc2md -c .jsdoc --files lib/** > doc/README.md && webpack",
     "prepublish": "npm run build"

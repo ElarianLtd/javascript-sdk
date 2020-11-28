@@ -10,14 +10,13 @@ const client = new Client({
 client.on('ussdSession', async (data, customer) => {
     const {
         input,
-        sessionId,
     } = data;
 
     const metadata = await customer.leaseMetadata('awesomeNameSurvey');
     let {
         name,
         state = 'newbie',
-    } = metadata.value || {};
+    } = metadata;
 
     const menu = {
         text: null,
@@ -55,7 +54,7 @@ client.on('ussdSession', async (data, customer) => {
         },
     });
 
-    await client.replyToUssdSession(sessionId, menu);
+    return menu;
 });
 
 async function testSend() {
