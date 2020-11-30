@@ -22,11 +22,9 @@ describe('Notification', function fx() {
     before(async () => {
         await client.connect();
 
-        /*
-        client.on('data', (data) => {
-            log.info('Got some notification data...', data);
-        });
-        */
+        // client.on('data', (event, data) => {
+        //     log.info(event, data);
+        // });
 
         await simulator.startSession({
             phoneNumber: bob.customerNumber.number,
@@ -68,7 +66,7 @@ describe('Notification', function fx() {
                 'payload',
             ]);
             data.reminder.key.should.equal(key.toString());
-            data.reminder.payload.value.should.equal('test-ok??');
+            data.reminder.payload.should.equal('test-ok??');
             should.exist(customer);
             customer.customerId.should.equal(bob.customerId);
             done();
@@ -143,6 +141,7 @@ describe('Notification', function fx() {
             done();
         });
         // TODO: Trigger a message
+        done(new Error('Not implemented'));
     });
 
     it('messagingConsentStatus', (done) => {
@@ -164,7 +163,7 @@ describe('Notification', function fx() {
             'opt-out',
         )
             .then((resp) => {
-                resp.status.should.equal(301);
+                resp.status.should.equal('opt_out_completed');
             })
             .catch((err) => done(err));
     });
@@ -271,7 +270,7 @@ describe('Notification', function fx() {
             ]);
             should.exist(customer);
             data.transactionId.should.equal(transactionId);
-            client.off('paymentStatus');
+            // client.off('paymentStatus');
             done();
         });
         client.initiatePayment(
@@ -292,7 +291,7 @@ describe('Notification', function fx() {
             },
         )
             .then(async (resp) => {
-                resp.status.should.equal(102);
+                resp.status.should.equal('pending_confirmation');
                 transactionId = resp.transactionId;
             })
             .catch((err) => done(err));
@@ -334,7 +333,7 @@ describe('Notification', function fx() {
             ))
             .then((resp) => {
                 // console.log(resp);
-                resp.status.should.equal(102);
+                resp.status.should.equal('success');
                 transactionId = resp.transactionId;
             })
             .catch((err) => done(err));

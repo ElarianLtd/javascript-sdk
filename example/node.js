@@ -7,6 +7,10 @@ const client = new Client({
     appId: 'test_app',
 });
 
+client.on('paymentStatus', (data) => {
+    console.log(data);
+});
+
 client.on('ussdSession', async (data, customer) => {
     const {
         input,

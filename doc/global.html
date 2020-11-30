@@ -674,169 +674,6 @@
             
                 
 <hr>
-<dt class="name" id="ChannelNumber">
-    <h4 id="ChannelNumber">ChannelNumber</h4>
-
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>An object representing a messaging channel number</p>
-    </div>
-    
-
-    
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type">Object</span>
-
-
-
-            </li>
-        </ul>
-    
-
-    
-<dl class="details">
-    
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    <dl>
-
-<table class="props table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>number</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>provider</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">telco</span>
-|
-
-<span class="param-type">sms</span>
-|
-
-<span class="param-type">telegram</span>
-|
-
-<span class="param-type">whatsapp</span>
-|
-
-<span class="param-type">google_rcs</span>
-|
-
-<span class="param-type">fb_messenger</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-</dl>
-
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-</dd>
-
-            
-                
-<hr>
 <dt class="name" id="ClientParams">
     <h4 id="ClientParams">ClientParams</h4>
 
@@ -1320,7 +1157,7 @@
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">string</span>
 
 
 
@@ -1439,7 +1276,7 @@
 <dd>
     
     <div class="description">
-        <p>An object representing a customer number</p>
+        <p>An object representing a customer number.</p>
     </div>
     
 
@@ -3866,7 +3703,7 @@
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">string</span>
 
 
 
@@ -3939,6 +3776,169 @@
             
                 
 <span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+</dl>
+
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<hr>
+<dt class="name" id="MessagingChannelNumber">
+    <h4 id="MessagingChannelNumber">MessagingChannelNumber</h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>An object representing a messaging channel number</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Object</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    <dl>
+
+<table class="props table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>number</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>provider</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">telco</span>
+|
+
+<span class="param-type">sms</span>
+|
+
+<span class="param-type">telegram</span>
+|
+
+<span class="param-type">whatsapp</span>
+|
+
+<span class="param-type">google_rcs</span>
+|
+
+<span class="param-type">fb_messenger</span>
 
 
 
@@ -4130,7 +4130,7 @@
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;<a href="global.html#ChannelNumber">ChannelNumber</a>></span>
+<span class="param-type">Array.&lt;ChannelNumber></span>
 
 
 
@@ -4464,7 +4464,7 @@
 
         <tr>
             
-                <td class="name"><code>channel</code></td>
+                <td class="name"><code>provider</code></td>
             
 
             <td class="type">
@@ -4614,7 +4614,7 @@
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;PaymentTransaction></span>
+<span class="param-type">Array.&lt;<a href="global.html#PaymentTransaction">PaymentTransaction</a>></span>
 
 
 
@@ -4638,7 +4638,7 @@
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;PaymentTransaction></span>
+<span class="param-type">Array.&lt;<a href="global.html#PaymentTransaction">PaymentTransaction</a>></span>
 
 
 
@@ -4686,7 +4686,7 @@
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;<a href="global.html#ChannelNumber">ChannelNumber</a>></span>
+<span class="param-type">Array.&lt;<a href="global.html#PaymentChannelNumber">PaymentChannelNumber</a>></span>
 
 
 
@@ -4903,6 +4903,310 @@
             
                 
 <span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+</dl>
+
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<hr>
+<dt class="name" id="PaymentTransaction">
+    <h4 id="PaymentTransaction">PaymentTransaction</h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>An object representing a payment transaction</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Object</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    <dl>
+
+<table class="props table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>transactionId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>appId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>creditParty</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#CustomerPayment">CustomerPayment</a></span>
+|
+
+<span class="param-type"><a href="global.html#Wallet">Wallet</a></span>
+|
+
+<span class="param-type"><a href="global.html#Purse">Purse</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>debitParty</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#CustomerPayment">CustomerPayment</a></span>
+|
+
+<span class="param-type"><a href="global.html#Wallet">Wallet</a></span>
+|
+
+<span class="param-type"><a href="global.html#Purse">Purse</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#Cash">Cash</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>status</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>createdAt</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>updatedAt</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
 
 
 
@@ -5857,7 +6161,7 @@
 <dd>
     
     <div class="description">
-        <p>An object representing a secondary id</p>
+        <p>An object representing a secondary id. Secondary Ids can be used to add some more unique identities to a customer. e.g. driver's license, etc.</p>
     </div>
     
 
@@ -6180,7 +6484,7 @@
 <dd>
     
     <div class="description">
-        <p>An object representing a tag</p>
+        <p>An object representing a tag. Tags can be used to group customers based on some similarities. e.g. loan defaulters, etc.</p>
     </div>
     
 
@@ -6534,6 +6838,154 @@
             
                 
 <hr>
+<dt class="name" id="UssdChannelNumber">
+    <h4 id="UssdChannelNumber">UssdChannelNumber</h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>An object representing a ussd channel</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Object</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    <dl>
+
+<table class="props table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>number</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>provider</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">telco</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+</dl>
+
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<hr>
 <dt class="name" id="UssdMenu">
     <h4 id="UssdMenu">UssdMenu</h4>
 
@@ -6787,7 +7239,7 @@
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;<a href="global.html#ChannelNumber">ChannelNumber</a>></span>
+<span class="param-type">Array.&lt;ChannelNumber></span>
 
 
 
@@ -7166,6 +7618,154 @@
             
                 
 <hr>
+<dt class="name" id="VoiceChannelNumber">
+    <h4 id="VoiceChannelNumber">VoiceChannelNumber</h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>An object representing a voice channel</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Object</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    <dl>
+
+<table class="props table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>number</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>provider</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">telco</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+</dl>
+
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<hr>
 <dt class="name" id="VoiceState">
     <h4 id="VoiceState">VoiceState</h4>
 
@@ -7271,7 +7871,7 @@
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;<a href="global.html#ChannelNumber">ChannelNumber</a>></span>
+<span class="param-type">Array.&lt;ChannelNumber></span>
 
 
 
@@ -7891,7 +8491,7 @@
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a>
 	
-		on Sat, Nov 28, 2020 7:19 AM
+		on Mon, Nov 30, 2020 2:22 PM
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

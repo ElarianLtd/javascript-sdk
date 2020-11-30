@@ -26,7 +26,7 @@ describe('Messaging', () => {
                 provider: 'sms',
             },
             {
-                text: 'node messaging test',
+                text: 'node messaging sms test',
             },
         );
         resp.should.have.properties(['status', 'description', 'messageId', 'customerId']);
@@ -36,7 +36,17 @@ describe('Messaging', () => {
                 provider: 'sms',
             },
             {
-                text: 'node customer messaging test',
+                text: 'node customer sms messaging test',
+            },
+        );
+        resp.should.have.properties(['status', 'description', 'messageId', 'customerId']);
+        resp = await customer.sendMessage(
+            {
+                number: 'elarian_test_bot',
+                provider: 'telegram',
+            },
+            {
+                text: 'node customer telegram messaging test',
             },
         );
         resp.should.have.properties(['status', 'description', 'messageId', 'customerId']);
@@ -50,7 +60,7 @@ describe('Messaging', () => {
             },
             {
                 number: 'Elarian',
-                provider: 'sms', // sms|telegram|whatsapp|fb_messenger|google_rcs
+                provider: 'sms',
             },
             {
                 text: 'Tagged',

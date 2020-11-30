@@ -30,7 +30,7 @@
 <a name="new_Customer_new"></a>
 
 ### new Customer(params)
-<p>Customer class</p>
+<p>A customer is your end-user, represented by a number (from a telco, facebook or telegram)</p>
 
 
 | Param | Type |
@@ -40,7 +40,7 @@
 <a name="Customer+getState"></a>
 
 ### customer.getState() ⇒ <code>CustomerState</code>
-<p>Fetch the customer's state</p>
+<p>Fetch the customer's current state.</p>
 
 **Kind**: instance method of [<code>Customer</code>](#Customer)  
 <a name="Customer+adoptState"></a>
@@ -165,7 +165,7 @@ and locks metadata fetching(for up to <b>90s</b>) until next call to update meta
 
 | Param | Type |
 | --- | --- |
-| channelNumber | <code>ChannelNumber</code> | 
+| channelNumber | <code>MessagingChannelNumber</code> | 
 | body | <code>Body</code> | 
 
 <a name="Client"></a>
@@ -225,7 +225,7 @@ and locks metadata fetching(for up to <b>90s</b>) until next call to update meta
 <a name="Client+getCustomerState"></a>
 
 ### client.getCustomerState(customer) ⇒ <code>CustomerState</code>
-<p>Get customer state</p>
+<p>Fetch the customer's current state.</p>
 
 **Kind**: instance method of [<code>Client</code>](#Client)  
 
@@ -402,7 +402,7 @@ and locks metadata fetching(for up to <b>90s</b>) until next call to update meta
 | Param | Type |
 | --- | --- |
 | customer | [<code>Customer</code>](#Customer) | 
-| channelNumber | <code>CustomerNumber</code> | 
+| channelNumber | <code>MessagingChannelNumber</code> | 
 | body | <code>Body</code> | 
 
 <a name="Client+sendMessageByTag"></a>
@@ -415,7 +415,7 @@ and locks metadata fetching(for up to <b>90s</b>) until next call to update meta
 | Param | Type |
 | --- | --- |
 | tag | <code>Tag</code> | 
-| channelNumber | <code>CustomerNumber</code> | 
+| channelNumber | <code>MessagingChannelNumber</code> | 
 | body | <code>Body</code> | 
 
 <a name="Client+replyToMessage"></a>
@@ -441,7 +441,7 @@ and locks metadata fetching(for up to <b>90s</b>) until next call to update meta
 | Param | Type | Description |
 | --- | --- | --- |
 | customer | [<code>Customer</code>](#Customer) |  |
-| channelNumber | <code>CustomerNumber</code> |  |
+| channelNumber | <code>MessagingChannelNumber</code> |  |
 | action | <code>opt-in</code> \| <code>opt-out</code> | <p>opt-in or opt-out</p> |
 
 <a name="Client+registerListerner"></a>
@@ -513,7 +513,7 @@ and locks metadata fetching(for up to <b>90s</b>) until next call to update meta
 | Param | Type |
 | --- | --- |
 | customer | [<code>Customer</code>](#Customer) | 
-| channelNumber | <code>ChannelNumber</code> | 
+| channelNumber | <code>VoiceChannelNumber</code> | 
 
 <a name="Client.newInstance"></a>
 
