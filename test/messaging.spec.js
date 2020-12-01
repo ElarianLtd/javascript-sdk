@@ -1,28 +1,24 @@
 // eslint-disable-next-line no-unused-vars
 const should = require('should');
 
-const { Client, Customer } = require('..');
+const { Customer } = require('..');
 const fixtures = require('./fixtures');
 
 describe('Messaging', () => {
-    const client = new Client(fixtures.clientParams);
+    let client;
     const customer = new Customer({
         customerNumber: fixtures.customerNumber,
     });
 
     before(async () => {
-        await client.connect();
-    });
-
-    after(async () => {
-        await client.disconnect();
+        client = fixtures.getClient();
     });
 
     it('sendMessage()', async () => {
         let resp = await client.sendMessage(
             customer,
             {
-                number: 'Elarian',
+                number: fixtures.senderId,
                 provider: 'sms',
             },
             {
@@ -32,7 +28,7 @@ describe('Messaging', () => {
         resp.should.have.properties(['status', 'description', 'messageId', 'customerId']);
         resp = await customer.sendMessage(
             {
-                number: 'Elarian',
+                number: fixtures.senderId,
                 provider: 'sms',
             },
             {
@@ -42,7 +38,7 @@ describe('Messaging', () => {
         resp.should.have.properties(['status', 'description', 'messageId', 'customerId']);
         resp = await customer.sendMessage(
             {
-                number: 'elarian_test_bot',
+                number: fixtures.telegramBot,
                 provider: 'telegram',
             },
             {
@@ -59,7 +55,7 @@ describe('Messaging', () => {
                 value: 'testers',
             },
             {
-                number: 'Elarian',
+                number: fixtures.senderId,
                 provider: 'sms',
             },
             {
@@ -98,7 +94,7 @@ describe('Messaging', () => {
         const resp = await client.messagingConsent(
             customer,
             {
-                number: 'Elarian',
+                number: fixtures.senderId,
                 provider: 'sms',
             },
             'opt-in', // opt-out

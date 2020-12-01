@@ -1,23 +1,19 @@
 // eslint-disable-next-line no-unused-vars
 const should = require('should');
 
-const { Client, Customer } = require('..');
+const { Customer } = require('..');
 const fixtures = require('./fixtures');
 
 describe('Customer', function fx() {
     this.timeout(10000);
 
-    const client = new Client(fixtures.clientParams);
+    let client;
     const customer = new Customer({
         customerNumber: fixtures.customerNumber,
     });
 
     before(async () => {
-        await client.connect();
-    });
-
-    after(async () => {
-        await client.disconnect();
+        client = fixtures.getClient();
     });
 
     it('getCustomerState()', async () => {

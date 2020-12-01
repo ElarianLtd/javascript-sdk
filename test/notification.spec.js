@@ -2,7 +2,7 @@ const _ = require('lodash');
 const should = require('should');
 const { Signale } = require('signale');
 
-const { Client, Customer } = require('..');
+const { Customer } = require('..');
 const fixtures = require('./fixtures');
 const simulator = require('./simulator');
 
@@ -14,18 +14,13 @@ const log = new Signale({
 describe('Notification', function fx() {
     this.timeout(10000);
 
-    const client = new Client(fixtures.clientParams);
+    let client;
     const bob = new Customer({
         customerNumber: fixtures.notifCustomerNumber,
     });
 
     before(async () => {
-        await client.connect();
-
-        // client.on('data', (event, data) => {
-        //     log.info(event, data);
-        // });
-
+        client = fixtures.getClient();
         await simulator.startSession({
             phoneNumber: bob.customerNumber.number,
             cb: (notif) => {
@@ -46,7 +41,6 @@ describe('Notification', function fx() {
     });
 
     after(async () => {
-        await client.disconnect();
         await simulator.endSession(bob.customerNumber.number);
     });
 
@@ -93,7 +87,7 @@ describe('Notification', function fx() {
         });
         bob.sendMessage(
             {
-                number: '21414',
+                number: fixtures.shortCode,
                 provider: 'sms',
             },
             { text: 'messageStatus test' },
@@ -123,7 +117,7 @@ describe('Notification', function fx() {
             customerNumber: bob.customerNumber.number,
             channelNumber: {
                 channel: 3,
-                number: '21414',
+                number: fixtures.shortCode,
             },
             text: 'test receivedMessage',
         };
@@ -140,8 +134,18 @@ describe('Notification', function fx() {
             should.exist(customer);
             done();
         });
-        // TODO: Trigger a message
-        done(new Error('Not implemented'));
+        // TODO: Trigger a message: in bound whatsapp
+        bob.sendMessage(
+            {
+                number: fixtures.senderId,
+                provider: 'whatsapp',
+            },
+            {
+                text: 'node customer whatsapp messaging test',
+            },
+        ).then((resp) => {
+            console.log(resp);
+        }).catch((ex) => done(ex));
     });
 
     it('messagingConsentStatus', (done) => {
@@ -157,13 +161,14 @@ describe('Notification', function fx() {
         client.messagingConsent(
             bob,
             {
-                number: 'Elarian',
-                provider: 'sms',
+                number: fixtures.senderId,
+                provider: 'whatsapp',
             },
-            'opt-out',
+            'opt-in',
         )
-            .then((resp) => {
-                resp.status.should.equal('opt_out_completed');
+            .then((resp) => { // goes to whatsapp
+                console.log(resp);
+                resp.status.should.equal('opt_in_completed');
             })
             .catch((err) => done(err));
     });
@@ -190,7 +195,7 @@ describe('Notification', function fx() {
             customerNumber: bob.customerNumber.number,
             channelNumber: {
                 channel: 1,
-                number: '*384#',
+                number: fixtures.ussdCode,
             },
             input: '',
         };
@@ -217,7 +222,7 @@ describe('Notification', function fx() {
             customerNumber: bob.customerNumber.number,
             channelNumber: {
                 channel: 1,
-                number: '+254711082000',
+                number: fixtures.voiceNumber,
             },
             direction: 0,
             input: {
@@ -250,7 +255,7 @@ describe('Notification', function fx() {
             customerNumber: bob.customerNumber.number,
             channelNumber: {
                 channel: 1,
-                number: '525900',
+                number: fixtures.paybill,
             },
             value: {
                 currencyCode: 'KES',
@@ -262,39 +267,57 @@ describe('Notification', function fx() {
     });
 
     it('paymentStatus', (done) => {
-        let transactionId;
+        const transactionIds = [];
+        let hits = 0;
         client.on('paymentStatus', async (data, customer) => {
             data.should.have.properties([
                 'transactionId',
                 'status',
             ]);
             should.exist(customer);
-            data.transactionId.should.equal(transactionId);
-            // client.off('paymentStatus');
-            done();
+            transactionIds.should.containEql(data.transactionId);
+            hits += 1;
+            if (hits === transactionIds.length) {
+                client.off('paymentStatus');
+                done();
+            }
         });
+
         client.initiatePayment(
             {
                 customerNumber: bob.customerNumber,
                 channelNumber: {
-                    number: '525900',
+                    number: fixtures.paybill,
                     provider: 'telco',
                 },
             },
             {
-                customerId: bob.customerId,
-                walletId: 'bob_wallet',
+                purseId: fixtures.purseId,
             },
             {
-                amount: _.random(100, 1000),
+                amount: _.random(1000, 2000),
                 currencyCode: 'KES',
             },
-        )
-            .then(async (resp) => {
-                resp.status.should.equal('pending_confirmation');
-                transactionId = resp.transactionId;
-            })
-            .catch((err) => done(err));
+        ).then((resp) => {
+            transactionIds.push(resp.transactionId);
+            return client.initiatePayment(
+                {
+                    purseId: fixtures.purseId,
+                },
+                {
+                    customerId: bob.customerId,
+                    walletId: 'bob_wallet',
+                },
+                {
+                    amount: _.random(100, 1000),
+                    currencyCode: 'KES',
+                },
+            );
+        }).then((resp) => {
+            resp.status.should.equal('success');
+            transactionIds.push(resp.transactionId);
+        })
+            .catch((ex) => done(ex));
     });
 
     it('walletPaymentStatus', (done) => {
@@ -307,13 +330,11 @@ describe('Notification', function fx() {
             ]);
             should.exist(customer);
             data.transactionId.should.equal(transactionId);
+            client.off('walletPaymentStatus');
             done();
         });
 
         bob.getState()
-            .then(() => {
-                // console.log(JSON.stringify(state, null, 2));
-            })
             .then(() => client.initiatePayment(
                 {
                     customerId: bob.customerId,
@@ -322,7 +343,7 @@ describe('Notification', function fx() {
                 {
                     customerNumber: bob.customerNumber,
                     channelNumber: {
-                        number: '525900', // paybill
+                        number: fixtures.paybill,
                         provider: 'telco',
                     },
                 },
@@ -332,8 +353,7 @@ describe('Notification', function fx() {
                 },
             ))
             .then((resp) => {
-                // console.log(resp);
-                resp.status.should.equal('success');
+                resp.status.should.equal('pending_confirmation');
                 transactionId = resp.transactionId;
             })
             .catch((err) => done(err));

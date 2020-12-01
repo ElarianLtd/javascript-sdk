@@ -1,11 +1,18 @@
 const _ = require('lodash');
+const { Client } = require('../lib/index.node');
+
+let client;
+const clientParams = {
+    // appId: 'test_app',
+    // orgId: 'test_org',
+    // apiKey: 'test_api_key',
+    appId: 'ck_app',
+    orgId: 'ck_org',
+    apiKey: 'ck_api_key',
+};
 
 module.exports = {
-    clientParams: {
-        appId: 'test_app',
-        orgId: 'test_org',
-        apiKey: 'test_api_key',
-    },
+    clientParams,
 
     customerNumber: {
         number: `+254720${_.random(100000, 999999)}`,
@@ -21,6 +28,14 @@ module.exports = {
         number: `+254722${_.random(100000, 999999)}`,
         provider: 'telco',
     },
+
+    shortCode: '21515',
+    senderId: 'CK_Elarian',
+    telegramBot: 'ck_test_bot',
+    paybill: '888888',
+    purseId: 'ck_purse',
+    ussdCode: '*484#',
+    voiceNumber: '+254711082001',
 
     dialPlan: [
         {
@@ -113,6 +128,13 @@ module.exports = {
             },
         },
     ],
+
+    initializeClient: async () => {
+        client = new Client(clientParams);
+        await client.connect();
+    },
+
+    getClient: () => client,
 
     sleep: (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
 };

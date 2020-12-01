@@ -1,8 +1,9 @@
 // eslint-disable-next-line no-unused-vars
 const should = require('should');
 
-const { Client, Customer } = require('..');
+const { Customer } = require('..');
 const fixtures = require('./fixtures');
+const simulator = require('./simulator');
 
 describe('Voice', () => {
     let client;
@@ -11,18 +12,35 @@ describe('Voice', () => {
     });
 
     before(async () => {
-        client = await Client.newInstance(fixtures.clientParams);
+        client = fixtures.getClient();
+
+        await customer.getState();
     });
 
     after(async () => {
         await client.disconnect();
+        await simulator.endSession(customer.customerNumber.number);
     });
 
-    it('makeVoiceCall()', async () => {
-        const resp = await client.makeVoiceCall(customer, {
-            number: '+254711082000',
-            provider: 'telco',
+    it('makeVoiceCall()', (done) => {
+        simulator.startSession({
+            phoneNumber: customer.customerNumber.number,
+            cb: (notif) => {
+                if (notif.data.type === 'MakeVoiceCallNotification') {
+                    done();
+                }
+            },
+        }).then(() => {
+            client.makeVoiceCall(customer, {
+                number: fixtures.voiceNumber,
+                provider: 'telco',
+            }).then((resp) => {
+                resp.should.have.properties(['status', 'description', 'customerId', 'sessionId']);
+            }).catch((ex) => {
+                done(ex);
+            });
+        }).catch((ex) => {
+            done(ex);
         });
-        resp.should.have.properties(['status', 'description', 'customerId', 'sessionId']);
     });
 });

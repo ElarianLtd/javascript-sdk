@@ -6,8 +6,6 @@ const { Client, Customer } = require('..');
 const fixtures = require('./fixtures');
 
 describe('Authentication', () => {
-    let client;
-
     it('validates options', async () => {
         const options = {
             apiKey: 5,
@@ -21,9 +19,6 @@ describe('Authentication', () => {
         (function () {
             new Client(options);
         }).should.throw();
-
-        client = new Client(fixtures.clientParams);
-        should.exist(client);
 
         (function () {
             new Customer();
@@ -39,13 +34,20 @@ describe('Authentication', () => {
         should.exist(customer);
     });
 
-    it('authToken()', async () => {
-        await client.connect();
-        const resp = await client.authToken();
-        resp.should.have.properties(['token', 'lifetime']);
+    it('connect()', async () => {
+        const client = new Client(fixtures.clientParams);
+        should.exist(client);
+        return client.connect();
+    });
+
+    it('newInstance()', async () => Client.newInstance(fixtures.clientParams));
+
+    it('disconnect()', async () => {
+        const client = await Client.newInstance(fixtures.clientParams);
+        await client.disconnect();
     });
 
     after(async () => {
-        await client.disconnect();
+        await fixtures.initializeClient();
     });
 });

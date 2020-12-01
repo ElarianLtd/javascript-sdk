@@ -28,8 +28,7 @@ const { Client, Customer }  = Elarian;
 // ...
 
 const client = await Client.newInstance({
-    apiKey: 'test_api_key', // not needed in the browser
-    authToken: 'test_auth_token', // required in the browser
+    apiKey: 'test_api_key',
     orgId: 'test_org_id',
     appId: 'test_app_id',
 });

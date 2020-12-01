@@ -1,21 +1,17 @@
 // eslint-disable-next-line no-unused-vars
 const should = require('should');
 
-const { Client, Customer } = require('..');
+const { Customer } = require('..');
 const fixtures = require('./fixtures');
 
 describe('Payment', () => {
-    const client = new Client(fixtures.clientParams);
+    let client;
     const customer = new Customer({
         customerNumber: fixtures.customerNumber,
     });
 
     before(async () => {
-        await client.connect();
-    });
-
-    after(async () => {
-        await client.disconnect();
+        client = fixtures.getClient();
     });
 
     it('initiatePayment()', async () => {
@@ -31,7 +27,7 @@ describe('Payment', () => {
             {
                 customerNumber: customer.customerNumber,
                 channelNumber: {
-                    number: '525900', // paybill
+                    number: fixtures.paybill,
                     provider: 'telco',
                 },
             },
@@ -57,12 +53,12 @@ describe('Payment', () => {
             {
                 customerNumber: customer.customerNumber,
                 channelNumber: {
-                    number: '525900', // paybill
+                    number: fixtures.paybill,
                     provider: 'telco',
                 },
             },
             {
-                purseId: 'test_purse',
+                purseId: fixtures.purseId,
             },
             {
                 amount: 178.78,
@@ -84,7 +80,7 @@ describe('Payment', () => {
                 walletId: 'test_wallet',
             },
             {
-                purseId: 'test_purse',
+                purseId: fixtures.purseId,
             },
             {
                 amount: 123.78,
@@ -102,12 +98,12 @@ describe('Payment', () => {
         // B2C: From purse to mpesa
         resp = await client.initiatePayment(
             {
-                purseId: 'test_purse',
+                purseId: fixtures.purseId,
             },
             {
                 customerNumber: customer.customerNumber,
                 channelNumber: {
-                    number: '525900', // paybill
+                    number: fixtures.paybill,
                     provider: 'telco',
                 },
             },
@@ -136,7 +132,7 @@ describe('Payment', () => {
                     provider: 'telco',
                 },
                 channelNumber: {
-                    number: '525900', // paybill
+                    number: fixtures.paybill,
                     provider: 'telco',
                 },
             },
@@ -156,7 +152,7 @@ describe('Payment', () => {
         // B2C: From purse to mpesa
         resp = await client.initiatePayment(
             {
-                purseId: 'test_purse',
+                purseId: fixtures.purseId,
             },
             {
                 customerNumber: {
@@ -164,7 +160,7 @@ describe('Payment', () => {
                     provider: 'telco',
                 },
                 channelNumber: {
-                    number: '525900', // paybill
+                    number: fixtures.paybill,
                     provider: 'telco',
                 },
             },
@@ -207,7 +203,7 @@ describe('Payment', () => {
         // B2B: Purse to Purse
         resp = await client.initiatePayment(
             {
-                purseId: 'test_purse',
+                purseId: fixtures.purseId,
             },
             {
                 purseId: 'test_purse_test',
