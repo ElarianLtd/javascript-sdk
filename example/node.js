@@ -7,8 +7,8 @@ const client = new Client({
     appId: 'test_app',
 });
 
-client.on('paymentStatus', (data) => {
-    console.log(data);
+client.on('data', (event, data) => {
+    console.log(event, data);
 });
 
 client.on('ussdSession', async (data, customer) => {

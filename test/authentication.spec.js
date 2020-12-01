@@ -43,6 +43,9 @@ describe('Authentication', () => {
         await client.connect();
         const resp = await client.authToken();
         resp.should.have.properties(['token', 'lifetime']);
+    });
+
+    after(async () => {
         await client.disconnect();
     });
 });
