@@ -86,7 +86,7 @@ client.on('ussdSession', async (data, customer) => {
 
 ## Documentation
 
-Take a look at the [API docs here](http://docs.elarian.com). For detailed info on this SDK, see the [documentation](docs/).
+Take a look at the [API docs here](http://docs.elarian.com). For detailed info on this SDK, see the [documentation](https://elarianltd.github.io/javascript-sdk/Client.html).
 
 ## Development
 
