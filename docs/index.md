@@ -1,37 +1,102 @@
-## Welcome to GitHub Pages
+# Javascript SDK
 
-You can use the [editor on GitHub](https://github.com/ElarianLtd/javascript-sdk/edit/develop/docs/index.md) to maintain and preview the content for your website in Markdown files.
+[![NPM](https://nodei.co/npm/elarian.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.org/package/elarian)
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+> A convenient way to interact with the Elarian APIs.
 
-### Markdown
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
 
-```markdown
-Syntax highlighted code block
+## Install
 
-# Header 1
-## Header 2
-### Header 3
+You can install the package from [npm](https://www.npmjs.com/package/elarian) by running: 
 
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+```bash
+$ npm install elarian
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+## Usage
 
-### Jekyll Themes
+```javascript
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/ElarianLtd/javascript-sdk/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+// on node
+const { Client, Customer }  = require('elarian');
+// or in the browser
+<script src="dist/elarian.min.js"></script>
+// ...
+const { Client, Customer }  = Elarian;
 
-### Support or Contact
+// ...
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+const client = await Client.newInstance({
+    apiKey: 'test_api_key',
+    orgId: 'test_org_id',
+    appId: 'test_app_id',
+});
+
+client.on('ussdSession', async (data, customer) => {
+    const {
+        input,
+        sessionId,
+    } = data;
+
+    const metadata = await customer.leaseMetadata('awesomeSurvey');
+    let {
+        name,
+        state = 'newbie',
+    } = metadata;
+
+    const menu = {
+        text: null,
+        isTerminal: true,
+    };
+
+    switch (state) {
+    case 'veteran':
+        if (name) {
+            menu.text = `Welcome back ${name}! What is your new name?`;
+            menu.isTerminal = false;
+        } else {
+            name = input.value;
+            menu.text = `Thank you for trying Elarian, ${name}!`;
+            menu.isTerminal = true;
+            await customer.sendMessage(
+                { number: 'Elarian', provider: 'telco' },
+                { text: `Hey ${name}! Thank you for trying out Elarian` },
+            );
+        }
+        break;
+    case 'newbie':
+    default:
+        menu.text = 'Hey there, welcome to Elarian! What\'s your name?';
+        menu.isTerminal = false;
+        state = 'veteran';
+        break;
+    }
+
+    await customer.updateMetadata({
+        awesomeSurvey: {
+            state,
+            name,
+        },
+    });
+    return menu;
+});
+
+```
+
+## Documentation
+
+Take a look at the [API docs here](http://docs.elarian.com). For detailed info on this SDK, see the [documentation](index.html).
+
+## Development
+
+Run all tests:
+
+```bash
+$ npm install
+$ npm test
+```
+
+## Issues
+
+If you find a bug, please file an issue on [our issue tracker on GitHub](https://github.com/ElarianLtd/javascript-sdk/issues).
