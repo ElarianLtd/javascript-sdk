@@ -1,9 +1,4 @@
-const { Signale } = require('signale');
-
-const log = new Signale({
-    interactive: false,
-    scope: 'elarian',
-});
+const log = console;
 
 const RESPONSE_QUEUE = {};
 

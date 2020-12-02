@@ -1,5 +1,4 @@
 const Ws = require('ws');
-const { Signale } = require('signale');
 
 const { getResponseHandler } = require('./responseQueueManager');
 
@@ -7,10 +6,7 @@ const SOCKET_URL = 'wss://simulator.elarian.com/api/socket';
 const SOCKET_CLOSED = 3;
 const SOCKET_OPEN = 1;
 
-const log = new Signale({
-    interactive: false,
-    scope: 'elarian',
-});
+const log = console;
 
 class SocketManager {
     constructor() {

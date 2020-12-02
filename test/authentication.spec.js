@@ -21,6 +21,22 @@ describe('Authentication', () => {
         }).should.throw();
 
         (function () {
+            new Client({
+                orgId: 'ok',
+                appId: 'yes',
+                authToken: 'fake',
+            });
+        }).should.throw();
+
+        (function () {
+            new Client({
+                orgId: 'ok',
+                appId: 'yes',
+                authToken: '13245:7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069',
+            });
+        }).should.not.throw();
+
+        (function () {
             new Customer();
         }).should.throw();
 

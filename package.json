@@ -1,6 +1,6 @@
 {
   "name": "elarian",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "Elrian JavaScript SDK",
   "main": "index.js",
   "scripts": {
@@ -34,12 +34,12 @@
   ],
   "dependencies": {
     "google-protobuf": "^3.13.0",
+    "js-sha256": "^0.9.0",
     "lodash": "^4.17.20",
     "rsocket-core": "0.0.19",
     "rsocket-flowable": "0.0.14",
     "rsocket-tcp-client": "0.0.19",
     "rsocket-websocket-client": "0.0.19",
-    "signale": "^1.4.0",
     "validate.js": "^0.13.1"
   },
   "devDependencies": {

@@ -9,6 +9,7 @@ const clientParams = {
     appId: 'ck_app',
     orgId: 'ck_org',
     apiKey: 'ck_api_key',
+    receiveNotification: true,
 };
 
 module.exports = {
@@ -36,6 +37,7 @@ module.exports = {
     purseId: 'ck_purse',
     ussdCode: '*484#',
     voiceNumber: '+254711082001',
+    whatsappNumber: '+254711082002',
 
     dialPlan: [
         {

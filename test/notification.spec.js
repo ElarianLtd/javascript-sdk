@@ -1,15 +1,11 @@
 const _ = require('lodash');
 const should = require('should');
-const { Signale } = require('signale');
 
 const { Customer } = require('..');
 const fixtures = require('./fixtures');
 const simulator = require('./simulator');
 
-const log = new Signale({
-    interactive: false,
-    scope: 'elarian',
-});
+const log = console;
 
 describe('Notification', function fx() {
     this.timeout(10000);
@@ -21,6 +17,9 @@ describe('Notification', function fx() {
 
     before(async () => {
         client = fixtures.getClient();
+
+        client.on('data', (event) => console.log('DATA: ', event));
+
         await simulator.startSession({
             phoneNumber: bob.customerNumber.number,
             cb: (notif) => {
@@ -125,6 +124,31 @@ describe('Notification', function fx() {
             .catch((err) => done(err));
     });
 
+    it('messagingConsentStatus', (done) => {
+        client.on('messagingConsentStatus', async (data, customer) => {
+            data.should.have.properties([
+                'customerId',
+                'customerNumber',
+                'channelNumber',
+                'status',
+            ]);
+            should.exist(customer);
+            done();
+        });
+        client.messagingConsent(
+            bob,
+            {
+                number: fixtures.whatsappNumber,
+                provider: 'whatsapp',
+            },
+            'opt-in',
+        )
+            .then((resp) => {
+                resp.status.should.equal('opt_in_request_sent');
+            })
+            .catch((err) => done(err));
+    });
+
     it('messagingSessionStatus', (done) => {
         client.on('messagingSessionStatus', async (data, customer) => {
             data.should.have.properties([
@@ -137,7 +161,7 @@ describe('Notification', function fx() {
         // TODO: Trigger a message: in bound whatsapp
         bob.sendMessage(
             {
-                number: fixtures.senderId,
+                number: fixtures.whatsappNumber,
                 provider: 'whatsapp',
             },
             {
@@ -146,31 +170,6 @@ describe('Notification', function fx() {
         ).then((resp) => {
             console.log(resp);
         }).catch((ex) => done(ex));
-    });
-
-    it('messagingConsentStatus', (done) => {
-        client.on('messagingConsentStatus', async (data, customer) => {
-            console.log(data);
-            data.should.have.properties([
-                'messageId',
-                'status',
-            ]);
-            should.exist(customer);
-            done();
-        });
-        client.messagingConsent(
-            bob,
-            {
-                number: fixtures.senderId,
-                provider: 'whatsapp',
-            },
-            'opt-in',
-        )
-            .then((resp) => { // goes to whatsapp
-                console.log(resp);
-                resp.status.should.equal('opt_in_completed');
-            })
-            .catch((err) => done(err));
     });
 
     it('ussdSession', (done) => {
