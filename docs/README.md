@@ -189,6 +189,7 @@ and locks metadata fetching(for up to <b>90s</b>) until next call to update meta
         * [.updateCustomerMetadata(customer, metadata)](#Client+updateCustomerMetadata) ⇒ <code>UpdateStatus</code>
         * [.leaseCustomerMetadata(customer, key)](#Client+leaseCustomerMetadata) ⇒ <code>LeasedMetadata</code>
         * [.deleteCustomerMetadata(customer, keys)](#Client+deleteCustomerMetadata) ⇒ <code>UpdateStatus</code>
+        * [.getAuthToken()](#Client+getAuthToken)
         * [.connect()](#Client+connect)
         * [.disconnect()](#Client+disconnect)
         * [.sendMessage(customer, channelNumber, body)](#Client+sendMessage) ⇒ <code>MessageStatus</code>
@@ -373,6 +374,12 @@ and locks metadata fetching(for up to <b>90s</b>) until next call to update meta
 | customer | [<code>Customer</code>](#Customer) | 
 | keys | <code>Array.&lt;string&gt;</code> | 
 
+<a name="Client+getAuthToken"></a>
+
+### client.getAuthToken()
+<p>Get the auth token used for authentication</p>
+
+**Kind**: instance method of [<code>Client</code>](#Client)  
 <a name="Client+connect"></a>
 
 ### client.connect()

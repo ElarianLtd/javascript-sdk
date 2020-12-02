@@ -36,7 +36,7 @@
     "opts": {
         "template": "node_modules/ink-docstrap/template",
         "encoding": "utf8",
-        "destination": "./doc",
+        "destination": "./docs",
         "recurse": true
     }
 }
