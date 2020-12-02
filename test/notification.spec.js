@@ -18,8 +18,6 @@ describe('Notification', function fx() {
     before(async () => {
         client = fixtures.getClient();
 
-        client.on('data', (event) => console.log('DATA: ', event));
-
         await simulator.startSession({
             phoneNumber: bob.customerNumber.number,
             cb: (notif) => {
@@ -92,7 +90,7 @@ describe('Notification', function fx() {
             { text: 'messageStatus test' },
         )
             .then((resp) => {
-                resp.status.should.equal(101);
+                resp.status.should.equal('sent');
             })
             .catch((err) => done(err));
     });
