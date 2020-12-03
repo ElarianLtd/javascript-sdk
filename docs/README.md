@@ -176,6 +176,7 @@ and locks metadata fetching(for up to <b>90s</b>) until next call to update meta
 * [Client](#Client)
     * [new Client(params, [configOptions])](#new_Client_new)
     * _instance_
+        * [.authToken()](#Client+authToken) ⇒ <code>AuthToken</code>
         * [.getCustomerState(customer)](#Client+getCustomerState) ⇒ <code>CustomerState</code>
         * [.adoptCustomerState(customer, otherCustomer)](#Client+adoptCustomerState) ⇒ <code>UpdateStatus</code>
         * [.updateCustomerTag(customer, tags)](#Client+updateCustomerTag) ⇒ <code>UpdateStatus</code>
@@ -189,7 +190,6 @@ and locks metadata fetching(for up to <b>90s</b>) until next call to update meta
         * [.updateCustomerMetadata(customer, metadata)](#Client+updateCustomerMetadata) ⇒ <code>UpdateStatus</code>
         * [.leaseCustomerMetadata(customer, key)](#Client+leaseCustomerMetadata) ⇒ <code>LeasedMetadata</code>
         * [.deleteCustomerMetadata(customer, keys)](#Client+deleteCustomerMetadata) ⇒ <code>UpdateStatus</code>
-        * [.getAuthToken()](#Client+getAuthToken)
         * [.connect()](#Client+connect)
         * [.disconnect()](#Client+disconnect)
         * [.sendMessage(customer, channelNumber, body)](#Client+sendMessage) ⇒ <code>MessageStatus</code>
@@ -216,6 +216,12 @@ and locks metadata fetching(for up to <b>90s</b>) until next call to update meta
 | params | <code>ClientParams</code> | 
 | [configOptions] | <code>ConfigOptions</code> | 
 
+<a name="Client+authToken"></a>
+
+### client.authToken() ⇒ <code>AuthToken</code>
+<p>Generate a short-lived auth token to use instead of apiKey. Used for browser and mobile clients.</p>
+
+**Kind**: instance method of [<code>Client</code>](#Client)  
 <a name="Client+getCustomerState"></a>
 
 ### client.getCustomerState(customer) ⇒ <code>CustomerState</code>
@@ -374,12 +380,6 @@ and locks metadata fetching(for up to <b>90s</b>) until next call to update meta
 | customer | [<code>Customer</code>](#Customer) | 
 | keys | <code>Array.&lt;string&gt;</code> | 
 
-<a name="Client+getAuthToken"></a>
-
-### client.getAuthToken()
-<p>Get the auth token used for authentication</p>
-
-**Kind**: instance method of [<code>Client</code>](#Client)  
 <a name="Client+connect"></a>
 
 ### client.connect()

@@ -3,12 +3,12 @@ const { Client } = require('../lib/index.node');
 
 let client;
 const clientParams = {
-    // appId: 'test_app',
-    // orgId: 'test_org',
-    // apiKey: 'test_api_key',
-    appId: 'ck_app',
-    orgId: 'ck_org',
-    apiKey: 'ck_api_key',
+    appId: 'test_app',
+    orgId: 'test_org',
+    apiKey: 'test_api_key',
+    // appId: 'ck_app',
+    // orgId: 'ck_org',
+    // apiKey: 'ck_api_key',
     receiveNotification: true,
 };
 
@@ -30,14 +30,14 @@ module.exports = {
         provider: 'telco',
     },
 
-    shortCode: '21515',
-    senderId: 'CK_Elarian',
-    telegramBot: 'ck_test_bot',
-    paybill: '888888',
-    purseId: 'ck_purse',
-    ussdCode: '*484#',
-    voiceNumber: '+254711082001',
-    whatsappNumber: '+254711082002',
+    shortCode: '21414',
+    senderId: 'Elarian',
+    telegramBot: 'elarian_test_bot',
+    paybill: '525900',
+    purseId: 'test_purse',
+    ussdCode: '*384#',
+    voiceNumber: '+254711082000',
+    whatsappNumber: '+254711082001',
 
     dialPlan: [
         {
