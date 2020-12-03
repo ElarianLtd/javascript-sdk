@@ -176,7 +176,7 @@ and locks metadata fetching(for up to <b>90s</b>) until next call to update meta
 * [Client](#Client)
     * [new Client(params, [configOptions])](#new_Client_new)
     * _instance_
-        * [.authToken()](#Client+authToken) ⇒ <code>AuthToken</code>
+        * [.generateAuthToken()](#Client+generateAuthToken) ⇒ <code>AuthToken</code>
         * [.getCustomerState(customer)](#Client+getCustomerState) ⇒ <code>CustomerState</code>
         * [.adoptCustomerState(customer, otherCustomer)](#Client+adoptCustomerState) ⇒ <code>UpdateStatus</code>
         * [.updateCustomerTag(customer, tags)](#Client+updateCustomerTag) ⇒ <code>UpdateStatus</code>
@@ -216,9 +216,9 @@ and locks metadata fetching(for up to <b>90s</b>) until next call to update meta
 | params | <code>ClientParams</code> | 
 | [configOptions] | <code>ConfigOptions</code> | 
 
-<a name="Client+authToken"></a>
+<a name="Client+generateAuthToken"></a>
 
-### client.authToken() ⇒ <code>AuthToken</code>
+### client.generateAuthToken() ⇒ <code>AuthToken</code>
 <p>Generate a short-lived auth token to use instead of apiKey. Used for browser and mobile clients.</p>
 
 **Kind**: instance method of [<code>Client</code>](#Client)  
