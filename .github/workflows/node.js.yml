@@ -21,10 +21,10 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+    - run: npm ci
+    - run: npm run lint
+    - run: npm test
       env:
         ELARIAN_ORG_ID: ${{ secrets.ELARIAN_ORG_ID }}
         ELARIAN_APP_ID: ${{ secrets.ELARIAN_APP_ID }}
         ELARIAN_API_KEY: ${{ secrets.ELARIAN_API_KEY }}
-    - run: npm ci
-    - run: npm run lint
-    - run: npm test
