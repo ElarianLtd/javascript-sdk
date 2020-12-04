@@ -1,14 +1,13 @@
+require('dotenv').config();
+
 const _ = require('lodash');
 const { Client } = require('../lib/index.node');
 
 let client;
 const clientParams = {
-    appId: 'test_app',
-    orgId: 'test_org',
-    apiKey: 'test_api_key',
-    // appId: 'ck_app',
-    // orgId: 'ck_org',
-    // apiKey: 'ck_api_key',
+    appId: process.env.ELARIAN_APP_ID,
+    orgId: process.env.ELARIAN_ORG_ID,
+    apiKey: process.env.ELARIAN_API_KEY,
     receiveNotification: true,
 };
 
