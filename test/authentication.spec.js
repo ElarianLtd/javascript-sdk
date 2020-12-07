@@ -24,15 +24,7 @@ describe('Authentication', () => {
             new Client({
                 orgId: 'ok',
                 appId: 'yes',
-                authToken: 'fake',
-            });
-        }).should.throw();
-
-        (function () {
-            new Client({
-                orgId: 'ok',
-                appId: 'yes',
-                authToken: '13245:7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069',
+                authToken: '7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069',
             });
         }).should.not.throw();
 
@@ -66,6 +58,7 @@ describe('Authentication', () => {
     it('generateAuthToken()', async () => {
         const client = await Client.newInstance(fixtures.clientParams);
         let resp = await client.generateAuthToken();
+        console.log(resp);
         resp.should.have.properties(['token', 'lifetime']);
 
         const tokenClient = await Client.newInstance({
