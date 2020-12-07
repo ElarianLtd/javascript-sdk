@@ -58,7 +58,6 @@ describe('Authentication', () => {
     it('generateAuthToken()', async () => {
         const client = await Client.newInstance(fixtures.clientParams);
         let resp = await client.generateAuthToken();
-        console.log(resp);
         resp.should.have.properties(['token', 'lifetime']);
 
         const tokenClient = await Client.newInstance({

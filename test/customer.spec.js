@@ -20,7 +20,7 @@ describe('Customer', function fx() {
         let resp = await client.getCustomerState(customer);
         resp.should.have.properties([
             'customerId',
-            'nuclearState',
+            'identityState',
             'messagingState',
             'ussdState',
             'voiceState',
@@ -33,7 +33,7 @@ describe('Customer', function fx() {
 
         resp.should.have.properties([
             'customerId',
-            'nuclearState',
+            'identityState',
             'messagingState',
             'ussdState',
             'voiceState',
@@ -43,7 +43,7 @@ describe('Customer', function fx() {
         resp = await customer.getState();
         resp.should.have.properties([
             'customerId',
-            'nuclearState',
+            'identityState',
             'messagingState',
             'ussdState',
             'voiceState',
