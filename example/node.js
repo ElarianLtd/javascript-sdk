@@ -12,7 +12,7 @@ client.on('ussdSession', async (data, customer) => {
         input,
     } = data;
 
-    const metadata = await customer.leaseMetadata('awesomeNameSurvey');
+    const metadata = await customer.leaseAppData('awesomeNameSurvey');
     let {
         name,
         state = 'newbie',
@@ -47,7 +47,7 @@ client.on('ussdSession', async (data, customer) => {
         break;
     }
 
-    await customer.updateMetadata({
+    await customer.updateAppData({
         awesomeNameSurvey: {
             state,
             name,
