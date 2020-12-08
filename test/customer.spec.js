@@ -165,9 +165,6 @@ describe('Customer', function fx() {
             payload: JSON.stringify({ a: 1, c: 'de' }),
         });
         resp.should.have.properties(['status', 'description']);
-
-        await customer.getState();
-        customer.reminders.map((i) => i.key).should.containDeep(['a', 'b']);
     });
 
     it('cancelCustomerReminder()', async () => {
@@ -176,9 +173,6 @@ describe('Customer', function fx() {
 
         resp = await customer.cancelReminder('b');
         resp.should.have.properties(['status', 'description']);
-
-        await customer.getState();
-        customer.reminders.map((i) => i.key).should.not.containDeep(['a', 'b']);
     });
 
     it('addCustomerReminderByTag()', async () => {
@@ -217,19 +211,6 @@ describe('Customer', function fx() {
         customer.metadata.should.have.properties(['abc', 'def', 'key']);
     });
 
-    it('leaseCustomerMetadata()', async () => {
-        let resp = await client.leaseCustomerMetadata(customer, 'abc');
-        JSON.stringify(resp).should.equal(JSON.stringify({ name: 'fake' }));
-
-        resp = await customer.updateMetadata({ abc: { name: 'updatedAfterLease' } });
-        resp = await customer.leaseMetadata('abc');
-        resp.name.should.equal('updatedAfterLease');
-        resp = await customer.updateMetadata({ abc: { name: 'restored' } });
-        await customer.getState();
-        customer.metadata.should.have.properties(['abc']);
-        customer.metadata.abc.name.should.equal('restored');
-    });
-
     it('deleteCustomerMetadata()', async () => {
         let resp = await client.deleteCustomerMetadata(customer, ['abc']);
         resp.should.have.properties(['status', 'description']);
@@ -238,5 +219,38 @@ describe('Customer', function fx() {
         resp.should.have.properties(['status', 'description']);
         await customer.getState();
         Object.keys(customer.metadata).should.not.have.properties(['abc', 'def']);
+    });
+
+    it('updateCustomerAppData()', async () => {
+        let resp = await client.updateCustomerAppData(customer, {
+            abc: { name: 'fake' },
+            def: 'fakery',
+        });
+        resp.should.have.properties(['status', 'description']);
+
+        resp = await customer.updateAppData({
+            key: 'weird',
+            hollow: new Date(2025, 1, 1).getTime() / 1000,
+            payload: JSON.stringify({ a: 1, c: 'de' }),
+        });
+        resp.should.have.properties(['status', 'description']);
+    });
+
+    it('leaseCustomerAppData()', async () => {
+        let resp = await client.leaseCustomerAppData(customer, 'abc');
+        JSON.stringify(resp).should.equal(JSON.stringify({ name: 'fake' }));
+
+        resp = await customer.updateAppData({ abc: { name: 'updatedAfterLease' } });
+        resp = await customer.leaseAppData('abc');
+        resp.name.should.equal('updatedAfterLease');
+        resp = await customer.updateAppData({ abc: { name: 'restored' } });
+    });
+
+    it('deleteCustomerAppData()', async () => {
+        let resp = await client.deleteCustomerAppData(customer, ['abc']);
+        resp.should.have.properties(['status', 'description']);
+
+        resp = await customer.deleteAppData(['def']);
+        resp.should.have.properties(['status', 'description']);
     });
 });

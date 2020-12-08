@@ -51,7 +51,6 @@ describe('Notification', function fx() {
             ]);
             data.reminder.should.have.properties([
                 'key',
-                'appId',
                 'expiration',
                 'interval',
                 'payload',
@@ -75,7 +74,6 @@ describe('Notification', function fx() {
         client.on('messageStatus', async (data, customer) => {
             data.should.have.properties([
                 'messageId',
-                'customerId',
                 'status',
             ]);
             should.exist(customer);

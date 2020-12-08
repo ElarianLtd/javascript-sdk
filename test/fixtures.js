@@ -10,6 +10,10 @@ const clientParams = {
     apiKey: process.env.ELARIAN_API_KEY,
     receiveNotification: true,
 };
+const configOptions = {
+    lifetime: 1800000,
+    keepAlive: 2500,
+};
 
 module.exports = {
     clientParams,
@@ -29,12 +33,12 @@ module.exports = {
         provider: 'telco',
     },
 
-    shortCode: '21414',
-    senderId: 'Elarian',
+    shortCode: '2000',
+    senderId: 'AwesomeSurvey',
     telegramBot: 'elarian_test_bot',
-    paybill: '525900',
+    paybill: '8888',
     purseId: 'test_purse',
-    ussdCode: '*384#',
+    ussdCode: '*544#',
     voiceNumber: '+254711082000',
     whatsappNumber: '+254711082001',
 
@@ -131,8 +135,9 @@ module.exports = {
     ],
 
     initializeClient: async () => {
-        client = new Client(clientParams);
+        client = new Client(clientParams, configOptions);
         await client.connect();
+        return client;
     },
 
     getClient: () => client,

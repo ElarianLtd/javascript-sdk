@@ -42,21 +42,16 @@ describe('Authentication', () => {
         should.exist(customer);
     });
 
-    it('connect()', async () => {
-        const client = new Client(fixtures.clientParams);
-        should.exist(client);
-        return client.connect();
-    });
-
-    it('newInstance()', async () => Client.newInstance(fixtures.clientParams));
-
-    it('disconnect()', async () => {
-        const client = await Client.newInstance(fixtures.clientParams);
+    it('connect() and disconnect()', async () => {
+        const client = await Client.newInstance({
+            ...fixtures.clientParams,
+            receiveNotifications: false,
+        });
         await client.disconnect();
     });
 
     it('generateAuthToken()', async () => {
-        const client = await Client.newInstance(fixtures.clientParams);
+        const client = await fixtures.initializeClient();
         let resp = await client.generateAuthToken();
         resp.should.have.properties(['token', 'lifetime']);
 
@@ -67,9 +62,5 @@ describe('Authentication', () => {
         });
         resp = await tokenClient.generateAuthToken();
         resp.should.have.properties(['token', 'lifetime']);
-    });
-
-    after(async () => {
-        await fixtures.initializeClient();
     });
 });

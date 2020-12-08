@@ -1391,6 +1391,178 @@
             
 <hr>
 <dt>
+    <h4 class="name" id="deleteCustomerAppData"><span class="type-signature">&lt;async> </span>deleteCustomerAppData(customer, keys)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Remove some app data from a customer.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>customer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Customer.html">Customer</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>keys</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;string></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="global.html#UpdateStatus">UpdateStatus</a></span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
     <h4 class="name" id="deleteCustomerMetadata"><span class="type-signature">&lt;async> </span>deleteCustomerMetadata(customer, keys)</h4>
     
     
@@ -1808,7 +1980,7 @@
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;<a href="global.html#Tag">Tag</a>></span>
+<span class="param-type">Array.&lt;string></span>
 
 
 
@@ -2439,7 +2611,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="leaseCustomerMetadata"><span class="type-signature">&lt;async> </span>leaseCustomerMetadata(customer, key)</h4>
+    <h4 class="name" id="leaseCustomerAppData"><span class="type-signature">&lt;async> </span>leaseCustomerAppData(customer, key)</h4>
     
     
 </dt>
@@ -2447,7 +2619,7 @@
 
     
     <div class="description">
-        <p>Fetches the value of <code>key</code> from the customer's metdata
+        <p>Fetches the value of <code>key</code> from the customer's app data
 and locks metadata fetching(for up to <b>90s</b>) until next call to update metadata.</p>
     </div>
     
@@ -2595,7 +2767,7 @@ and locks metadata fetching(for up to <b>90s</b>) until next call to update meta
     </dt>
     <dd>
         
-<span class="param-type"><a href="global.html#LeasedMetadata">LeasedMetadata</a></span>
+<span class="param-type"><a href="global.html#LeasedAppData">LeasedAppData</a></span>
 
 
 
@@ -4131,6 +4303,180 @@ and locks metadata fetching(for up to <b>90s</b>) until next call to update meta
             
 <hr>
 <dt>
+    <h4 class="name" id="updateCustomerAppData"><span class="type-signature">&lt;async> </span>updateCustomerAppData(customer, metadata)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Sets some metadata on the customer.
+Values in the metadata object can either be strings or buffers,
+depending on your serializer. @see <a href="Client.html">Client</a></p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>customer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Customer.html">Customer</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>metadata</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="global.html#UpdateStatus">UpdateStatus</a></span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
     <h4 class="name" id="updateCustomerMetadata"><span class="type-signature">&lt;async> </span>updateCustomerMetadata(customer, metadata)</h4>
     
     
@@ -4699,7 +5045,7 @@ depending on your serializer. @see <a href="Client.html">Client</a></p>
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a>
 	
-		on Thu, Dec 3, 2020 12:25 PM
+		on Tue, Dec 8, 2020 7:48 PM
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

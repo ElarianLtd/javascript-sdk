@@ -11,6 +11,7 @@ describe('Payment', () => {
     });
 
     before(async () => {
+        await fixtures.initializeClient();
         client = fixtures.getClient();
     });
 
