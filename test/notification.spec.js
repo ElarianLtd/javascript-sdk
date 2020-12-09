@@ -102,7 +102,6 @@ describe('Notification', function fx() {
                 'location',
                 'channelNumber',
                 'customerNumber',
-                'customerId',
             ]);
             should.exist(customer);
             done();
@@ -123,7 +122,6 @@ describe('Notification', function fx() {
     it('messagingConsentStatus', (done) => {
         client.on('messagingConsentStatus', async (data, customer) => {
             data.should.have.properties([
-                'customerId',
                 'customerNumber',
                 'channelNumber',
                 'status',
@@ -171,7 +169,6 @@ describe('Notification', function fx() {
     it('ussdSession', (done) => {
         client.on('ussdSession', async (data, customer) => {
             data.should.have.properties([
-                'customerId',
                 'customerNumber',
                 'input',
                 'sessionId',
@@ -236,7 +233,6 @@ describe('Notification', function fx() {
                 'purseId',
                 'transactionId',
                 'channelNumber',
-                'customerId',
                 'customerNumber',
                 'value',
                 'status',

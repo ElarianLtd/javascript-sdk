@@ -13,7 +13,6 @@ describe('Voice', () => {
 
     before(async () => {
         client = fixtures.getClient();
-
         await customer.getState();
     });
 
