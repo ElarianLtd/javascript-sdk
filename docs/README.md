@@ -24,9 +24,9 @@
     * [.cancelReminder(key)](#Customer+cancelReminder) ⇒ <code>UpdateStatus</code>
     * [.updateMetadata(metadata)](#Customer+updateMetadata) ⇒ <code>UpdateStatus</code>
     * [.deleteMetadata(keys)](#Customer+deleteMetadata) ⇒ <code>UpdateStatus</code>
-    * [.updateAppData(metadata)](#Customer+updateAppData) ⇒ <code>UpdateStatus</code>
+    * [.updateAppData(data)](#Customer+updateAppData) ⇒ <code>UpdateStatus</code>
     * [.leaseAppData(key)](#Customer+leaseAppData) ⇒ <code>LeasedAppData</code>
-    * [.deleteAppData(keys)](#Customer+deleteAppData) ⇒ <code>UpdateStatus</code>
+    * [.deleteAppData()](#Customer+deleteAppData) ⇒ <code>UpdateStatus</code>
     * [.sendMessage(channelNumber, body)](#Customer+sendMessage) ⇒ <code>MessageStatus</code>
 
 <a name="new_Customer_new"></a>
@@ -148,22 +148,22 @@ depending on the set serializer</p>
 
 <a name="Customer+updateAppData"></a>
 
-### customer.updateAppData(metadata) ⇒ <code>UpdateStatus</code>
+### customer.updateAppData(data) ⇒ <code>UpdateStatus</code>
 <p>Sets some app data on the customer.
-Values in the metadata object can either be strings or buffers,
+Values in the data object can either be strings or buffers,
 depending on the set serializer</p>
 
 **Kind**: instance method of [<code>Customer</code>](#Customer)  
 
 | Param | Type |
 | --- | --- |
-| metadata | <code>Object</code> | 
+| data | <code>Object</code> | 
 
 <a name="Customer+leaseAppData"></a>
 
 ### customer.leaseAppData(key) ⇒ <code>LeasedAppData</code>
-<p>Fetches the value of <code>key</code> from the customer's metdata
-and locks metadata fetching(for up to <b>90s</b>) until next call to update metadata.</p>
+<p>Fetches the customer's app data and lock it from fetching(for up to <b>90s</b>)
+until next call to update app data.</p>
 
 **Kind**: instance method of [<code>Customer</code>](#Customer)  
 
@@ -173,15 +173,10 @@ and locks metadata fetching(for up to <b>90s</b>) until next call to update meta
 
 <a name="Customer+deleteAppData"></a>
 
-### customer.deleteAppData(keys) ⇒ <code>UpdateStatus</code>
-<p>Remove some app data from a customer. <code>keys</code> is an array of strings</p>
+### customer.deleteAppData() ⇒ <code>UpdateStatus</code>
+<p>Remove customer's app data</p>
 
 **Kind**: instance method of [<code>Customer</code>](#Customer)  
-
-| Param | Type |
-| --- | --- |
-| keys | <code>Array.&lt;string&gt;</code> | 
-
 <a name="Customer+sendMessage"></a>
 
 ### customer.sendMessage(channelNumber, body) ⇒ <code>MessageStatus</code>
@@ -215,9 +210,9 @@ and locks metadata fetching(for up to <b>90s</b>) until next call to update meta
         * [.cancelCustomerReminderByTag(tag, key)](#Client+cancelCustomerReminderByTag) ⇒ <code>WorkStatus</code>
         * [.updateCustomerMetadata(customer, metadata)](#Client+updateCustomerMetadata) ⇒ <code>UpdateStatus</code>
         * [.deleteCustomerMetadata(customer, keys)](#Client+deleteCustomerMetadata) ⇒ <code>UpdateStatus</code>
-        * [.updateCustomerAppData(customer, metadata)](#Client+updateCustomerAppData) ⇒ <code>UpdateStatus</code>
-        * [.leaseCustomerAppData(customer, key)](#Client+leaseCustomerAppData) ⇒ <code>LeasedAppData</code>
-        * [.deleteCustomerAppData(customer, keys)](#Client+deleteCustomerAppData) ⇒ <code>UpdateStatus</code>
+        * [.updateCustomerAppData(customer, data)](#Client+updateCustomerAppData) ⇒ <code>UpdateStatus</code>
+        * [.leaseCustomerAppData(customer)](#Client+leaseCustomerAppData) ⇒ <code>LeasedAppData</code>
+        * [.deleteCustomerAppData(customer)](#Client+deleteCustomerAppData) ⇒ <code>UpdateStatus</code>
         * [.connect()](#Client+connect)
         * [.disconnect()](#Client+disconnect)
         * [.sendMessage(customer, channelNumber, body)](#Client+sendMessage) ⇒ <code>MessageStatus</code>
@@ -397,9 +392,9 @@ depending on your serializer. @see [Client](#Client)</p>
 
 <a name="Client+updateCustomerAppData"></a>
 
-### client.updateCustomerAppData(customer, metadata) ⇒ <code>UpdateStatus</code>
-<p>Sets some metadata on the customer.
-Values in the metadata object can either be strings or buffers,
+### client.updateCustomerAppData(customer, data) ⇒ <code>UpdateStatus</code>
+<p>Sets some app data on the customer.
+Value of the data object can either be a string or a buffer,
 depending on your serializer. @see [Client](#Client)</p>
 
 **Kind**: instance method of [<code>Client</code>](#Client)  
@@ -407,32 +402,30 @@ depending on your serializer. @see [Client](#Client)</p>
 | Param | Type |
 | --- | --- |
 | customer | [<code>Customer</code>](#Customer) | 
-| metadata | <code>Object</code> | 
+| data | <code>Object</code> | 
 
 <a name="Client+leaseCustomerAppData"></a>
 
-### client.leaseCustomerAppData(customer, key) ⇒ <code>LeasedAppData</code>
-<p>Fetches the value of <code>key</code> from the customer's app data
-and locks metadata fetching(for up to <b>90s</b>) until next call to update metadata.</p>
+### client.leaseCustomerAppData(customer) ⇒ <code>LeasedAppData</code>
+<p>Fetches the customer's app data and lock it from fetching(for up to <b>90s</b>)
+until next call to update app data.</p>
 
 **Kind**: instance method of [<code>Client</code>](#Client)  
 
 | Param | Type |
 | --- | --- |
 | customer | [<code>Customer</code>](#Customer) | 
-| key | <code>string</code> | 
 
 <a name="Client+deleteCustomerAppData"></a>
 
-### client.deleteCustomerAppData(customer, keys) ⇒ <code>UpdateStatus</code>
-<p>Remove some app data from a customer.</p>
+### client.deleteCustomerAppData(customer) ⇒ <code>UpdateStatus</code>
+<p>Remove customer's app data.</p>
 
 **Kind**: instance method of [<code>Client</code>](#Client)  
 
 | Param | Type |
 | --- | --- |
 | customer | [<code>Customer</code>](#Customer) | 
-| keys | <code>Array.&lt;string&gt;</code> | 
 
 <a name="Client+connect"></a>
 

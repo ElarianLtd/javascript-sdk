@@ -237,20 +237,20 @@ describe('Customer', function fx() {
     });
 
     it('leaseCustomerAppData()', async () => {
-        let resp = await client.leaseCustomerAppData(customer, 'abc');
-        JSON.stringify(resp).should.equal(JSON.stringify({ name: 'fake' }));
+        let resp = await client.leaseCustomerAppData(customer);
+        JSON.stringify(resp).should.equal(JSON.stringify({ abc: { name: 'fake' } }));
 
         resp = await customer.updateAppData({ abc: { name: 'updatedAfterLease' } });
-        resp = await customer.leaseAppData('abc');
-        resp.name.should.equal('updatedAfterLease');
+        resp = await customer.leaseAppData();
+        resp.abc.name.should.equal('updatedAfterLease');
         resp = await customer.updateAppData({ abc: { name: 'restored' } });
     });
 
     it('deleteCustomerAppData()', async () => {
-        let resp = await client.deleteCustomerAppData(customer, ['abc']);
+        let resp = await client.deleteCustomerAppData(customer);
         resp.should.have.properties(['status', 'description']);
 
-        resp = await customer.deleteAppData(['def']);
+        resp = await customer.deleteAppData();
         resp.should.have.properties(['status', 'description']);
     });
 });

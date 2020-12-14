@@ -1,22 +1,22 @@
 // Simple SMS+USSD app
+require('dotenv').config();
+
 const { Client } = require('..');
 
 const client = new Client({
-    apiKey: 'test_api_key',
-    orgId: 'test_org',
-    appId: 'test_app',
+    appId: process.env.ELARIAN_APP_ID,
+    orgId: process.env.ELARIAN_ORG_ID,
+    apiKey: process.env.ELARIAN_API_KEY,
 });
 
-client.on('ussdSession', async (data, customer) => {
-    const {
-        input,
-    } = data;
+client.on('ussdSession', async (notification, callback) => {
+    const { data: { input }, customer } = notification;
 
-    const metadata = await customer.leaseAppData('awesomeNameSurvey');
+    const appData = await customer.leaseAppData();
     let {
         name,
         state = 'newbie',
-    } = metadata;
+    } = appData;
 
     const menu = {
         text: null,
@@ -47,14 +47,8 @@ client.on('ussdSession', async (data, customer) => {
         break;
     }
 
-    await customer.updateAppData({
-        awesomeNameSurvey: {
-            state,
-            name,
-        },
-    });
-
-    return menu;
+    callback(null, menu);
+    await customer.updateAppData({ state, name });
 });
 
 client

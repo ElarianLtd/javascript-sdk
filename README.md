@@ -33,17 +33,17 @@ const client = await Client.newInstance({
     appId: 'test_app_id',
 });
 
-client.on('ussdSession', async (data, customer) => {
+client.on('ussdSession', async ({ data, customer}, callback) => {
     const {
         input,
         sessionId,
     } = data;
 
-    const metadata = await customer.leaseAppData('awesomeSurvey');
+    const appData = await customer.leaseAppData();
     let {
         name,
         state = 'newbie',
-    } = metadata;
+    } = appData;
 
     const menu = {
         text: null,
@@ -73,13 +73,8 @@ client.on('ussdSession', async (data, customer) => {
         break;
     }
 
-    await customer.updateAppData({
-        awesomeSurvey: {
-            state,
-            name,
-        },
-    });
-    return menu;
+    await customer.updateAppData({ state, name });
+    callback(null, menu);
 });
 
 ```
