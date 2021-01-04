@@ -346,4 +346,21 @@ describe('Notification', function fx() {
             })
             .catch((err) => done(err));
     });
+
+    it('webAction', (done) => {
+        client.on('webAction', async ({ data, customer }) => {
+            data.should.have.properties([
+                'customerNumber',
+                'channelNumber',
+                'sessionId',
+                'action',
+            ]);
+            should.exist(customer);
+            client.off('webAction');
+            done();
+        });
+
+        bob.webAction('test.com.local', 'fake-session', 'some-key')
+            .catch((err) => done(err));
+    });
 });

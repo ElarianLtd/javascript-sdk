@@ -84,6 +84,17 @@ describe('Messaging', () => {
                 location: {
                     latitude: 12,
                     longitude: 33,
+                    label: 'home',
+                    address: '45th Street',
+                },
+                // or
+                email: {
+                    subject: 'Hi',
+                    bodyPlain: 'Hello There',
+                    bodyHtml: '<h1>Hello There</h1>',
+                    ccList: [],
+                    bccList: [],
+                    attachments: [],
                 },
             },
         );
