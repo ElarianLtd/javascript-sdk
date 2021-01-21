@@ -244,4 +244,30 @@ describe('Customer', function fx() {
         resp = await customer.deleteAppData();
         resp.should.have.properties(['status', 'description']);
     });
+
+    it('updateCustomerActivity()', async () => {
+        let resp = await client.updateCustomerActivity(
+            customer.customerNumber,
+            'test.com.local',
+            'fake-session-id',
+            'some-key',
+            { ok: 1, val: false },
+        );
+        resp.should.have.properties([
+            'status',
+            'description',
+            'customerId',
+        ]);
+        resp = customer.updateActivity(
+            'test.com.local',
+            'fake-session-id',
+            'some-key',
+            { ok: 1, val: false },
+        );
+        resp.should.have.properties([
+            'status',
+            'description',
+            'customerId',
+        ]);
+    });
 });
