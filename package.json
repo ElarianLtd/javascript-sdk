@@ -6,7 +6,7 @@
   "scripts": {
     "pretest": "npm run lint",
     "posttest": "npm run build",
-    "test": "nyc mocha ./test/authentication.spec ./test/customer.spec -t 5000 --slow 100 --exit",
+    "test": "nyc mocha ./test -t 5000 --slow 100 --exit",
     "lint": "eslint .",
     "build": "rm -rf docs/ dist/ && jsdoc -c .jsdoc -R README.md -r lib/ && jsdoc2md -c .jsdoc --files lib/** > docs/README.md && webpack",
     "prepublish": "npm run build"

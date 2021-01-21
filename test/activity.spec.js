@@ -4,7 +4,7 @@ const should = require('should');
 const { Customer } = require('..');
 const fixtures = require('./fixtures');
 
-describe('Web', () => {
+describe('Activity', () => {
     let client;
     const customer = new Customer({
         customerNumber: fixtures.customerNumber,
@@ -15,9 +15,20 @@ describe('Web', () => {
         client = fixtures.getClient();
     });
 
-    it('webAction()', async () => {
-        const resp = await client.webAction(
+    it('updateCustomerActivity()', async () => {
+        let resp = await client.updateCustomerActivity(
             customer.customerNumber,
+            'test.com.local',
+            'fake-session-id',
+            'some-key',
+            { ok: 1, val: false },
+        );
+        resp.should.have.properties([
+            'status',
+            'description',
+            'customerId',
+        ]);
+        resp = customer.updateActivity(
             'test.com.local',
             'fake-session-id',
             'some-key',

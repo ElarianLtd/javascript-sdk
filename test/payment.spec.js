@@ -29,7 +29,7 @@ describe('Payment', () => {
                 customerNumber: customer.customerNumber,
                 channelNumber: {
                     number: fixtures.paybill,
-                    provider: 'telco',
+                    provider: 'cellular',
                 },
             },
             {
@@ -55,7 +55,7 @@ describe('Payment', () => {
                 customerNumber: customer.customerNumber,
                 channelNumber: {
                     number: fixtures.paybill,
-                    provider: 'telco',
+                    provider: 'cellular',
                 },
             },
             {
@@ -105,7 +105,7 @@ describe('Payment', () => {
                 customerNumber: customer.customerNumber,
                 channelNumber: {
                     number: fixtures.paybill,
-                    provider: 'telco',
+                    provider: 'cellular',
                 },
             },
             {
@@ -130,11 +130,11 @@ describe('Payment', () => {
             {
                 customerNumber: {
                     number: '+254718769882',
-                    provider: 'telco',
+                    provider: 'cellular',
                 },
                 channelNumber: {
                     number: fixtures.paybill,
-                    provider: 'telco',
+                    provider: 'cellular',
                 },
             },
             {
@@ -158,11 +158,11 @@ describe('Payment', () => {
             {
                 customerNumber: {
                     number: '+254718769882',
-                    provider: 'telco',
+                    provider: 'cellular',
                 },
                 channelNumber: {
                     number: fixtures.paybill,
-                    provider: 'telco',
+                    provider: 'cellular',
                 },
             },
             {
