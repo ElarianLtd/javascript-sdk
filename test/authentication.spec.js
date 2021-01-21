@@ -2,7 +2,7 @@
 /* eslint-disable no-new */
 const should = require('should');
 
-const { Client, Customer } = require('..');
+const { Elarian, Customer } = require('..');
 const fixtures = require('./fixtures');
 
 describe('Authentication', () => {
@@ -12,16 +12,16 @@ describe('Authentication', () => {
         };
 
         (function () {
-            new Client(options);
+            new Elarian(options);
         }).should.throw();
 
         delete options.apiKey;
         (function () {
-            new Client(options);
+            new Elarian(options);
         }).should.throw();
 
         (function () {
-            new Client({
+            new Elarian({
                 orgId: 'ok',
                 appId: 'yes',
                 authToken: '7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069',
@@ -43,7 +43,7 @@ describe('Authentication', () => {
     });
 
     it('connect() and disconnect()', async () => {
-        const client = await Client.newInstance({
+        const client = await Elarian.newInstance({
             ...fixtures.clientParams,
             receiveNotifications: false,
         });

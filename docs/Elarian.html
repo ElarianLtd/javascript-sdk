@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Elarian Class: Client</title>
+	<title>Elarian Class: Elarian</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -33,7 +33,7 @@
 			<li class="dropdown">
 				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
 				<ul class="dropdown-menu inline">
-					<li><a href="Client.html">Client</a></li><li><a href="Customer.html">Customer</a></li>
+					<li><a href="Customer.html">Customer</a></li><li><a href="Elarian.html">Elarian</a></li>
 				</ul>
 			</li>
 			
@@ -72,13 +72,13 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Class: Client</h1>
+	<h1 class="page-title">Class: Elarian</h1>
 <section>
 
 <header>
     
         <h2>
-        Client
+        Elarian
         </h2>
         
     
@@ -91,7 +91,7 @@
         
 <hr>
 <dt>
-    <h4 class="name" id="Client"><span class="type-signature"></span>new Client(params [, configOptions])</h4>
+    <h4 class="name" id="Elarian"><span class="type-signature"></span>new Elarian(config)</h4>
     
     
 </dt>
@@ -122,8 +122,6 @@
         <th>Type</th>
 
         
-        <th>Argument</th>
-        
 
         
 
@@ -136,61 +134,19 @@
 
         <tr>
             
-                <td class="name"><code>params</code></td>
+                <td class="name"><code>config</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="global.html#ClientParams">ClientParams</a></span>
+<span class="param-type"><a href="global.html#ElarianConfig">ElarianConfig</a></span>
 
 
 
             
             </td>
 
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>configOptions</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#ConfigOptions">ConfigOptions</a></span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
             
 
             
@@ -281,7 +237,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id=".newInstance"><span class="type-signature">&lt;static> </span>newInstance(params [, configOptions])</h4>
+    <h4 class="name" id=".newInstance"><span class="type-signature">&lt;static> </span>newInstance(config)</h4>
     
     
 </dt>
@@ -312,8 +268,6 @@
         <th>Type</th>
 
         
-        <th>Argument</th>
-        
 
         
 
@@ -326,61 +280,19 @@
 
         <tr>
             
-                <td class="name"><code>params</code></td>
+                <td class="name"><code>config</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="global.html#ClientParams">ClientParams</a></span>
+<span class="param-type"><a href="global.html#ElarianConfig">ElarianConfig</a></span>
 
 
 
             
             </td>
 
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>configOptions</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#ConfigOptions">ConfigOptions</a></span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
             
 
             
@@ -2379,214 +2291,6 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="initiatePayment"><span class="type-signature"></span>initiatePayment(debitParty, creditParty, value)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Initiate a payment transaction</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>debitParty</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#CustomerPayment">CustomerPayment</a></span>
-|
-
-<span class="param-type"><a href="global.html#Wallet">Wallet</a></span>
-|
-
-<span class="param-type"><a href="global.html#Purse">Purse</a></span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>creditParty</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#CustomerPayment">CustomerPayment</a></span>
-|
-
-<span class="param-type"><a href="global.html#Wallet">Wallet</a></span>
-|
-
-<span class="param-type"><a href="global.html#Purse">Purse</a></span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>value</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#Cash">Cash</a></span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="global.html#PaymentStatus">PaymentStatus</a></span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
     <h4 class="name" id="leaseCustomerAppData"><span class="type-signature">&lt;async> </span>leaseCustomerAppData(customer)</h4>
     
     
@@ -2736,7 +2440,7 @@ until next call to update app data.</p>
             
 <hr>
 <dt>
-    <h4 class="name" id="makeVoiceCall"><span class="type-signature"></span>makeVoiceCall(customer, channelNumber)</h4>
+    <h4 class="name" id="updateCustomerActivity"><span class="type-signature"></span>updateCustomerActivity(customerNumber, domain, sessionId, key, properties)</h4>
     
     
 </dt>
@@ -2744,7 +2448,7 @@ until next call to update app data.</p>
 
     
     <div class="description">
-        <p>Initiate a voice call to customer</p>
+        <p>Initiate a customer activity</p>
     </div>
     
 
@@ -2779,13 +2483,13 @@ until next call to update app data.</p>
 
         <tr>
             
-                <td class="name"><code>customer</code></td>
+                <td class="name"><code>customerNumber</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="Customer.html">Customer</a></span>
+<span class="param-type"><a href="global.html#CustomerNumber">CustomerNumber</a></span>
 
 
 
@@ -2803,938 +2507,7 @@ until next call to update app data.</p>
 
         <tr>
             
-                <td class="name"><code>channelNumber</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#VoiceChannelNumber">VoiceChannelNumber</a></span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="global.html#VoiceStatus">VoiceStatus</a></span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="messagingConsent"><span class="type-signature"></span>messagingConsent(customer, channelNumber, action)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Opt in or out a customer from receiving messages from a channel</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>customer</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Customer.html">Customer</a></span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>channelNumber</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#MessagingChannelNumber">MessagingChannelNumber</a></span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>action</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">opt-in</span>
-|
-
-<span class="param-type">opt-out</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>opt-in or opt-out</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="global.html#ConsentStatus">ConsentStatus</a></span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="off"><span class="type-signature"></span>off(event)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Remove listener registered for event. Can also be called with <code>client.removeListener(event)</code></p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>event</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#Event">Event</a></span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The event whose listener to remove</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="on"><span class="type-signature"></span>on(event, listener)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Register a listener to watch out for events. Can also be called with <code>client.registerListerner(event,listener)</code></p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>event</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#Event">Event</a></span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The event whose listener to register</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>listener</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#EventListener">EventListener</a></span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>A function that reacts to events</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="registerListerner"><span class="type-signature"></span>registerListerner(event, listener)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Register a listener to watch out for events. Can also be called with <code>client.on(event,listener)</code></p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>event</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#Event">Event</a></span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The event whose listener to register</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>listener</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#EventListener">EventListener</a></span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>A function that reacts to events</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="removeListener"><span class="type-signature"></span>removeListener(event)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Remove listener registered for event. Can also be called with <code>client.off(event)</code></p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>event</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#Event">Event</a></span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The event whose listener to remove</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="replyToMessage"><span class="type-signature">&lt;async> </span>replyToMessage(customer, replyToMessageId, body)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Reply to a received message</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>customer</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Customer.html">Customer</a></span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>replyToMessageId</code></td>
+                <td class="name"><code>domain</code></td>
             
 
             <td class="type">
@@ -3758,13 +2531,61 @@ until next call to update app data.</p>
 
         <tr>
             
-                <td class="name"><code>body</code></td>
+                <td class="name"><code>sessionId</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="global.html#Body">Body</a></span>
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>key</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>properties</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
 
 
 
@@ -3846,399 +2667,7 @@ until next call to update app data.</p>
     </dt>
     <dd>
         
-<span class="param-type"><a href="global.html#MessageStatus">MessageStatus</a></span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="sendMessage"><span class="type-signature"></span>sendMessage(customer, channelNumber, body)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Send a message</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>customer</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Customer.html">Customer</a></span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>channelNumber</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#MessagingChannelNumber">MessagingChannelNumber</a></span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>body</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#Body">Body</a></span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="global.html#MessageStatus">MessageStatus</a></span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="sendMessageByTag"><span class="type-signature"></span>sendMessageByTag(tag, channelNumber, body)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Send message by tag</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>tag</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#Tag">Tag</a></span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>channelNumber</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#MessagingChannelNumber">MessagingChannelNumber</a></span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>body</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#Body">Body</a></span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="global.html#WorkStatus">WorkStatus</a></span>
+<span class="param-type"><a href="global.html#PaymentStatus">PaymentStatus</a></span>
 
 
 
@@ -4997,7 +3426,7 @@ depending on your serializer. @see <a href="Client.html">Client</a></p>
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a>
 	
-		on Mon, Dec 14, 2020 9:36 AM
+		on Thu, Jan 21, 2021 11:13 AM
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

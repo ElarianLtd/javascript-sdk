@@ -8,6 +8,6 @@ module.exports = {
         path: path.join(__dirname, 'dist'),
         filename: 'elarian.min.js',
         libraryTarget: 'umd',
-        library: 'Elarian',
+        library: 'ElarianSDK',
     },
 };

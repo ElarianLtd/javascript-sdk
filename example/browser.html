@@ -9,8 +9,8 @@
 <body>
     <script>
         async function test() {
-            const { Client, Customer } = Elarian;
-            const client = new Client({
+            const { Elarian, Customer } = ElarianSDK;
+            const client = new Elarian({
                 authToken: 'test_auth_token',
                 orgId: 'test_org',
                 appId: 'test_app',

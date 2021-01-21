@@ -20,34 +20,19 @@ describe('Customer', function fx() {
         let resp = await client.getCustomerState(customer);
         resp.should.have.properties([
             'customerId',
+            'paymentState',
+            'activityState',
             'identityState',
             'messagingState',
-            'ussdState',
-            'voiceState',
-            'paymentState',
-        ]);
-
-        resp = await client.getCustomerState(new Customer({
-            customerId: resp.customerId,
-        }));
-
-        resp.should.have.properties([
-            'customerId',
-            'identityState',
-            'messagingState',
-            'ussdState',
-            'voiceState',
-            'paymentState',
         ]);
 
         resp = await customer.getState();
         resp.should.have.properties([
             'customerId',
+            'paymentState',
+            'activityState',
             'identityState',
             'messagingState',
-            'ussdState',
-            'voiceState',
-            'paymentState',
         ]);
     });
 
@@ -67,12 +52,12 @@ describe('Customer', function fx() {
             {
                 key: 'kind',
                 value: 'testers',
-                expiration: new Date(2030, 1, 1).getTime() / 1000,
+                expiresAt: new Date(2030, 1, 1).getTime() / 1000,
             },
             {
                 key: 'kind',
                 value: 'premium',
-                expiration: new Date(2030, 1, 1).getTime() / 1000,
+                expiresAt: new Date(2030, 1, 1).getTime() / 1000,
             },
         ]);
         resp.should.have.properties(['status', 'description', 'customerId']);
@@ -81,23 +66,23 @@ describe('Customer', function fx() {
             {
                 key: 'kind',
                 value: 'testers',
-                expiration: new Date(2025, 1, 1).getTime() / 1000,
+                expiresAt: new Date(2025, 1, 1).getTime() / 1000,
             },
             {
                 key: 'type',
                 value: 'premium',
-                expiration: new Date(2025, 1, 1).getTime() / 1000,
+                expiresAt: new Date(2025, 1, 1).getTime() / 1000,
             },
             {
                 key: 'userSegment',
                 value: 'testers',
-                expiration: new Date(2025, 1, 1).getTime() / 1000,
+                expiresAt: new Date(2025, 1, 1).getTime() / 1000,
             },
         ]);
         resp.should.have.properties(['status', 'description', 'customerId']);
 
         await customer.getState();
-        customer.tags.map((i) => i.key).should.containDeep(['kind', 'type']);
+        customer.identityState.tags.map((i) => i.key).should.containDeep(['kind', 'type']);
     });
 
     it('deleteCustomerTag()', async () => {
@@ -108,7 +93,7 @@ describe('Customer', function fx() {
         resp.should.have.properties(['status', 'description', 'customerId']);
 
         await customer.getState();
-        customer.tags.map((i) => i.key).should.not.containDeep(['kind', 'type']);
+        customer.identityState.tags.map((i) => i.key).should.not.containDeep(['kind', 'type']);
     });
 
     it('updateCustomerSecondaryId()', async () => {
@@ -116,7 +101,7 @@ describe('Customer', function fx() {
             {
                 key: 'passport',
                 value: '808082',
-                expiration: new Date(2025, 1, 1).getTime() / 1000,
+                expiresAt: new Date(2025, 1, 1).getTime() / 1000,
             },
         ]);
         resp.should.have.properties(['status', 'description', 'customerId']);
@@ -125,18 +110,18 @@ describe('Customer', function fx() {
             {
                 key: 'passport',
                 value: '808083',
-                expiration: new Date(2025, 1, 1).getTime() / 1000,
+                expiresAt: new Date(2025, 1, 1).getTime() / 1000,
             },
             {
                 key: 'huduma',
                 value: '808082',
-                expiration: new Date(2025, 1, 1).getTime() / 1000,
+                expiresAt: new Date(2025, 1, 1).getTime() / 1000,
             },
         ]);
         resp.should.have.properties(['status', 'description', 'customerId']);
 
         await customer.getState();
-        customer.secondaryIds.map((i) => i.key).should.containDeep(['passport', 'huduma']);
+        customer.identityState.secondaryIds.map((i) => i.key).should.containDeep(['passport', 'huduma']);
     });
 
     it('deleteCustomerSecondaryId()', async () => {
@@ -147,13 +132,13 @@ describe('Customer', function fx() {
         resp.should.have.properties(['status', 'description', 'customerId']);
 
         await customer.getState();
-        customer.secondaryIds.map((i) => i.key).should.not.containDeep(['huduma', 'passport']);
+        customer.identityState.secondaryIds.map((i) => i.key).should.not.containDeep(['huduma', 'passport']);
     });
 
     it('addCustomerReminder()', async () => {
         let resp = await client.addCustomerReminder(customer, {
             key: 'a',
-            expiration: new Date(2025, 1, 1).getTime() / 1000,
+            remindAt: new Date(2025, 1, 1).getTime() / 1000,
             interval: 60,
             payload: JSON.stringify({ a: 1, c: 'de' }),
         });
@@ -161,7 +146,7 @@ describe('Customer', function fx() {
 
         resp = await customer.addReminder({
             key: 'b',
-            expiration: new Date(2025, 1, 1).getTime() / 1000,
+            remindAt: new Date(2025, 1, 1).getTime() / 1000,
             payload: JSON.stringify({ a: 1, c: 'de' }),
         });
         resp.should.have.properties(['status', 'description']);
@@ -180,7 +165,7 @@ describe('Customer', function fx() {
             { key: 'kind', value: 'premium' },
             {
                 key: 'remByTag',
-                expiration: new Date(2025, 1, 1).getTime() / 1000,
+                remindAt: new Date(2025, 1, 1).getTime() / 1000,
                 interval: 968767,
                 payload: JSON.stringify({ a: 1, c: 'de' }),
             },
@@ -208,7 +193,7 @@ describe('Customer', function fx() {
         resp.should.have.properties(['status', 'description']);
 
         await customer.getState();
-        customer.metadata.should.have.properties(['abc', 'def', 'key']);
+        customer.identityState.metadata.should.have.properties(['abc', 'def', 'key']);
     });
 
     it('deleteCustomerMetadata()', async () => {
@@ -218,7 +203,7 @@ describe('Customer', function fx() {
         resp = await customer.deleteMetadata(['def']);
         resp.should.have.properties(['status', 'description']);
         await customer.getState();
-        Object.keys(customer.metadata).should.not.have.properties(['abc', 'def']);
+        Object.keys(customer.identityState.metadata).should.not.have.properties(['abc', 'def']);
     });
 
     it('updateCustomerAppData()', async () => {
@@ -230,7 +215,7 @@ describe('Customer', function fx() {
 
         resp = await customer.updateAppData({
             key: 'weird',
-            hollow: new Date(2025, 1, 1).getTime() / 1000,
+            hollow: 500,
             payload: JSON.stringify({ a: 1, c: 'de' }),
         });
         resp.should.have.properties(['status', 'description']);
@@ -238,7 +223,13 @@ describe('Customer', function fx() {
 
     it('leaseCustomerAppData()', async () => {
         let resp = await client.leaseCustomerAppData(customer);
-        JSON.stringify(resp).should.equal(JSON.stringify({ abc: { name: 'fake' } }));
+        JSON.stringify(resp)
+            .should
+            .equal(JSON.stringify({
+                key: 'weird',
+                hollow: 500,
+                payload: JSON.stringify({ a: 1, c: 'de' }),
+            }));
 
         resp = await customer.updateAppData({ abc: { name: 'updatedAfterLease' } });
         resp = await customer.leaseAppData();

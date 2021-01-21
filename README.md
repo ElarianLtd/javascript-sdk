@@ -19,15 +19,15 @@ $ npm install elarian
 ```javascript
 
 // on node
-const { Client, Customer }  = require('elarian');
+const { Elarian, Customer }  = require('elarian');
 // or in the browser
 <script src="dist/elarian.min.js"></script>
 // ...
-const { Client, Customer }  = Elarian;
+const { Elarian, Customer }  = ElarianSDK;
 
 // ...
 
-const client = await Client.newInstance({
+const client = await Elarian.newInstance({
     apiKey: 'efg', // or authToken: 'abc'
     orgId: 'test_org_id',
     appId: 'test_app_id',

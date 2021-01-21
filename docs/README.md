@@ -3,7 +3,7 @@
 <dl>
 <dt><a href="#Customer">Customer</a></dt>
 <dd></dd>
-<dt><a href="#Client">Client</a></dt>
+<dt><a href="#Elarian">Elarian</a></dt>
 <dd></dd>
 </dl>
 
@@ -25,9 +25,10 @@
     * [.updateMetadata(metadata)](#Customer+updateMetadata) ⇒ <code>UpdateStatus</code>
     * [.deleteMetadata(keys)](#Customer+deleteMetadata) ⇒ <code>UpdateStatus</code>
     * [.updateAppData(data)](#Customer+updateAppData) ⇒ <code>UpdateStatus</code>
-    * [.leaseAppData(key)](#Customer+leaseAppData) ⇒ <code>LeasedAppData</code>
+    * [.leaseAppData()](#Customer+leaseAppData) ⇒ <code>LeasedAppData</code>
     * [.deleteAppData()](#Customer+deleteAppData) ⇒ <code>UpdateStatus</code>
     * [.sendMessage(channelNumber, body)](#Customer+sendMessage) ⇒ <code>MessageStatus</code>
+    * [.updateActivity()](#Customer+updateActivity)
 
 <a name="new_Customer_new"></a>
 
@@ -161,16 +162,11 @@ depending on the set serializer</p>
 
 <a name="Customer+leaseAppData"></a>
 
-### customer.leaseAppData(key) ⇒ <code>LeasedAppData</code>
+### customer.leaseAppData() ⇒ <code>LeasedAppData</code>
 <p>Fetches the customer's app data and lock it from fetching(for up to <b>90s</b>)
 until next call to update app data.</p>
 
 **Kind**: instance method of [<code>Customer</code>](#Customer)  
-
-| Param | Type |
-| --- | --- |
-| key | <code>string</code> | 
-
 <a name="Customer+deleteAppData"></a>
 
 ### customer.deleteAppData() ⇒ <code>UpdateStatus</code>
@@ -189,388 +185,275 @@ until next call to update app data.</p>
 | channelNumber | <code>MessagingChannelNumber</code> | 
 | body | <code>Body</code> | 
 
-<a name="Client"></a>
+<a name="Customer+updateActivity"></a>
 
-## Client
+### customer.updateActivity()
+<p>Initiate web action?</p>
+
+**Kind**: instance method of [<code>Customer</code>](#Customer)  
+<a name="Elarian"></a>
+
+## Elarian
 **Kind**: global class  
 
-* [Client](#Client)
-    * [new Client(params, [configOptions])](#new_Client_new)
+* [Elarian](#Elarian)
+    * [new Elarian(config)](#new_Elarian_new)
     * _instance_
-        * [.generateAuthToken()](#Client+generateAuthToken) ⇒ <code>AuthToken</code>
-        * [.getCustomerState(customer)](#Client+getCustomerState) ⇒ <code>CustomerState</code>
-        * [.adoptCustomerState(customer, otherCustomer)](#Client+adoptCustomerState) ⇒ <code>UpdateStatus</code>
-        * [.updateCustomerTag(customer, tags)](#Client+updateCustomerTag) ⇒ <code>UpdateStatus</code>
-        * [.deleteCustomerTag(customer, tags)](#Client+deleteCustomerTag) ⇒ <code>UpdateStatus</code>
-        * [.updateCustomerSecondaryId(customer, secondaryIds)](#Client+updateCustomerSecondaryId) ⇒ <code>UpdateStatus</code>
-        * [.deleteCustomerSecondaryId(customer, secondaryIds)](#Client+deleteCustomerSecondaryId) ⇒ <code>UpdateStatus</code>
-        * [.addCustomerReminder(customer, reminder)](#Client+addCustomerReminder) ⇒ <code>UpdateStatus</code>
-        * [.cancelCustomerReminder(customer, key)](#Client+cancelCustomerReminder) ⇒ <code>UpdateStatus</code>
-        * [.addCustomerReminderByTag(tag, reminder)](#Client+addCustomerReminderByTag) ⇒ <code>WorkStatus</code>
-        * [.cancelCustomerReminderByTag(tag, key)](#Client+cancelCustomerReminderByTag) ⇒ <code>WorkStatus</code>
-        * [.updateCustomerMetadata(customer, metadata)](#Client+updateCustomerMetadata) ⇒ <code>UpdateStatus</code>
-        * [.deleteCustomerMetadata(customer, keys)](#Client+deleteCustomerMetadata) ⇒ <code>UpdateStatus</code>
-        * [.updateCustomerAppData(customer, data)](#Client+updateCustomerAppData) ⇒ <code>UpdateStatus</code>
-        * [.leaseCustomerAppData(customer)](#Client+leaseCustomerAppData) ⇒ <code>LeasedAppData</code>
-        * [.deleteCustomerAppData(customer)](#Client+deleteCustomerAppData) ⇒ <code>UpdateStatus</code>
-        * [.connect()](#Client+connect)
-        * [.disconnect()](#Client+disconnect)
-        * [.sendMessage(customer, channelNumber, body)](#Client+sendMessage) ⇒ <code>MessageStatus</code>
-        * [.sendMessageByTag(tag, channelNumber, body)](#Client+sendMessageByTag) ⇒ <code>WorkStatus</code>
-        * [.replyToMessage(customer, replyToMessageId, body)](#Client+replyToMessage) ⇒ <code>MessageStatus</code>
-        * [.messagingConsent(customer, channelNumber, action)](#Client+messagingConsent) ⇒ <code>ConsentStatus</code>
-        * [.registerListerner(event, listener)](#Client+registerListerner)
-        * [.on(event, listener)](#Client+on)
-        * [.removeListener(event)](#Client+removeListener)
-        * [.off(event)](#Client+off)
-        * [.initiatePayment(debitParty, creditParty, value)](#Client+initiatePayment) ⇒ <code>PaymentStatus</code>
-        * [.makeVoiceCall(customer, channelNumber)](#Client+makeVoiceCall) ⇒ <code>VoiceStatus</code>
+        * [.updateCustomerActivity(customerNumber, domain, sessionId, key, properties)](#Elarian+updateCustomerActivity) ⇒ <code>PaymentStatus</code>
+        * [.generateAuthToken()](#Elarian+generateAuthToken) ⇒ <code>AuthToken</code>
+        * [.getCustomerState(customer)](#Elarian+getCustomerState) ⇒ <code>CustomerState</code>
+        * [.adoptCustomerState(customer, otherCustomer)](#Elarian+adoptCustomerState) ⇒ <code>UpdateStatus</code>
+        * [.updateCustomerTag(customer, tags)](#Elarian+updateCustomerTag) ⇒ <code>UpdateStatus</code>
+        * [.deleteCustomerTag(customer, tags)](#Elarian+deleteCustomerTag) ⇒ <code>UpdateStatus</code>
+        * [.updateCustomerSecondaryId(customer, secondaryIds)](#Elarian+updateCustomerSecondaryId) ⇒ <code>UpdateStatus</code>
+        * [.deleteCustomerSecondaryId(customer, secondaryIds)](#Elarian+deleteCustomerSecondaryId) ⇒ <code>UpdateStatus</code>
+        * [.addCustomerReminder(customer, reminder)](#Elarian+addCustomerReminder) ⇒ <code>UpdateStatus</code>
+        * [.cancelCustomerReminder(customer, key)](#Elarian+cancelCustomerReminder) ⇒ <code>UpdateStatus</code>
+        * [.addCustomerReminderByTag(tag, reminder)](#Elarian+addCustomerReminderByTag) ⇒ <code>WorkStatus</code>
+        * [.cancelCustomerReminderByTag(tag, key)](#Elarian+cancelCustomerReminderByTag) ⇒ <code>WorkStatus</code>
+        * [.updateCustomerMetadata(customer, metadata)](#Elarian+updateCustomerMetadata) ⇒ <code>UpdateStatus</code>
+        * [.deleteCustomerMetadata(customer, keys)](#Elarian+deleteCustomerMetadata) ⇒ <code>UpdateStatus</code>
+        * [.updateCustomerAppData(customer, data)](#Elarian+updateCustomerAppData) ⇒ <code>UpdateStatus</code>
+        * [.leaseCustomerAppData(customer)](#Elarian+leaseCustomerAppData) ⇒ <code>LeasedAppData</code>
+        * [.deleteCustomerAppData(customer)](#Elarian+deleteCustomerAppData) ⇒ <code>UpdateStatus</code>
+        * [.connect()](#Elarian+connect)
+        * [.disconnect()](#Elarian+disconnect)
     * _static_
-        * [.newInstance(params, [configOptions])](#Client.newInstance)
+        * [.newInstance(config)](#Elarian.newInstance)
 
-<a name="new_Client_new"></a>
+<a name="new_Elarian_new"></a>
 
-### new Client(params, [configOptions])
+### new Elarian(config)
 <p>Instantiate an elarian client. You have to call connect() on then client to start using it</p>
 
 
 | Param | Type |
 | --- | --- |
-| params | <code>ClientParams</code> | 
-| [configOptions] | <code>ConfigOptions</code> | 
+| config | <code>ElarianConfig</code> | 
 
-<a name="Client+generateAuthToken"></a>
+<a name="Elarian+updateCustomerActivity"></a>
 
-### client.generateAuthToken() ⇒ <code>AuthToken</code>
+### elarian.updateCustomerActivity(customerNumber, domain, sessionId, key, properties) ⇒ <code>PaymentStatus</code>
+<p>Initiate a customer activity</p>
+
+**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
+
+| Param | Type |
+| --- | --- |
+| customerNumber | <code>CustomerNumber</code> | 
+| domain | <code>string</code> | 
+| sessionId | <code>string</code> | 
+| key | <code>string</code> | 
+| properties | <code>Object</code> | 
+
+<a name="Elarian+generateAuthToken"></a>
+
+### elarian.generateAuthToken() ⇒ <code>AuthToken</code>
 <p>Generate a short-lived auth token to use instead of apiKey. Used for browser and mobile clients.</p>
 
-**Kind**: instance method of [<code>Client</code>](#Client)  
-<a name="Client+getCustomerState"></a>
+**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
+<a name="Elarian+getCustomerState"></a>
 
-### client.getCustomerState(customer) ⇒ <code>CustomerState</code>
+### elarian.getCustomerState(customer) ⇒ <code>CustomerState</code>
 <p>Fetch the customer's current state.</p>
 
-**Kind**: instance method of [<code>Client</code>](#Client)  
+**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
 
 | Param | Type |
 | --- | --- |
 | customer | [<code>Customer</code>](#Customer) | 
 
-<a name="Client+adoptCustomerState"></a>
+<a name="Elarian+adoptCustomerState"></a>
 
-### client.adoptCustomerState(customer, otherCustomer) ⇒ <code>UpdateStatus</code>
+### elarian.adoptCustomerState(customer, otherCustomer) ⇒ <code>UpdateStatus</code>
 <p>Adopt another customer's state</p>
 
-**Kind**: instance method of [<code>Client</code>](#Client)  
+**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
 
 | Param | Type |
 | --- | --- |
 | customer | [<code>Customer</code>](#Customer) | 
 | otherCustomer | [<code>Customer</code>](#Customer) | 
 
-<a name="Client+updateCustomerTag"></a>
+<a name="Elarian+updateCustomerTag"></a>
 
-### client.updateCustomerTag(customer, tags) ⇒ <code>UpdateStatus</code>
+### elarian.updateCustomerTag(customer, tags) ⇒ <code>UpdateStatus</code>
 <p>Update a customer's tag list</p>
 
-**Kind**: instance method of [<code>Client</code>](#Client)  
+**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
 
 | Param | Type |
 | --- | --- |
 | customer | [<code>Customer</code>](#Customer) | 
 | tags | <code>Array.&lt;Tag&gt;</code> | 
 
-<a name="Client+deleteCustomerTag"></a>
+<a name="Elarian+deleteCustomerTag"></a>
 
-### client.deleteCustomerTag(customer, tags) ⇒ <code>UpdateStatus</code>
+### elarian.deleteCustomerTag(customer, tags) ⇒ <code>UpdateStatus</code>
 <p>Remove tags from a customer</p>
 
-**Kind**: instance method of [<code>Client</code>](#Client)  
+**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
 
 | Param | Type |
 | --- | --- |
 | customer | [<code>Customer</code>](#Customer) | 
 | tags | <code>Array.&lt;string&gt;</code> | 
 
-<a name="Client+updateCustomerSecondaryId"></a>
+<a name="Elarian+updateCustomerSecondaryId"></a>
 
-### client.updateCustomerSecondaryId(customer, secondaryIds) ⇒ <code>UpdateStatus</code>
+### elarian.updateCustomerSecondaryId(customer, secondaryIds) ⇒ <code>UpdateStatus</code>
 <p>Update a customer's secondary Ids</p>
 
-**Kind**: instance method of [<code>Client</code>](#Client)  
+**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
 
 | Param | Type |
 | --- | --- |
 | customer | [<code>Customer</code>](#Customer) | 
 | secondaryIds | <code>Array.&lt;SecondaryId&gt;</code> | 
 
-<a name="Client+deleteCustomerSecondaryId"></a>
+<a name="Elarian+deleteCustomerSecondaryId"></a>
 
-### client.deleteCustomerSecondaryId(customer, secondaryIds) ⇒ <code>UpdateStatus</code>
+### elarian.deleteCustomerSecondaryId(customer, secondaryIds) ⇒ <code>UpdateStatus</code>
 <p>Delete a customer's secondary Ids</p>
 
-**Kind**: instance method of [<code>Client</code>](#Client)  
+**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
 
 | Param | Type |
 | --- | --- |
 | customer | [<code>Customer</code>](#Customer) | 
 | secondaryIds | <code>Array.&lt;SecondaryId&gt;</code> | 
 
-<a name="Client+addCustomerReminder"></a>
+<a name="Elarian+addCustomerReminder"></a>
 
-### client.addCustomerReminder(customer, reminder) ⇒ <code>UpdateStatus</code>
+### elarian.addCustomerReminder(customer, reminder) ⇒ <code>UpdateStatus</code>
 <p>Set a reminder to be triggered at the specified time for a particular customer</p>
 
-**Kind**: instance method of [<code>Client</code>](#Client)  
+**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
 
 | Param | Type |
 | --- | --- |
 | customer | [<code>Customer</code>](#Customer) | 
 | reminder | <code>Reminder</code> | 
 
-<a name="Client+cancelCustomerReminder"></a>
+<a name="Elarian+cancelCustomerReminder"></a>
 
-### client.cancelCustomerReminder(customer, key) ⇒ <code>UpdateStatus</code>
+### elarian.cancelCustomerReminder(customer, key) ⇒ <code>UpdateStatus</code>
 <p>Cancels a previously set reminder with the key <code>key</code> on the customer</p>
 
-**Kind**: instance method of [<code>Client</code>](#Client)  
+**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
 
 | Param | Type |
 | --- | --- |
 | customer | [<code>Customer</code>](#Customer) | 
 | key | <code>string</code> | 
 
-<a name="Client+addCustomerReminderByTag"></a>
+<a name="Elarian+addCustomerReminderByTag"></a>
 
-### client.addCustomerReminderByTag(tag, reminder) ⇒ <code>WorkStatus</code>
+### elarian.addCustomerReminderByTag(tag, reminder) ⇒ <code>WorkStatus</code>
 <p>Set a reminder to be triggered at the specified time for customers with the particular tag</p>
 
-**Kind**: instance method of [<code>Client</code>](#Client)  
+**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
 
 | Param | Type |
 | --- | --- |
 | tag | <code>Tag</code> | 
 | reminder | <code>Reminder</code> | 
 
-<a name="Client+cancelCustomerReminderByTag"></a>
+<a name="Elarian+cancelCustomerReminderByTag"></a>
 
-### client.cancelCustomerReminderByTag(tag, key) ⇒ <code>WorkStatus</code>
+### elarian.cancelCustomerReminderByTag(tag, key) ⇒ <code>WorkStatus</code>
 <p>Cancels a previously set reminder with tag <code>tag</code> and key <code>key</code></p>
 
-**Kind**: instance method of [<code>Client</code>](#Client)  
+**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
 
 | Param | Type |
 | --- | --- |
 | tag | <code>Tag</code> | 
 | key | <code>string</code> | 
 
-<a name="Client+updateCustomerMetadata"></a>
+<a name="Elarian+updateCustomerMetadata"></a>
 
-### client.updateCustomerMetadata(customer, metadata) ⇒ <code>UpdateStatus</code>
+### elarian.updateCustomerMetadata(customer, metadata) ⇒ <code>UpdateStatus</code>
 <p>Sets some metadata on the customer.
 Values in the metadata object can either be strings or buffers,
-depending on your serializer. @see [Client](#Client)</p>
+depending on your serializer. @see [Client](Client)</p>
 
-**Kind**: instance method of [<code>Client</code>](#Client)  
+**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
 
 | Param | Type |
 | --- | --- |
 | customer | [<code>Customer</code>](#Customer) | 
 | metadata | <code>Object</code> | 
 
-<a name="Client+deleteCustomerMetadata"></a>
+<a name="Elarian+deleteCustomerMetadata"></a>
 
-### client.deleteCustomerMetadata(customer, keys) ⇒ <code>UpdateStatus</code>
+### elarian.deleteCustomerMetadata(customer, keys) ⇒ <code>UpdateStatus</code>
 <p>Remove some metadata from a customer.</p>
 
-**Kind**: instance method of [<code>Client</code>](#Client)  
+**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
 
 | Param | Type |
 | --- | --- |
 | customer | [<code>Customer</code>](#Customer) | 
 | keys | <code>Array.&lt;string&gt;</code> | 
 
-<a name="Client+updateCustomerAppData"></a>
+<a name="Elarian+updateCustomerAppData"></a>
 
-### client.updateCustomerAppData(customer, data) ⇒ <code>UpdateStatus</code>
+### elarian.updateCustomerAppData(customer, data) ⇒ <code>UpdateStatus</code>
 <p>Sets some app data on the customer.
 Value of the data object can either be a string or a buffer,
-depending on your serializer. @see [Client](#Client)</p>
+depending on your serializer. @see [Client](Client)</p>
 
-**Kind**: instance method of [<code>Client</code>](#Client)  
+**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
 
 | Param | Type |
 | --- | --- |
 | customer | [<code>Customer</code>](#Customer) | 
 | data | <code>Object</code> | 
 
-<a name="Client+leaseCustomerAppData"></a>
+<a name="Elarian+leaseCustomerAppData"></a>
 
-### client.leaseCustomerAppData(customer) ⇒ <code>LeasedAppData</code>
+### elarian.leaseCustomerAppData(customer) ⇒ <code>LeasedAppData</code>
 <p>Fetches the customer's app data and lock it from fetching(for up to <b>90s</b>)
 until next call to update app data.</p>
 
-**Kind**: instance method of [<code>Client</code>](#Client)  
+**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
 
 | Param | Type |
 | --- | --- |
 | customer | [<code>Customer</code>](#Customer) | 
 
-<a name="Client+deleteCustomerAppData"></a>
+<a name="Elarian+deleteCustomerAppData"></a>
 
-### client.deleteCustomerAppData(customer) ⇒ <code>UpdateStatus</code>
+### elarian.deleteCustomerAppData(customer) ⇒ <code>UpdateStatus</code>
 <p>Remove customer's app data.</p>
 
-**Kind**: instance method of [<code>Client</code>](#Client)  
+**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
 
 | Param | Type |
 | --- | --- |
 | customer | [<code>Customer</code>](#Customer) | 
 
-<a name="Client+connect"></a>
+<a name="Elarian+connect"></a>
 
-### client.connect()
+### elarian.connect()
 <p>Initialize client connection to the API server</p>
 
-**Kind**: instance method of [<code>Client</code>](#Client)  
-<a name="Client+disconnect"></a>
+**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
+<a name="Elarian+disconnect"></a>
 
-### client.disconnect()
+### elarian.disconnect()
 <p>Disconnect from the API server</p>
 
-**Kind**: instance method of [<code>Client</code>](#Client)  
-<a name="Client+sendMessage"></a>
+**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
+<a name="Elarian.newInstance"></a>
 
-### client.sendMessage(customer, channelNumber, body) ⇒ <code>MessageStatus</code>
-<p>Send a message</p>
-
-**Kind**: instance method of [<code>Client</code>](#Client)  
-
-| Param | Type |
-| --- | --- |
-| customer | [<code>Customer</code>](#Customer) | 
-| channelNumber | <code>MessagingChannelNumber</code> | 
-| body | <code>Body</code> | 
-
-<a name="Client+sendMessageByTag"></a>
-
-### client.sendMessageByTag(tag, channelNumber, body) ⇒ <code>WorkStatus</code>
-<p>Send message by tag</p>
-
-**Kind**: instance method of [<code>Client</code>](#Client)  
-
-| Param | Type |
-| --- | --- |
-| tag | <code>Tag</code> | 
-| channelNumber | <code>MessagingChannelNumber</code> | 
-| body | <code>Body</code> | 
-
-<a name="Client+replyToMessage"></a>
-
-### client.replyToMessage(customer, replyToMessageId, body) ⇒ <code>MessageStatus</code>
-<p>Reply to a received message</p>
-
-**Kind**: instance method of [<code>Client</code>](#Client)  
-
-| Param | Type |
-| --- | --- |
-| customer | [<code>Customer</code>](#Customer) | 
-| replyToMessageId | <code>string</code> | 
-| body | <code>Body</code> | 
-
-<a name="Client+messagingConsent"></a>
-
-### client.messagingConsent(customer, channelNumber, action) ⇒ <code>ConsentStatus</code>
-<p>Opt in or out a customer from receiving messages from a channel</p>
-
-**Kind**: instance method of [<code>Client</code>](#Client)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| customer | [<code>Customer</code>](#Customer) |  |
-| channelNumber | <code>MessagingChannelNumber</code> |  |
-| action | <code>opt-in</code> \| <code>opt-out</code> | <p>opt-in or opt-out</p> |
-
-<a name="Client+registerListerner"></a>
-
-### client.registerListerner(event, listener)
-<p>Register a listener to watch out for events. Can also be called with <code>client.on(event,listener)</code></p>
-
-**Kind**: instance method of [<code>Client</code>](#Client)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| event | <code>Event</code> | <p>The event whose listener to register</p> |
-| listener | <code>EventListener</code> | <p>A function that reacts to events</p> |
-
-<a name="Client+on"></a>
-
-### client.on(event, listener)
-<p>Register a listener to watch out for events. Can also be called with <code>client.registerListerner(event,listener)</code></p>
-
-**Kind**: instance method of [<code>Client</code>](#Client)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| event | <code>Event</code> | <p>The event whose listener to register</p> |
-| listener | <code>EventListener</code> | <p>A function that reacts to events</p> |
-
-<a name="Client+removeListener"></a>
-
-### client.removeListener(event)
-<p>Remove listener registered for event. Can also be called with <code>client.off(event)</code></p>
-
-**Kind**: instance method of [<code>Client</code>](#Client)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| event | <code>Event</code> | <p>The event whose listener to remove</p> |
-
-<a name="Client+off"></a>
-
-### client.off(event)
-<p>Remove listener registered for event. Can also be called with <code>client.removeListener(event)</code></p>
-
-**Kind**: instance method of [<code>Client</code>](#Client)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| event | <code>Event</code> | <p>The event whose listener to remove</p> |
-
-<a name="Client+initiatePayment"></a>
-
-### client.initiatePayment(debitParty, creditParty, value) ⇒ <code>PaymentStatus</code>
-<p>Initiate a payment transaction</p>
-
-**Kind**: instance method of [<code>Client</code>](#Client)  
-
-| Param | Type |
-| --- | --- |
-| debitParty | <code>CustomerPayment</code> \| <code>Wallet</code> \| <code>Purse</code> | 
-| creditParty | <code>CustomerPayment</code> \| <code>Wallet</code> \| <code>Purse</code> | 
-| value | <code>Cash</code> | 
-
-<a name="Client+makeVoiceCall"></a>
-
-### client.makeVoiceCall(customer, channelNumber) ⇒ <code>VoiceStatus</code>
-<p>Initiate a voice call to customer</p>
-
-**Kind**: instance method of [<code>Client</code>](#Client)  
-
-| Param | Type |
-| --- | --- |
-| customer | [<code>Customer</code>](#Customer) | 
-| channelNumber | <code>VoiceChannelNumber</code> | 
-
-<a name="Client.newInstance"></a>
-
-### Client.newInstance(params, [configOptions])
+### Elarian.newInstance(config)
 <p>Instantiate and connect an elarian client</p>
 
-**Kind**: static method of [<code>Client</code>](#Client)  
+**Kind**: static method of [<code>Elarian</code>](#Elarian)  
 
 | Param | Type |
 | --- | --- |
-| params | <code>ClientParams</code> | 
-| [configOptions] | <code>ConfigOptions</code> | 
+| config | <code>ElarianConfig</code> | 
 

@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 const _ = require('lodash');
-const { Client } = require('../lib/index.node');
+const { Elarian } = require('../lib/index.node');
 
 let client;
 const clientParams = {
@@ -9,10 +9,10 @@ const clientParams = {
     orgId: process.env.ELARIAN_ORG_ID,
     apiKey: process.env.ELARIAN_API_KEY,
     receiveNotification: true,
-};
-const configOptions = {
-    lifetime: 1800000,
-    keepAlive: 2500,
+    options: {
+        lifetime: 1800000,
+        keepAlive: 2500,
+    },
 };
 
 module.exports = {
@@ -33,14 +33,14 @@ module.exports = {
         provider: 'telco',
     },
 
-    shortCode: '2000',
-    senderId: 'AwesomeSurvey',
+    shortCode: '21414',
+    senderId: 'Elarian',
     telegramBot: 'elarian_test_bot',
-    paybill: '88888',
+    paybill: '525900',
     purseId: 'awesome_purse',
     ussdCode: '*544#',
     voiceNumber: '+254711082000',
-    whatsappNumber: '+254711082001',
+    whatsappNumber: '+15012365864',
 
     dialPlan: [
         {
@@ -135,7 +135,7 @@ module.exports = {
     ],
 
     initializeClient: async () => {
-        client = new Client(clientParams, configOptions);
+        client = new Elarian(clientParams);
         await client.connect();
         return client;
     },
