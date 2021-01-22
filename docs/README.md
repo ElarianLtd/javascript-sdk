@@ -28,12 +28,14 @@
     * [.leaseAppData()](#Customer+leaseAppData) ⇒ <code>LeasedAppData</code>
     * [.deleteAppData()](#Customer+deleteAppData) ⇒ <code>UpdateStatus</code>
     * [.sendMessage(channelNumber, body)](#Customer+sendMessage) ⇒ <code>MessageStatus</code>
-    * [.updateActivity()](#Customer+updateActivity)
+    * [.makeVoiceCall(channelNumber, actions)](#Customer+makeVoiceCall) ⇒ <code>MessageStatus</code>
+    * [.updateMessagingConsent(customer, channelNumber, action)](#Customer+updateMessagingConsent) ⇒ <code>ConsentStatus</code>
+    * [.updateActivity(channelNumber, sessionId, key, properties)](#Customer+updateActivity) ⇒ <code>UpdateStatus</code>
 
 <a name="new_Customer_new"></a>
 
 ### new Customer(params)
-<p>A customer is your end-user, represented by a number (from a telco, facebook or telegram)</p>
+<p>A customer is your end-user, represented by a number (from a cellular, facebook or telegram)</p>
 
 
 | Param | Type |
@@ -185,12 +187,45 @@ until next call to update app data.</p>
 | channelNumber | <code>MessagingChannelNumber</code> | 
 | body | <code>Body</code> | 
 
-<a name="Customer+updateActivity"></a>
+<a name="Customer+makeVoiceCall"></a>
 
-### customer.updateActivity()
-<p>Initiate web action?</p>
+### customer.makeVoiceCall(channelNumber, actions) ⇒ <code>MessageStatus</code>
+<p>Initiate a voice call to the customer</p>
 
 **Kind**: instance method of [<code>Customer</code>](#Customer)  
+
+| Param | Type |
+| --- | --- |
+| channelNumber | <code>string</code> | 
+| actions | <code>Array.&lt;VoiceAction&gt;</code> | 
+
+<a name="Customer+updateMessagingConsent"></a>
+
+### customer.updateMessagingConsent(customer, channelNumber, action) ⇒ <code>ConsentStatus</code>
+<p>Allow or block a customer from receiving messages from a channel</p>
+
+**Kind**: instance method of [<code>Customer</code>](#Customer)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| customer | [<code>Customer</code>](#Customer) |  |
+| channelNumber | <code>MessagingChannelNumber</code> |  |
+| action | <code>string</code> | <p>allow or block</p> |
+
+<a name="Customer+updateActivity"></a>
+
+### customer.updateActivity(channelNumber, sessionId, key, properties) ⇒ <code>UpdateStatus</code>
+<p>Initiate a customer activity</p>
+
+**Kind**: instance method of [<code>Customer</code>](#Customer)  
+
+| Param | Type |
+| --- | --- |
+| channelNumber | <code>ActivityChannelNumber</code> | 
+| sessionId | <code>string</code> | 
+| key | <code>string</code> | 
+| properties | <code>Object</code> | 
+
 <a name="Elarian"></a>
 
 ## Elarian
@@ -199,7 +234,6 @@ until next call to update app data.</p>
 * [Elarian](#Elarian)
     * [new Elarian(config)](#new_Elarian_new)
     * _instance_
-        * [.updateCustomerActivity(customerNumber, domain, sessionId, key, properties)](#Elarian+updateCustomerActivity) ⇒ <code>PaymentStatus</code>
         * [.generateAuthToken()](#Elarian+generateAuthToken) ⇒ <code>AuthToken</code>
         * [.getCustomerState(customer)](#Elarian+getCustomerState) ⇒ <code>CustomerState</code>
         * [.adoptCustomerState(customer, otherCustomer)](#Elarian+adoptCustomerState) ⇒ <code>UpdateStatus</code>
@@ -216,8 +250,14 @@ until next call to update app data.</p>
         * [.updateCustomerAppData(customer, data)](#Elarian+updateCustomerAppData) ⇒ <code>UpdateStatus</code>
         * [.leaseCustomerAppData(customer)](#Elarian+leaseCustomerAppData) ⇒ <code>LeasedAppData</code>
         * [.deleteCustomerAppData(customer)](#Elarian+deleteCustomerAppData) ⇒ <code>UpdateStatus</code>
+        * [.updateCustomerActivity(customerNumber, channelNumber, sessionId, key, properties)](#Elarian+updateCustomerActivity) ⇒ <code>UpdateStatus</code>
         * [.connect()](#Elarian+connect)
         * [.disconnect()](#Elarian+disconnect)
+        * [.sendMessage(customer, channelNumber, message)](#Elarian+sendMessage) ⇒ <code>MessageStatus</code>
+        * [.sendMessageByTag(tag, channelNumber, body)](#Elarian+sendMessageByTag) ⇒ <code>WorkStatus</code>
+        * [.replyToMessage(customer, replyToMessageId, body)](#Elarian+replyToMessage) ⇒ <code>MessageStatus</code>
+        * [.updateMessagingConsent(customer, channelNumber, action)](#Elarian+updateMessagingConsent) ⇒ <code>ConsentStatus</code>
+        * [.makeVoiceCall(customer, channelNumber, actions)](#Elarian+makeVoiceCall) ⇒ <code>VoiceStatus</code>
     * _static_
         * [.newInstance(config)](#Elarian.newInstance)
 
@@ -230,21 +270,6 @@ until next call to update app data.</p>
 | Param | Type |
 | --- | --- |
 | config | <code>ElarianConfig</code> | 
-
-<a name="Elarian+updateCustomerActivity"></a>
-
-### elarian.updateCustomerActivity(customerNumber, domain, sessionId, key, properties) ⇒ <code>PaymentStatus</code>
-<p>Initiate a customer activity</p>
-
-**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
-
-| Param | Type |
-| --- | --- |
-| customerNumber | <code>CustomerNumber</code> | 
-| domain | <code>string</code> | 
-| sessionId | <code>string</code> | 
-| key | <code>string</code> | 
-| properties | <code>Object</code> | 
 
 <a name="Elarian+generateAuthToken"></a>
 
@@ -434,6 +459,21 @@ until next call to update app data.</p>
 | --- | --- |
 | customer | [<code>Customer</code>](#Customer) | 
 
+<a name="Elarian+updateCustomerActivity"></a>
+
+### elarian.updateCustomerActivity(customerNumber, channelNumber, sessionId, key, properties) ⇒ <code>UpdateStatus</code>
+<p>Initiate a customer activity</p>
+
+**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
+
+| Param | Type |
+| --- | --- |
+| customerNumber | <code>CustomerNumber</code> | 
+| channelNumber | <code>ActivityChannelNumber</code> | 
+| sessionId | <code>string</code> | 
+| key | <code>string</code> | 
+| properties | <code>Object</code> | 
+
 <a name="Elarian+connect"></a>
 
 ### elarian.connect()
@@ -446,6 +486,71 @@ until next call to update app data.</p>
 <p>Disconnect from the API server</p>
 
 **Kind**: instance method of [<code>Elarian</code>](#Elarian)  
+<a name="Elarian+sendMessage"></a>
+
+### elarian.sendMessage(customer, channelNumber, message) ⇒ <code>MessageStatus</code>
+<p>Send a message</p>
+
+**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
+
+| Param | Type |
+| --- | --- |
+| customer | [<code>Customer</code>](#Customer) | 
+| channelNumber | <code>MessagingChannelNumber</code> | 
+| message | <code>Message</code> | 
+
+<a name="Elarian+sendMessageByTag"></a>
+
+### elarian.sendMessageByTag(tag, channelNumber, body) ⇒ <code>WorkStatus</code>
+<p>Send message by tag</p>
+
+**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
+
+| Param | Type |
+| --- | --- |
+| tag | <code>Tag</code> | 
+| channelNumber | <code>MessagingChannelNumber</code> | 
+| body | <code>Message</code> | 
+
+<a name="Elarian+replyToMessage"></a>
+
+### elarian.replyToMessage(customer, replyToMessageId, body) ⇒ <code>MessageStatus</code>
+<p>Reply to a received message</p>
+
+**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
+
+| Param | Type |
+| --- | --- |
+| customer | [<code>Customer</code>](#Customer) | 
+| replyToMessageId | <code>string</code> | 
+| body | <code>Message</code> | 
+
+<a name="Elarian+updateMessagingConsent"></a>
+
+### elarian.updateMessagingConsent(customer, channelNumber, action) ⇒ <code>ConsentStatus</code>
+<p>Allow or block a customer from receiving messages from a channel</p>
+
+**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| customer | [<code>Customer</code>](#Customer) |  |
+| channelNumber | <code>MessagingChannelNumber</code> |  |
+| action | <code>string</code> | <p>allow or block</p> |
+
+<a name="Elarian+makeVoiceCall"></a>
+
+### elarian.makeVoiceCall(customer, channelNumber, actions) ⇒ <code>VoiceStatus</code>
+<p>Initiate a voice call to customer from channelNumber</p>
+
+**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
+
+| Param | Type |
+| --- | --- |
+| customer | [<code>Customer</code>](#Customer) | 
+| channelNumber | <code>string</code> | 
+| actions | <code>Array.&lt;VoiceAction&gt;</code> | 
+
 <a name="Elarian.newInstance"></a>
 
 ### Elarian.newInstance(config)

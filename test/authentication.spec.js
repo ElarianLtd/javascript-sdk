@@ -35,7 +35,7 @@ describe('Authentication', () => {
         const customer = new Customer({
             customerNumber: {
                 number: '0700000000',
-                provider: 'telco',
+                provider: 'cellular',
                 partition: 'xyz',
             },
         });

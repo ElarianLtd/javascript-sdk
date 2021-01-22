@@ -246,9 +246,8 @@ describe('Customer', function fx() {
     });
 
     it('updateCustomerActivity()', async () => {
-        let resp = await client.updateCustomerActivity(
-            customer.customerNumber,
-            'test.com.local',
+        const resp = await customer.updateActivity(
+            { number: 'what-is-this-number', channel: 'web' },
             'fake-session-id',
             'some-key',
             { ok: 1, val: false },
@@ -256,18 +255,80 @@ describe('Customer', function fx() {
         resp.should.have.properties([
             'status',
             'description',
-            'customerId',
+            'transactionId',
         ]);
-        resp = customer.updateActivity(
-            'test.com.local',
-            'fake-session-id',
-            'some-key',
-            { ok: 1, val: false },
+    });
+
+    it('updateMessagingConsent()', async () => {
+        const resp = await customer.updateMessagingConsent(
+            {
+                number: fixtures.senderId,
+                channel: 'sms',
+            },
+            'block',
+        );
+        resp.should.have.properties(['status', 'description', 'customerId']);
+    });
+
+    it('sendMessage()', async () => {
+        const resp = await customer.sendMessage(
+            {
+                number: fixtures.senderId,
+                channel: 'sms',
+            },
+            {
+                body: {
+                    text: 'node customer sms messaging test',
+                },
+            },
+        );
+        resp.should.have.properties(['status', 'description', 'messageId', 'customerId']);
+    });
+
+    it('makeVoiceCall()', async () => {
+        const resp = await customer.makeVoiceCall(fixtures.voiceNumber);
+        resp.should.have.properties(['status', 'description', 'customerId', 'sessionId']);
+        resp.status.should.equal('session_initiated');
+    });
+
+    it('requestPayment()', async () => {
+        let resp = await customer.requestPayment(
+            { number: fixtures.paybill, channel: 'cellular' },
+            { walletId: 'bob_wallet' },
+            { amount: 120, currencyCode: 'KES' },
         );
         resp.should.have.properties([
             'status',
             'description',
-            'customerId',
+            'transactionId',
+            'debitCustomerId',
+            'creditCustomerId',
+        ]);
+
+        resp = await customer.requestPayment(
+            { number: fixtures.paybill, channel: 'cellular' },
+            { purseId: fixtures.purseId },
+            { amount: 120, currencyCode: 'KES' },
+        );
+        resp.should.have.properties([
+            'status',
+            'description',
+            'transactionId',
+            'debitCustomerId',
+            'creditCustomerId',
+        ]);
+
+        resp = await customer.requestPayment(
+            { walletId: 'bob_wallet' },
+            { purseId: fixtures.purseId },
+            { amount: 120, currencyCode: 'KES' },
+        );
+        resp.should.have.properties([
+            'status',
+            'description',
+            'transactionId',
+            'debitCustomerId',
+            'creditCustomerId',
         ]);
     });
 });

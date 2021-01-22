@@ -29,7 +29,7 @@ describe('Payment', () => {
                 customerNumber: customer.customerNumber,
                 channelNumber: {
                     number: fixtures.paybill,
-                    provider: 'cellular',
+                    channel: 'cellular',
                 },
             },
             {
@@ -55,7 +55,7 @@ describe('Payment', () => {
                 customerNumber: customer.customerNumber,
                 channelNumber: {
                     number: fixtures.paybill,
-                    provider: 'cellular',
+                    channel: 'cellular',
                 },
             },
             {
@@ -105,7 +105,7 @@ describe('Payment', () => {
                 customerNumber: customer.customerNumber,
                 channelNumber: {
                     number: fixtures.paybill,
-                    provider: 'cellular',
+                    channel: 'cellular',
                 },
             },
             {
@@ -134,7 +134,7 @@ describe('Payment', () => {
                 },
                 channelNumber: {
                     number: fixtures.paybill,
-                    provider: 'cellular',
+                    channel: 'cellular',
                 },
             },
             {
@@ -162,7 +162,7 @@ describe('Payment', () => {
                 },
                 channelNumber: {
                     number: fixtures.paybill,
-                    provider: 'cellular',
+                    channel: 'cellular',
                 },
             },
             {

@@ -32,9 +32,10 @@ describe('Voice', () => {
         }).then(() => {
             client.makeVoiceCall(customer, {
                 number: fixtures.voiceNumber,
-                provider: 'telco',
-            }).then((resp) => {
+                channel: 'cellular',
+            }, fixtures.dialPlan).then((resp) => {
                 resp.should.have.properties(['status', 'description', 'customerId', 'sessionId']);
+                resp.status.should.equal('session_initiated');
             }).catch((ex) => {
                 done(ex);
             });

@@ -20,24 +20,24 @@ module.exports = {
 
     customerNumber: {
         number: `+254720${_.random(100000, 999999)}`,
-        provider: 'telco',
+        provider: 'cellular',
     },
 
     adoptedCustomer: {
         number: `+254721${_.random(100000, 999999)}`,
-        provider: 'telco',
+        provider: 'cellular',
     },
 
     notifCustomerNumber: {
         number: `+254722${_.random(100000, 999999)}`,
-        provider: 'telco',
+        provider: 'cellular',
     },
 
     shortCode: '21414',
     senderId: 'Elarian',
     telegramBot: 'elarian_test_bot',
     paybill: '525900',
-    purseId: 'awesome_purse',
+    purseId: 'test_purse',
     ussdCode: '*544#',
     voiceNumber: '+254711082000',
     whatsappNumber: '+15012365864',
@@ -76,7 +76,7 @@ module.exports = {
                 customerNumbers: [
                     {
                         number: '+254700000000',
-                        provider: 'telco',
+                        provider: 'cellular',
                         partition: '1',
                     },
                 ],
@@ -116,10 +116,7 @@ module.exports = {
         },
         {
             dequeue: {
-                channelNumber: {
-                    number: '123',
-                    provider: 'telco',
-                },
+                number: '123',
                 record: true,
                 queueName: 'fake',
             },
