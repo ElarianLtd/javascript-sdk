@@ -11,13 +11,13 @@ describe('Notification', function fx() {
 
     let bob;
     let client;
-    // let simulator;
+    let simulator;
 
     before(async () => {
         client = fixtures.getClient();
 
         client.on('data', (evt, data) => {
-            log.warn('Client', evt, data);
+            log.warn('Client ->', evt, data);
         });
 
         bob = new Customer({
@@ -25,11 +25,10 @@ describe('Notification', function fx() {
             customerNumber: fixtures.customerNumber,
         });
 
-        /*
         simulator = fixtures.getSimulator();
 
         simulator.on('data', (evt, data) => {
-            log.warn('Simulator', evt, data);
+            log.warn('Simulator ->', evt, data);
         });
 
         simulator.on('sendMessage', (data, cb) => {
@@ -52,13 +51,13 @@ describe('Notification', function fx() {
         simulator.on('checkoutPayment', (data, cb) => {
             log.info(data);
             cb();
-        }); */
+        });
 
         await bob.getState();
     });
 
     after(async () => {
-        // await simulator.disconnect();
+        await simulator.disconnect();
     });
 
     it('reminder', (done) => {
@@ -114,51 +113,6 @@ describe('Notification', function fx() {
             .catch((err) => done(err));
     });
 
-    it('paymentStatus', (done) => {
-        client.on('paymentStatus', async ({ data, customer }) => {
-            data.should.have.properties([
-                'transactionId',
-                'status',
-            ]);
-            should.exist(customer);
-            client.off('paymentStatus');
-            done();
-        });
-
-        client.initiatePayment(
-            {
-                customerNumber: bob.customerNumber,
-                channelNumber: {
-                    number: fixtures.paybill,
-                    channel: 'cellular',
-                },
-            },
-            {
-                purseId: fixtures.purseId,
-            },
-            {
-                amount: _.random(1000, 2000),
-                currencyCode: 'KES',
-            },
-        ).then(() => client.initiatePayment(
-            {
-                purseId: fixtures.purseId,
-            },
-            {
-                customerId: bob.customerId,
-                walletId: 'bob_wallet',
-            },
-            {
-                amount: _.random(100, 1000),
-                currencyCode: 'KES',
-            },
-        )).then((resp) => {
-            console.log(resp);
-            resp.status.should.equal('success');
-        })
-            .catch((ex) => done(ex));
-    });
-
     it('receivedPayment', (done) => {
         client.on('receivedPayment', async ({ data, customer }) => {
             data.should.have.properties([
@@ -174,31 +128,46 @@ describe('Notification', function fx() {
             done();
         });
 
-        /*
-        const sendPaymentData = {
-            type: 'PaymentRequest',
-            customerNumber: bob.customerNumber.number,
-            channelNumber: {
-                channel: 1,
-                number: fixtures.paybill,
-            },
-            value: {
-                currencyCode: 'KES',
-                amount: _.random(100, 200),
-            },
-        };
-        simulator.submit(sendPaymentData)
-            .catch((err) => done(err));
-        */
+        const { number } = fixtures.customerNumber;
+        const { paymentChannel } = fixtures;
+        simulator.receivePayment('fake-txn', number, paymentChannel, { currencyCode: 'KES', amount: _.random(100, 250) }, 'pending_confirmation')
+            .then((resp) => {
+                resp.should.have.properties([
+                    'status',
+                    'message',
+                    'description',
+                ]);
+            })
+            .catch((ex) => done(ex));
+    });
+
+    it('paymentStatus', (done) => {
+        client.on('paymentStatus', async ({ data, customer }) => {
+            data.should.have.properties([
+                'transactionId',
+                'status',
+            ]);
+            should.exist(customer);
+            client.off('paymentStatus');
+            done();
+        });
+
+        simulator.updatePaymentStatus('fake-txn', 'failed')
+            .then((resp) => {
+                resp.should.have.properties([
+                    'status',
+                    'message',
+                    'description',
+                ]);
+            })
+            .catch((ex) => done(ex));
     });
 
     it('receivedMessage', (done) => {
         client.on('receivedMessage', async ({ data, customer }) => {
             data.should.have.properties([
+                'parts',
                 'messageId',
-                'text',
-                'mediaList',
-                'location',
                 'channelNumber',
                 'customerNumber',
             ]);
@@ -206,19 +175,23 @@ describe('Notification', function fx() {
             client.off('receivedMessage');
             done();
         });
-        /*
-        const sendMessageData = {
-            type: 'MessageRequest',
-            customerNumber: bob.customerNumber.number,
-            channelNumber: {
-                channel: 1,
-                number: fixtures.shortCode,
+        const customerNumber = fixtures.customerNumber.number;
+        const channelNumber = fixtures.messagingChannel;
+        const messageBodyParts = [
+            {
+                text: 'Hello test long long long text',
             },
-            text: 'test receivedMessage',
-        };
-        simulator.submit(sendMessageData)
-            .catch((err) => done(err));
-        */
+        ];
+        const sessionId = 'some-session-id';
+        simulator.receiveMessage(customerNumber, channelNumber, sessionId, messageBodyParts)
+            .then((resp) => {
+                resp.should.have.properties([
+                    'status',
+                    'message',
+                    'description',
+                ]);
+            })
+            .catch((ex) => done(ex));
     });
 
     it('customerActivity', (done) => {
@@ -234,7 +207,7 @@ describe('Notification', function fx() {
             done();
         });
 
-        bob.updateActivity({ number: 'www.elarian.com', channel: 'web' }, 'fake-session', 'some-key')
+        bob.updateActivity({ number: 'www.elarian.com', channel: 'web' }, { sessionId: 'some-session', key: 'kkey' })
             .catch((err) => done(err));
     });
 

@@ -2,7 +2,7 @@
     "plugins": [
         "plugins/markdown"
     ],
-    "recurseDepth": 100,
+    "recurseDepth": 1000,
     "source": {
         "includePattern": ".+\\.js(doc|x)?$",
         "excludePattern": "(^|\\/|\\\\)_",
@@ -21,9 +21,9 @@
         "copyright":  "Elarian",
         "includeDate": true,
         "navType": "inline",
-        "theme": "flatly",
+        "theme": "united",
         "linenums": false,
-        "collapseSymbols": true,
+        "collapseSymbols": false,
         "inverseNav": false,
         "outputSourceFiles": false,
         "outputSourcePath": false,

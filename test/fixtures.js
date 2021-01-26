@@ -35,6 +35,16 @@ module.exports = {
         provider: 'cellular',
     },
 
+    paymentChannel: {
+        number: '525900',
+        channel: 'cellular',
+    },
+
+    messagingChannel: {
+        number: '21414',
+        channel: 'sms',
+    },
+
     shortCode: '21414',
     senderId: 'Elarian',
     telegramBot: 'elarian_test_bot',
@@ -134,7 +144,10 @@ module.exports = {
     ],
 
     initializeClient: async () => {
-        simulator = new Simulator(clientParams);
+        simulator = new Simulator({
+            ...clientParams,
+            appId: 'fake-debug-test',
+        });
         await simulator.connect();
 
         client = new Elarian(clientParams);
@@ -142,6 +155,10 @@ module.exports = {
 
         return { client, simulator };
     },
+
+    getClient: () => client,
+
+    getSimulator: () => simulator,
 
     sleep: (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
 };

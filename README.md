@@ -1,9 +1,8 @@
-# Javascript SDK
+# Elarian
 
 [![NPM](https://nodei.co/npm/elarian.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.org/package/elarian)
 
 > A convenient way to interact with the Elarian APIs.
-
 
 
 ## Install
@@ -20,10 +19,11 @@ $ npm install elarian
 
 // on node
 const { Elarian }  = require('elarian');
-// or in the browser
+/*
+or in the browser
 <script src="dist/elarian.min.js"></script>
-// ...
-const { Elarian }  = ElarianSDK;
+const { Elarian } = ElarianSDK;
+*/
 
 // ...
 
