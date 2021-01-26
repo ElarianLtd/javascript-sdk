@@ -19,11 +19,11 @@ $ npm install elarian
 ```javascript
 
 // on node
-const { Elarian, Customer }  = require('elarian');
+const { Elarian }  = require('elarian');
 // or in the browser
 <script src="dist/elarian.min.js"></script>
 // ...
-const { Elarian, Customer }  = ElarianSDK;
+const { Elarian }  = ElarianSDK;
 
 // ...
 

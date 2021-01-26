@@ -2,7 +2,7 @@
 /* eslint-disable no-new */
 const should = require('should');
 
-const { Elarian, Customer } = require('..');
+const { Elarian, Simulator, Customer } = require('..');
 const fixtures = require('./fixtures');
 
 describe('Authentication', () => {
@@ -20,8 +20,9 @@ describe('Authentication', () => {
             new Elarian(options);
         }).should.throw();
 
+        let client;
         (function () {
-            new Elarian({
+            client = new Elarian({
                 orgId: 'ok',
                 appId: 'yes',
                 authToken: '7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069',
@@ -33,6 +34,7 @@ describe('Authentication', () => {
         }).should.throw();
 
         const customer = new Customer({
+            client,
             customerNumber: {
                 number: '0700000000',
                 provider: 'cellular',
@@ -43,10 +45,13 @@ describe('Authentication', () => {
     });
 
     it('connect() and disconnect()', async () => {
-        const client = await Elarian.newInstance({
+        let client = await Elarian.newInstance({
             ...fixtures.clientParams,
-            receiveNotifications: false,
+            allowNotifications: false,
         });
+        await client.disconnect();
+
+        client = await Simulator.newInstance(fixtures.clientParams);
         await client.disconnect();
     });
 

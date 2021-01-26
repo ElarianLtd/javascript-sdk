@@ -9,6 +9,11 @@ const client = new Elarian({
     apiKey: process.env.ELARIAN_API_KEY,
 });
 
+client.on('data', (event, data) => {
+    console.log(event, data);
+});
+
+/*
 client.on('ussdSession', async (notification, callback) => {
     const { data: { input }, customer } = notification;
 
@@ -50,6 +55,7 @@ client.on('ussdSession', async (notification, callback) => {
     callback(null, menu);
     await customer.updateAppData({ state, name });
 });
+*/
 
 client
     .connect()

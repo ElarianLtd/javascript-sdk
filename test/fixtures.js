@@ -1,9 +1,11 @@
 require('dotenv').config();
 
 const _ = require('lodash');
-const { Elarian } = require('../lib/index.node');
+const { Elarian, Simulator } = require('../lib/index.node');
 
 let client;
+let simulator;
+
 const clientParams = {
     appId: process.env.ELARIAN_APP_ID,
     orgId: process.env.ELARIAN_ORG_ID,
@@ -132,12 +134,18 @@ module.exports = {
     ],
 
     initializeClient: async () => {
+        simulator = new Simulator(clientParams);
+        await simulator.connect();
+
         client = new Elarian(clientParams);
         await client.connect();
+
         return client;
     },
 
     getClient: () => client,
+
+    getSimulator: () => simulator,
 
     sleep: (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
 };

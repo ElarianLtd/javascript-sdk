@@ -3,48 +3,60 @@ const should = require('should');
 
 const { Customer } = require('..');
 const fixtures = require('./fixtures');
-const simulator = require('./simulator');
 
 const log = console;
 
 describe('Notification', function fx() {
     this.timeout(10000);
 
+    let bob;
     let client;
-    const bob = new Customer({
-        customerNumber: fixtures.notifCustomerNumber,
-    });
+    let simulator;
 
     before(async () => {
         client = fixtures.getClient();
+        bob = new Customer({
+            client,
+            customerNumber: fixtures.customerNumber,
+        });
 
-        /*
+        simulator = fixtures.getSimulator();
+
         client.on('data', (evt, data) => {
-            log.warn(evt, data);
+            log.warn('Client', evt, data);
         });
-        */
 
-        await simulator.startSession({
-            phoneNumber: bob.customerNumber.number,
-            cb: (notif) => {
-                if (notif.data.type === 'UssdMenu' && !notif.data.menu.isTerminal) {
-                    const ussdData = {
-                        type: 'UssdRequest',
-                        sessionId: notif.data.sessionId,
-                        input: '1', // Math.random() < 0.5 ? '1' : '2',
-                        customerNumber: bob.customerNumber.number,
-                        channelNumber: notif.data.channelNumber,
-                    };
-                    simulator.submit(ussdData)
-                        .catch((ex) => log.error(ex));
-                }
-            },
+        simulator.on('data', (evt, data) => {
+            log.warn('Simulator', evt, data);
         });
+
+        simulator.on('sendMessage', (data, cb) => {
+            // TODO: watch out for sms+ussd
+            log.info(data);
+            cb();
+        });
+        simulator.on('makeVoiceCall', (data, cb) => {
+            log.info(data);
+            cb();
+        });
+        simulator.on('sendCustomerPayment', (data, cb) => {
+            log.info(data);
+            cb();
+        });
+        simulator.on('sendChannelPayment', (data, cb) => {
+            log.info(data);
+            cb();
+        });
+        simulator.on('checkoutPayment', (data, cb) => {
+            log.info(data);
+            cb();
+        });
+
         await bob.getState();
     });
 
     after(async () => {
-        await simulator.endSession(bob.customerNumber.number);
+        await simulator.disconnect();
     });
 
     it('reminder', (done) => {
@@ -261,7 +273,7 @@ describe('Notification', function fx() {
                     customerNumber: bob.customerNumber,
                     channelNumber: {
                         number: fixtures.paybill,
-                        channel: 'telco',
+                        channel: 'cellular',
                     },
                 },
                 {
@@ -281,7 +293,8 @@ describe('Notification', function fx() {
             data.should.have.properties([
                 'customerNumber',
                 'channelNumber',
-                'status',
+                'sessionId',
+                'expiresAt',
             ]);
             should.exist(customer);
             client.off('messagingSessionStarted');
@@ -291,7 +304,8 @@ describe('Notification', function fx() {
             data.should.have.properties([
                 'customerNumber',
                 'channelNumber',
-                'status',
+                'sessionId',
+                'expiresAt',
             ]);
             should.exist(customer);
             client.off('messagingSessionRenewed');
@@ -300,7 +314,9 @@ describe('Notification', function fx() {
             data.should.have.properties([
                 'customerNumber',
                 'channelNumber',
-                'status',
+                'sessionId',
+                'duration',
+                'reason',
             ]);
             should.exist(customer);
             client.off('messagingSessionEnded');
@@ -324,14 +340,13 @@ describe('Notification', function fx() {
         client.updateMessagingConsent(
             bob,
             {
-                number: fixtures.whatsappNumber,
-                channel: 'whatsapp',
+                number: fixtures.shortCode,
+                channel: 'sms',
             },
             'block',
         )
             .then((resp) => {
-                console.log(resp);
-                resp.status.should.equal('opt_in_request_sent');
+                resp.status.should.equal('completed');
             })
             .catch((err) => done(err));
     });

@@ -3,25 +3,29 @@ const should = require('should');
 
 const { Customer } = require('..');
 const fixtures = require('./fixtures');
-const simulator = require('./simulator');
 
 describe('Voice', () => {
     let client;
-    const customer = new Customer({
-        customerNumber: fixtures.customerNumber,
-    });
+    let customer;
+    let simulator;
 
     before(async () => {
         client = fixtures.getClient();
+        simulator = fixtures.getSimulator();
+        customer = new Customer({
+            client,
+            customerNumber: fixtures.customerNumber,
+        });
         await customer.getState();
     });
 
     after(async () => {
         await client.disconnect();
-        await simulator.endSession(customer.customerNumber.number);
+        await simulator.disconnect();
     });
 
     it('makeVoiceCall()', (done) => {
+        // TODO: Simulator wait for calls
         simulator.startSession({
             phoneNumber: customer.customerNumber.number,
             cb: (notif) => {
@@ -43,4 +47,6 @@ describe('Voice', () => {
             done(ex);
         });
     });
+
+    // TODO: test receiveing calls
 });

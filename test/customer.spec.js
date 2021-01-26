@@ -2,18 +2,21 @@
 const should = require('should');
 
 const { Customer } = require('..');
+
 const fixtures = require('./fixtures');
 
 describe('Customer', function fx() {
     this.timeout(10000);
 
     let client;
-    const customer = new Customer({
-        customerNumber: fixtures.customerNumber,
-    });
+    let customer;
 
     before(async () => {
         client = fixtures.getClient();
+        customer = new Customer({
+            client,
+            customerNumber: fixtures.customerNumber,
+        });
     });
 
     it('getCustomerState()', async () => {
@@ -37,7 +40,7 @@ describe('Customer', function fx() {
     });
 
     it('adoptCustomerState()', async () => {
-        const otherCustomer = new Customer({
+        const otherCustomer = new client.Customer({
             customerNumber: fixtures.adoptedCustomer,
         });
         let resp = await client.adoptCustomerState(customer, otherCustomer);

@@ -10,15 +10,16 @@
     <script>
         async function test() {
             const { Elarian, Customer } = ElarianSDK;
-            const client = new Elarian({
+            const elarian = new Elarian({
                 authToken: 'test_auth_token',
                 orgId: 'test_org',
                 appId: 'test_app',
             });
             console.log('Connecting...');
-            await client.connect();
+            await elarian.connect();
             console.log('Connected!');
             const customer = new Customer({
+                client: elarian,
                 customerNumber: {
                     number: '+2547XXXXXXXX',
                     provider: 'telco',

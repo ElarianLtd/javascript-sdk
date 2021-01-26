@@ -6,12 +6,14 @@ const fixtures = require('./fixtures');
 
 describe('Messaging', () => {
     let client;
-    const customer = new Customer({
-        customerNumber: fixtures.customerNumber,
-    });
+    let customer;
 
     before(async () => {
         client = fixtures.getClient();
+        customer = new Customer({
+            client,
+            customerNumber: fixtures.customerNumber,
+        });
     });
 
     it('sendMessage()', async () => {

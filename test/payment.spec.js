@@ -6,13 +6,14 @@ const fixtures = require('./fixtures');
 
 describe('Payment', () => {
     let client;
-    const customer = new Customer({
-        customerNumber: fixtures.customerNumber,
-    });
+    let customer;
 
     before(async () => {
-        await fixtures.initializeClient();
         client = fixtures.getClient();
+        customer = new Customer({
+            client,
+            customerNumber: fixtures.customerNumber,
+        });
     });
 
     it('initiatePayment()', async () => {

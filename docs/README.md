@@ -7,6 +7,13 @@
 <dd></dd>
 </dl>
 
+## Functions
+
+<dl>
+<dt><a href="#ElarianSimulator">ElarianSimulator(config)</a></dt>
+<dd><p>Instantiate an elarian simulator client</p></dd>
+</dl>
+
 <a name="Customer"></a>
 
 ## Customer
@@ -557,6 +564,28 @@ until next call to update app data.</p>
 <p>Instantiate and connect an elarian client</p>
 
 **Kind**: static method of [<code>Elarian</code>](#Elarian)  
+
+| Param | Type |
+| --- | --- |
+| config | <code>ElarianConfig</code> | 
+
+<a name="ElarianSimulator"></a>
+
+## ElarianSimulator(config)
+<p>Instantiate an elarian simulator client</p>
+
+**Kind**: global function  
+
+| Param | Type |
+| --- | --- |
+| config | <code>ElarianConfig</code> | 
+
+<a name="ElarianSimulator.newInstance"></a>
+
+### ElarianSimulator.newInstance(config)
+<p>Instantiate and connect an elarian simulator client</p>
+
+**Kind**: static method of [<code>ElarianSimulator</code>](#ElarianSimulator)  
 
 | Param | Type |
 | --- | --- |
