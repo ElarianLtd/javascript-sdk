@@ -40,7 +40,8 @@ describe('Customer', function fx() {
     });
 
     it('adoptCustomerState()', async () => {
-        const otherCustomer = new client.Customer({
+        const otherCustomer = new Customer({
+            client,
             customerNumber: fixtures.adoptedCustomer,
         });
         let resp = await client.adoptCustomerState(customer, otherCustomer);
@@ -251,9 +252,11 @@ describe('Customer', function fx() {
     it('updateCustomerActivity()', async () => {
         const resp = await customer.updateActivity(
             { number: 'what-is-this-number', channel: 'web' },
-            'fake-session-id',
-            'some-key',
-            { ok: 1, val: false },
+            {
+                sessionId: 'fake-session-id',
+                key: 'some-key',
+                properties: { ok: 1, val: false },
+            },
         );
         resp.should.have.properties([
             'status',

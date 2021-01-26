@@ -1,7 +1,7 @@
 // Simple SMS+USSD app
 require('dotenv').config();
 
-const { Elarian } = require('..');
+const { Elarian, Simulator } = require('..');
 
 const client = new Elarian({
     appId: process.env.ELARIAN_APP_ID,
@@ -9,8 +9,18 @@ const client = new Elarian({
     apiKey: process.env.ELARIAN_API_KEY,
 });
 
+const simulator = new Simulator({
+    appId: process.env.ELARIAN_APP_ID,
+    orgId: process.env.ELARIAN_ORG_ID,
+    apiKey: process.env.ELARIAN_API_KEY,
+});
+
 client.on('data', (event, data) => {
-    console.log(event, data);
+    console.log('app', event, data);
+});
+
+simulator.on('data', (event, data) => {
+    console.log('simulator', event, data);
 });
 
 /*
@@ -61,5 +71,9 @@ client
     .connect()
     .then(() => {
         console.log('App running, waiting for notifications!\n');
+        return simulator.connect();
+    })
+    .then(() => {
+        console.log('Simulator running, waiting for notifications!\n');
     })
     .catch((ex) => console.log('error: ', ex));

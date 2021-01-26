@@ -140,12 +140,8 @@ module.exports = {
         client = new Elarian(clientParams);
         await client.connect();
 
-        return client;
+        return { client, simulator };
     },
-
-    getClient: () => client,
-
-    getSimulator: () => simulator,
 
     sleep: (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
 };

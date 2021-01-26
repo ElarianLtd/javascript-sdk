@@ -11,20 +11,22 @@ describe('Notification', function fx() {
 
     let bob;
     let client;
-    let simulator;
+    // let simulator;
 
     before(async () => {
         client = fixtures.getClient();
+
+        client.on('data', (evt, data) => {
+            log.warn('Client', evt, data);
+        });
+
         bob = new Customer({
             client,
             customerNumber: fixtures.customerNumber,
         });
 
+        /*
         simulator = fixtures.getSimulator();
-
-        client.on('data', (evt, data) => {
-            log.warn('Client', evt, data);
-        });
 
         simulator.on('data', (evt, data) => {
             log.warn('Simulator', evt, data);
@@ -50,13 +52,13 @@ describe('Notification', function fx() {
         simulator.on('checkoutPayment', (data, cb) => {
             log.info(data);
             cb();
-        });
+        }); */
 
         await bob.getState();
     });
 
     after(async () => {
-        await simulator.disconnect();
+        // await simulator.disconnect();
     });
 
     it('reminder', (done) => {
@@ -172,6 +174,7 @@ describe('Notification', function fx() {
             done();
         });
 
+        /*
         const sendPaymentData = {
             type: 'PaymentRequest',
             customerNumber: bob.customerNumber.number,
@@ -186,6 +189,7 @@ describe('Notification', function fx() {
         };
         simulator.submit(sendPaymentData)
             .catch((err) => done(err));
+        */
     });
 
     it('receivedMessage', (done) => {
@@ -202,6 +206,7 @@ describe('Notification', function fx() {
             client.off('receivedMessage');
             done();
         });
+        /*
         const sendMessageData = {
             type: 'MessageRequest',
             customerNumber: bob.customerNumber.number,
@@ -213,6 +218,7 @@ describe('Notification', function fx() {
         };
         simulator.submit(sendMessageData)
             .catch((err) => done(err));
+        */
     });
 
     it('customerActivity', (done) => {
