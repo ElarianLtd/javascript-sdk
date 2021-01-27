@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Elarian Source: client.js</title>
+	<title>Elarian Index</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -67,179 +67,116 @@
 <div class="row">
 
 	
-	<div class="col-md-12">
+	<div class="col-md-8">
 	
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: client.js</h1>
-    
-<section>
-    <article>
-        <pre
-            class="sunlight-highlight-javascript linenums">/* eslint-disable no-underscore-dangle */
-const validate = require('validate.js');
+	
+	
 
-const { connectRSocket } = require('./utils');
 
-const defaultConfigOptions = {
-    lifetime: 60000,
-    keepAlive: 1000,
-    reconnectInterval: 1000,
-    serializer: {
-        type: 'text',
-        serialize: (data) => JSON.stringify(data),
-        deserialize: (data) => {
-            try {
-                return JSON.parse(data);
-            } catch (err) { this.platform.log.error(err); }
-            return data;
-        },
-    },
-};
 
-/**
- * Instantiate an elarian client. You have to call connect() on then client to start using it
- * @class
- * @param {ElarianConfig} config
- */
-function Elarian(config) {
-    const opts = {
-        ...config,
+
+
+
+
+
+
+
+
+	
+	
+
+
+
+
+
+    <section class="readme-section">
+        <article><h1>Elarian</h1>
+<p><a href="https://www.npmjs.org/package/elarian"><img src="https://nodei.co/npm/elarian.png?downloads=true&amp;downloadRank=true&amp;stars=true" alt="NPM"></a></p>
+<blockquote>
+<p>A convenient way to interact with the Elarian APIs.</p>
+</blockquote>
+<h2>Install</h2>
+<p>You can install the package from <a href="https://www.npmjs.com/package/elarian">npm</a> by running:</p>
+<pre class="prettyprint source lang-bash"><code>$ npm install elarian
+</code></pre>
+<h2>Usage</h2>
+<pre class="prettyprint source lang-javascript"><code>
+// on node
+const { Elarian }  = require('elarian');
+/*
+or in the browser
+&lt;script src=&quot;dist/elarian.min.js&quot;>&lt;/script>
+const { Elarian } = ElarianSDK;
+*/
+
+// ...
+
+const client = await Elarian.newInstance({
+    apiKey: 'YOUR_API_KEY', // or authToken: 'YOUR_AUTH_TOKEN'
+    orgId: 'YOUR_ORG_ID',
+    appId: 'YOUR_APP_ID',
+});
+
+client.on('ussdSession', async ({ data, customer}, callback) => {
+    const {
+        input,
+        sessionId,
+    } = data;
+
+    const appData = await customer.leaseAppData();
+    let {
+        name,
+        state = 'newbie',
+    } = appData;
+
+    const menu = {
+        text: null,
+        isTerminal: true,
     };
-    const constraints = {
-        appId: {
-            type: 'string',
-            presence: true,
-        },
-        orgId: {
-            type: 'string',
-            presence: true,
-        },
-        apiKey: {
-            type: 'string',
-        },
-        authToken: {
-            type: 'string',
-            presence: this.platform.isBrowser,
-        },
-        allowNotifications: {
-            type: 'boolean',
-        },
-        isSimulator: {
-            type: 'boolean',
-        },
-        options: {
-            type: 'object',
-        },
-    };
 
-    const error = validate(opts, constraints);
-    if (error) {
-        throw error;
+    switch (state) {
+    case 'veteran':
+        if (name) {
+            menu.text = `Welcome back ${name}! What is your new name?`;
+            menu.isTerminal = false;
+        } else {
+            name = input.value;
+            menu.text = `Thank you for trying Elarian, ${name}!`;
+            menu.isTerminal = true;
+            await customer.sendMessage(
+                { number: 'Elarian', provider: 'telco' },
+                { text: `Hey ${name}! Thank you for trying out Elarian` },
+            );
+        }
+        break;
+    case 'newbie':
+    default:
+        menu.text = 'Hey there, welcome to Elarian! What\'s your name?';
+        menu.isTerminal = false;
+        state = 'veteran';
+        break;
     }
 
-    this.options = opts;
-    const configOpts = opts.options || {};
-    this.configOptions = {
-        lifetime: configOpts.lifetime || defaultConfigOptions.lifetime,
-        keepAlive: configOpts.keepAlive || defaultConfigOptions.keepAlive,
-        serializer: configOpts.serializer || defaultConfigOptions.serializer,
-        reconnectInterval: configOpts.reconnectInterval || defaultConfigOptions.reconnectInterval,
-    };
+    await customer.updateAppData({ state, name });
+    callback(null, menu);
+});
 
-    this.eventListeners = {
-        data: null,
+</code></pre>
+<h2>Documentation</h2>
+<p>Take a look at the <a href="http://docs.elarian.com">API docs here</a>. For detailed info on this SDK, see the <a href="https://elarianltd.github.io/javascript-sdk/Elarian.html">documentation</a>.</p>
+<h2>Development</h2>
+<p>Run all tests:</p>
+<pre class="prettyprint source lang-bash"><code>$ npm install
+$ npm test
+</code></pre>
+<h2>Issues</h2>
+<p>If you find a bug, please file an issue on <a href="https://github.com/ElarianLtd/javascript-sdk/issues">our issue tracker on GitHub</a>.</p></article>
+    </section>
 
-        // Simulator
-        sendMessage: null,
-        makeVoiceCall: null,
-        checkoutPayment: null,
-        sendChannelPayment: null,
-        sendCustomerPayment: null,
 
-        // App (core)
-        reminder: null,
-        messageStatus: null,
-        paymentStatus: null,
-        receivedPayment: null,
-        receivedMessage: null,
-        customerActivity: null,
-        sentMessageReaction: null,
-        walletPaymentStatus: null,
-        messagingSessionEnded: null,
-        messagingConsentUpdate: null,
-        messagingSessionStarted: null,
-        messagingSessionRenewed: null,
-
-        // App (virtual)
-        voiceCall: null,
-        ussdSession: null,
-        receivedSms: null,
-        receivedEmail: null,
-        receivedWhatsapp: null,
-        receivedTelegram: null,
-        receivedMessenger: null,
-    };
-
-    /**
-     * Connect to the elarian server
-     */
-    this.connect = async function connect() {
-        const { socket, transport } = await connectRSocket({
-            ...this.options,
-            authToken: this.options.authToken,
-            apiKey: this.options.authToken ? null : this.options.apiKey,
-        }, {
-            ...this.configOptions,
-            platform: this.platform,
-            notificationHandler: this.notificationHandler(this),
-        });
-        this._socket = socket;
-        this._transport = transport;
-    };
-
-    this.getSocket = function getSocket() {
-        if (!this._socket) {
-            throw new Error('Client is not connected');
-        }
-        return this._socket;
-    };
-
-    /**
-     * Disconnect from the elarian server
-     */
-    this.disconnect = function disconnect() {
-        if (this._socket) {
-            this._transport.close();
-            this._socket.close();
-            // this._socket = null;
-            // this._transport = null;
-        }
-    };
-
-    const cleanup = (code) => {
-        this.platform.log.warn(`Disconnecting from API server(${code})`);
-        this.disconnect();
-    };
-    process.on('SIGINT', cleanup.bind(null));
-    process.on('exit', cleanup.bind(null));
-}
-
-/**
- * Instantiate and connect an elarian client
- * @param {ElarianConfig} config
- */
-Elarian.newInstance = async (config) => {
-    const client = new Elarian(config);
-    await client.connect();
-    return client;
-};
-
-module.exports = Elarian;
-</pre>
-    </article>
-</section>
 
 
 
@@ -250,6 +187,10 @@ module.exports = Elarian;
 
 	<div class="clearfix"></div>
 
+	
+		<div class="col-md-3">
+			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
+		</div>
 	
 
 </div>
@@ -282,7 +223,7 @@ module.exports = Elarian;
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a>
 	
-		on Wed, Jan 27, 2021 2:22 PM
+		on Wed, Jan 27, 2021 2:32 PM
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

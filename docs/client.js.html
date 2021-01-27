@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Elarian Source: voice.js</title>
+	<title>Elarian Source: client.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -72,100 +72,168 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: voice.js</h1>
+		<h1 class="page-title">Source: client.js</h1>
     
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">const {
-    addCustomer,
-    ElarianMessages,
-    getMessageDeliveryStatusString,
-    addVoiceCallActions,
-} = require('./utils');
+            class="sunlight-highlight-javascript linenums">/* eslint-disable no-underscore-dangle */
+const validate = require('validate.js');
 
-const Elarian = require('./client');
-const Customer = require('./customer');
+const { connectRSocket } = require('./utils');
 
-const {
-    OutboundMessage,
-    MessagingChannel,
-    SendMessageCommand,
-    AppToServerCommand,
-    OutboundMessageBody,
-    MessagingChannelNumber,
-    AppToServerCommandReply,
-    VoiceCallDialplanMessageBody,
-} = ElarianMessages;
+const defaultConfigOptions = {
+    lifetime: 60000,
+    keepAlive: 1000,
+    reconnectInterval: 1000,
+    serializer: {
+        type: 'text',
+        serialize: (data) => JSON.stringify(data),
+        deserialize: (data) => {
+            try {
+                return JSON.parse(data);
+            } catch (err) { this.platform.log.error(err); }
+            return data;
+        },
+    },
+};
 
 /**
- * Initiate a voice call to customer from channelNumber
- * @param {Customer} customer
- * @param {string} channelNumber
- * @param {VoiceAction[]} actions
- * @returns {VoiceStatus}
- * @memberof Elarian
+ * Instantiate an elarian client. You have to call connect() on then client to start using it
+ * @class
+ * @param {ElarianConfig} config
  */
-Elarian.prototype.makeVoiceCall = function makeVoiceCall(customer, channelNumber, actions = []) {
-    const socket = this.getSocket();
+function Elarian(config) {
+    const opts = {
+        ...config,
+    };
+    const constraints = {
+        appId: {
+            type: 'string',
+            presence: true,
+        },
+        orgId: {
+            type: 'string',
+            presence: true,
+        },
+        apiKey: {
+            type: 'string',
+        },
+        authToken: {
+            type: 'string',
+            presence: this.platform.isBrowser,
+        },
+        allowNotifications: {
+            type: 'boolean',
+        },
+        isSimulator: {
+            type: 'boolean',
+        },
+        options: {
+            type: 'object',
+        },
+    };
 
-    if (!(customer instanceof Customer)) {
-        throw new Error('Invalid customer');
+    const error = validate(opts, constraints);
+    if (error) {
+        throw error;
     }
 
-    const { customerNumber } = customer;
-    if (!customerNumber) {
-        // FIXME: Have Elarian return the customer number on fetch state?
-        throw new Error('customerNumber is not setup on this customer');
-    }
+    this.options = opts;
+    const configOpts = opts.options || {};
+    this.configOptions = {
+        lifetime: configOpts.lifetime || defaultConfigOptions.lifetime,
+        keepAlive: configOpts.keepAlive || defaultConfigOptions.keepAlive,
+        serializer: configOpts.serializer || defaultConfigOptions.serializer,
+        reconnectInterval: configOpts.reconnectInterval || defaultConfigOptions.reconnectInterval,
+    };
 
-    let cmd = new SendMessageCommand()
-        .setChannelNumber(
-            new MessagingChannelNumber()
-                .setNumber(channelNumber)
-                .setChannel(MessagingChannel.MESSAGING_CHANNEL_VOICE),
-        );
-    cmd = addCustomer(cmd, customer);
+    this.eventListeners = {
+        data: null,
 
-    const message = new OutboundMessage();
-    const messageBody = new OutboundMessageBody();
-    const dialPlan = addVoiceCallActions(new VoiceCallDialplanMessageBody(), actions);
-    messageBody.setVoice(dialPlan);
-    message.setBody(messageBody);
-    cmd.setMessage(message);
+        // Simulator
+        sendMessage: null,
+        makeVoiceCall: null,
+        checkoutPayment: null,
+        sendChannelPayment: null,
+        sendCustomerPayment: null,
 
-    const req = new AppToServerCommand()
-        .setSendMessage(cmd);
+        // App (core)
+        reminder: null,
+        messageStatus: null,
+        paymentStatus: null,
+        receivedPayment: null,
+        receivedMessage: null,
+        customerActivity: null,
+        sentMessageReaction: null,
+        walletPaymentStatus: null,
+        messagingSessionEnded: null,
+        messagingConsentUpdate: null,
+        messagingSessionStarted: null,
+        messagingSessionRenewed: null,
 
-    return new Promise((resolve, reject) => {
-        socket
-            .requestResponse({
-                data: Buffer.from(req.serializeBinary()),
-            })
-            .subscribe({
-                onComplete: (value) => {
-                    try {
-                        const res = AppToServerCommandReply
-                            .deserializeBinary(value.data)
-                            .getSendMessage();
-                        const result = {
-                            status: getMessageDeliveryStatusString(res.getStatus()),
-                            description: res.getDescription(),
-                            sessionId: (res.getSessionId() || {
-                                getValue: () => undefined,
-                            }).getValue(),
-                            customerId: (res.getCustomerId() || {
-                                getValue: () => undefined,
-                            }).getValue(),
-                        };
-                        resolve(result);
-                    } catch (ex) {
-                        reject(ex);
-                    }
-                },
-                onError: (error) => reject(error),
-            });
-    });
+        // App (virtual)
+        voiceCall: null,
+        ussdSession: null,
+        receivedSms: null,
+        receivedEmail: null,
+        receivedWhatsapp: null,
+        receivedTelegram: null,
+        receivedMessenger: null,
+    };
+
+    /**
+     * Connect to the elarian server
+     */
+    this.connect = async function connect() {
+        const { socket, transport } = await connectRSocket({
+            ...this.options,
+            authToken: this.options.authToken,
+            apiKey: this.options.authToken ? null : this.options.apiKey,
+        }, {
+            ...this.configOptions,
+            platform: this.platform,
+            notificationHandler: this.notificationHandler(this),
+        });
+        this._socket = socket;
+        this._transport = transport;
+    };
+
+    this.getSocket = function getSocket() {
+        if (!this._socket) {
+            throw new Error('Client is not connected');
+        }
+        return this._socket;
+    };
+
+    /**
+     * Disconnect from the elarian server
+     */
+    this.disconnect = function disconnect() {
+        if (this._socket) {
+            this._transport.close();
+            this._socket.close();
+            // this._socket = null;
+            // this._transport = null;
+        }
+    };
+
+    const cleanup = (code) => {
+        this.platform.log.warn(`Disconnecting from API server(${code})`);
+        this.disconnect();
+    };
+    process.on('SIGINT', cleanup.bind(null));
+    process.on('exit', cleanup.bind(null));
+}
+
+/**
+ * Instantiate and connect an elarian client
+ * @param {ElarianConfig} config
+ */
+Elarian.newInstance = async (config) => {
+    const client = new Elarian(config);
+    await client.connect();
+    return client;
 };
 
 module.exports = Elarian;
@@ -214,7 +282,7 @@ module.exports = Elarian;
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a>
 	
-		on Wed, Jan 27, 2021 2:22 PM
+		on Wed, Jan 27, 2021 2:32 PM
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

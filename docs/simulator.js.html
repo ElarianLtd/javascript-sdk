@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Elarian Source: messaging.js</title>
+	<title>Elarian Source: simulator.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -72,120 +72,149 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: messaging.js</h1>
+		<h1 class="page-title">Source: simulator.js</h1>
     
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">const {
-    ElarianMessages,
-    addTag,
-    addMessage,
-    addCustomer,
-    getStatusString,
-    addCustomerNumber,
-    getMessageConsentUpdateAction,
-    getChannelProvider,
-} = require('./utils');
-
-const Elarian = require('./client');
-const Customer = require('./customer');
+            class="sunlight-highlight-javascript linenums">const Elarian = require('./client');
 
 const {
+    getStatus,
+    addCashValue,
+    ElarianMessages,
+    getChannelProvider,
+    getCustomerEventDirection,
+} = require('./utils');
+
+const {
+    Duration,
+    Timestamp,
+    StringValue,
+    PaymentStatus,
+    PaymentChannel,
+    VoiceCallStatus,
     MessagingChannel,
-    AppToServerCommand,
-    SendMessageCommand,
-    ReplyToMessageCommand,
-    SendMessageTagCommand,
-    MessageDeliveryStatus,
+    InboundMessageBody,
+    VoiceCallDialInput,
+    VoiceCallQueueInput,
+    PaymentChannelNumber,
+    VoiceCallHangupCause,
     MessagingChannelNumber,
-    AppToServerCommandReply,
-    MessagingConsentUpdateStatus,
-    UpdateMessagingConsentCommand,
+    CustomerEventDirection,
+    SimulatorToServerCommand,
+    VoiceCallInputMessageBody,
+    SimulatorToServerCommandReply,
+    ReceivePaymentSimulatorCommand,
+    ReceiveMessageSimulatorCommand,
+    UpdatePaymentStatusSimulatorCommand,
 } = ElarianMessages;
 
 /**
- * Send a message
- * @param {Customer} customer
- * @param {MessagingChannelNumber} channelNumber
- * @param {Message} message
- * @returns {MessageStatus}
- * @memberof Elarian
+ * Instantiate an elarian simulator client
+ * @class
+ * @param {ElarianConfig} config
  */
-Elarian.prototype.sendMessage = function sendMessage(customer, channelNumber, message) {
-    const socket = this.getSocket();
+function Simulator(config) {
+    Elarian.call(this, { ...config, isSimulator: true });
+}
 
-    if (!(customer instanceof Customer)) {
-        throw new Error('Invalid customer');
-    }
+Simulator.prototype = Object.create(Elarian.prototype, { constructor: Simulator });
 
-    if (!customer.customerNumber) {
-        throw new Error('sendMessage() requires a customer with customerNumber');
-    }
-
-    let cmd = new SendMessageCommand()
-        .setChannelNumber(
-            new MessagingChannelNumber()
-                .setNumber(channelNumber.number)
-                .setChannel(getChannelProvider(channelNumber.channel, MessagingChannel)),
-        );
-    cmd = addCustomer(cmd, customer);
-    cmd = addMessage(cmd, message);
-    const req = new AppToServerCommand()
-        .setSendMessage(cmd);
-
-    return new Promise((resolve, reject) => {
-        socket
-            .requestResponse({
-                data: Buffer.from(req.serializeBinary()),
-            })
-            .subscribe({
-                onComplete: (value) => {
-                    try {
-                        const res = AppToServerCommandReply
-                            .deserializeBinary(value.data)
-                            .getSendMessage();
-                        const result = {
-                            status: getStatusString(res.getStatus(), MessageDeliveryStatus),
-                            description: res.getDescription(),
-                            customerId: (res.getCustomerId() || {
-                                getValue: () => undefined,
-                            }).getValue(),
-                            messageId: (res.getMessageId() || {
-                                getValue: () => undefined,
-                            }).getValue(),
-                        };
-                        resolve(result);
-                    } catch (ex) {
-                        reject(ex);
-                    }
-                },
-                onError: (error) => reject(error),
-            });
-    });
+/**
+ * Instantiate and connect an elarian simulator client
+ * @param {ElarianConfig} config
+ */
+Simulator.newInstance = async (config) => {
+    const client = new Simulator(config);
+    await client.connect();
+    return client;
 };
 
 /**
- * Send message by tag
- * @param {Tag} tag
+ * Initiate a message request
+ * @param {string} customerNumber
  * @param {MessagingChannelNumber} channelNumber
- * @param {Message} body
- * @memberof Elarian
- * @returns {WorkStatus}
+ * @param {string} sessionId
+ * @param {SimulatorMessageBody[]} messageParts
+ * @memberof Simulator
  */
-Elarian.prototype.sendMessageByTag = function sendMessageByTag(tag, channelNumber, message) {
+// eslint-disable-next-line max-len
+Simulator.prototype.receiveMessage = function receiveMessage(customerNumber, channelNumber, sessionId, messageParts = []) {
     const socket = this.getSocket();
 
-    let cmd = new SendMessageTagCommand()
+    const parts = messageParts.map((part) => {
+        let voiceObj;
+        if (part.voice) {
+            let dialObj;
+            if (part.voice.dialData) {
+                const { dialData } = part.voice;
+                dialObj = new VoiceCallDialInput()
+                    .setDestinationNumber(dialData.destinationNumber)
+                    .setStartedAt(new Timestamp().setSeconds(Math.floor(dialData.startedAt)))
+                    .setDuration(new Duration().setSeconds(Math.floor(dialData.duration)));
+            }
+            let queueObj;
+            if (part.queueData) {
+                const { queueData } = part.voice;
+                queueObj = new VoiceCallQueueInput()
+                    .setEnqueuedAt(new Timestamp().setSeconds(Math.floor(queueData.enqueuedAt)))
+                    .setDequeuedAt(new Timestamp().setSeconds(Math.floor(queueData.dequeuedAt)))
+                    .setDequeuedToNumber(new StringValue().setValue(queueData.dequeuedToNumber))
+                    // eslint-disable-next-line max-len
+                    .setDequeuedToSessionId(new StringValue().setValue(queueData.dequeuedToSessionId))
+                    .setQueueDuration(new Duration().setSeconds(Math.floor(queueData.duration)));
+            }
+
+            voiceObj = new VoiceCallInputMessageBody()
+                // eslint-disable-next-line max-len
+                .setDirection(getCustomerEventDirection(part.voice.direction, CustomerEventDirection))
+                // eslint-disable-next-line max-len
+                .setStartedAt(new Timestamp().setSeconds(Math.floor(part.voice.startedAt || (Date.now() / 1000))))
+                .setDialData(dialObj)
+                .setQueueData(queueObj);
+
+            if (part.voice.status) {
+                voiceObj = voiceObj.setStatus(getStatus(part.voice.status, VoiceCallStatus));
+            }
+
+            if (part.voice.hangupCause) {
+                voiceObj = voiceObj.setHangupCause(getChannelProvider(part.voice.hangupCause, VoiceCallHangupCause, /^VOICE_CALL_HANGUP_CAUSE_/));
+            }
+
+            if (part.voice.dtmfDigits) {
+                // eslint-disable-next-line max-len
+                voiceObj = voiceObj.setDtmlDigits(new StringValue().setValue(part.voice.dtmfDigits));
+            }
+
+            if (part.voice.recordingUrl) {
+                // eslint-disable-next-line max-len
+                voiceObj = voiceObj.setRecordingUrl(new StringValue().setValue(part.voice.recordingUrl));
+            }
+        }
+
+        const obj = new InboundMessageBody()
+            .setText(part.text)
+            .setMedia(part.media)
+            .setLocation(part.location)
+            .setEmail(part.email)
+            .setUssd(new StringValue().setValue(part.ussd))
+            .setVoice(voiceObj);
+
+        return obj;
+    });
+    const cmd = new ReceiveMessageSimulatorCommand()
+        .setCustomerNumber(customerNumber)
+        .setSessionId(new StringValue().setValue(sessionId))
         .setChannelNumber(
             new MessagingChannelNumber()
                 .setNumber(channelNumber.number)
                 .setChannel(getChannelProvider(channelNumber.channel, MessagingChannel)),
-        );
-    cmd = addTag(cmd, tag);
-    cmd = addMessage(cmd, message);
-    const req = new AppToServerCommand()
-        .setSendMessageTag(cmd);
+        )
+        .setPartsList(parts);
+
+    const req = new SimulatorToServerCommand()
+        .setReceiveMessage(cmd);
 
     return new Promise((resolve, reject) => {
         socket
@@ -195,15 +224,12 @@ Elarian.prototype.sendMessageByTag = function sendMessageByTag(tag, channelNumbe
             .subscribe({
                 onComplete: (value) => {
                     try {
-                        const res = AppToServerCommandReply
-                            .deserializeBinary(value.data)
-                            .getTagCommand();
+                        const res = SimulatorToServerCommandReply
+                            .deserializeBinary(value.data);
                         const result = {
                             status: res.getStatus(),
                             description: res.getDescription(),
-                            workId: (res.getWorkId() || {
-                                getValue: () => undefined,
-                            }).getValue(),
+                            message: (res.getMessage() || { toObject: () => {} }).toObject(),
                         };
                         resolve(result);
                     } catch (ex) {
@@ -216,99 +242,32 @@ Elarian.prototype.sendMessageByTag = function sendMessageByTag(tag, channelNumbe
 };
 
 /**
- * Reply to a received message
- * @param {Customer} customer
- * @param {string} replyToMessageId
- * @param {Message} body
- * @returns {MessageStatus}
- * @memberof Elarian
+ * Initiate payment request
+ * @param {string} transactionId
+ * @param {string} customerNumber
+ * @param {PaymentChannelNumber} channelNumber
+ * @param {Cash} value
+ * @param {string} status
+ * @memberof Simulator
  */
 // eslint-disable-next-line max-len
-Elarian.prototype.replyToMessage = async function replyToMessage(customer, replyToMessageId, message) {
+Simulator.prototype.receivePayment = function receivePayment(transactionId, customerNumber, channelNumber, value, status) {
     const socket = this.getSocket();
 
-    if (!(customer instanceof Customer)) {
-        throw new Error('Invalid customer');
-    }
-
-    let { customerId } = customer;
-
-    if (!customerId) {
-        const state = await customer.getState();
-        customerId = state.customerId;
-    }
-
-    let cmd = new ReplyToMessageCommand()
-        .setCustomerId(customerId)
-        .setMessageId(replyToMessageId);
-    cmd = addMessage(cmd, message);
-    const req = new AppToServerCommand()
-        .setReplyToMessage(cmd);
-
-    return new Promise((resolve, reject) => {
-        socket
-            .requestResponse({
-                data: Buffer.from(req.serializeBinary()),
-            })
-            .subscribe({
-                onComplete: (value) => {
-                    try {
-                        const res = AppToServerCommandReply
-                            .deserializeBinary(value.data)
-                            .getSendMessage();
-                        const result = {
-                            status: getStatusString(res.getStatus(), MessageDeliveryStatus),
-                            description: res.getDescription(),
-                            customerId: (res.getCustomerId() || {
-                                getValue: () => undefined,
-                            }).getValue(),
-                            messageId: (res.getMessageId() || {
-                                getValue: () => undefined,
-                            }).getValue(),
-                        };
-                        resolve(result);
-                    } catch (ex) {
-                        reject(ex);
-                    }
-                },
-                onError: (error) => reject(error),
-            });
-    });
-};
-
-/**
- * Allow or block a customer from receiving messages from a channel
- * @param {Customer} customer
- * @param {MessagingChannelNumber} channelNumber
- * @param {string} action allow or block
- * @returns {ConsentStatus}
- * @memberof Elarian
- */
-// eslint-disable-next-line max-len
-Elarian.prototype.updateMessagingConsent = function updateMessagingConsent(customer, channelNumber, action) {
-    const socket = this.getSocket();
-
-    if (!(customer instanceof Customer)) {
-        throw new Error('Invalid customer');
-    }
-
-    const { customerNumber } = customer;
-    if (!customerNumber) {
-        // FIXME: Have Elarian return the customer number on fetch state?
-        throw new Error('customerNumber is not setup on this customer');
-    }
-
-    let cmd = new UpdateMessagingConsentCommand()
-        .setUpdate(getMessageConsentUpdateAction(action))
+    let cmd = new ReceivePaymentSimulatorCommand()
+        .setCustomerNumber(customerNumber)
+        .setTransactionId(transactionId)
+        .setStatus(getStatus(status, PaymentStatus))
         .setChannelNumber(
-            new MessagingChannelNumber()
+            new PaymentChannelNumber()
                 .setNumber(channelNumber.number)
-                .setChannel(getChannelProvider(channelNumber.channel, MessagingChannel)),
+                .setChannel(getChannelProvider(channelNumber.channel, PaymentChannel)),
         );
-    cmd = addCustomerNumber(cmd, customerNumber);
 
-    const req = new AppToServerCommand()
-        .setUpdateMessagingConsent(cmd);
+    cmd = addCashValue(cmd, value);
+
+    const req = new SimulatorToServerCommand()
+        .setReceivePayment(cmd);
 
     return new Promise((resolve, reject) => {
         socket
@@ -316,17 +275,14 @@ Elarian.prototype.updateMessagingConsent = function updateMessagingConsent(custo
                 data: Buffer.from(req.serializeBinary()),
             })
             .subscribe({
-                onComplete: (value) => {
+                onComplete: ({ data }) => {
                     try {
-                        const res = AppToServerCommandReply
-                            .deserializeBinary(value.data)
-                            .getUpdateMessagingConsent();
+                        const res = SimulatorToServerCommandReply
+                            .deserializeBinary(data);
                         const result = {
-                            status: getStatusString(res.getStatus(), MessagingConsentUpdateStatus),
+                            status: res.getStatus(),
                             description: res.getDescription(),
-                            customerId: (res.getCustomerId() || {
-                                getValue: () => undefined,
-                            }).getValue(),
+                            message: (res.getMessage() || { toObject: () => {} }).toObject(),
                         };
                         resolve(result);
                     } catch (ex) {
@@ -338,7 +294,48 @@ Elarian.prototype.updateMessagingConsent = function updateMessagingConsent(custo
     });
 };
 
-module.exports = Elarian;
+/**
+ * Update payment status
+ * @param {string} transactionId
+ * @param {string} status
+ * @memberof Simulator
+ */
+Simulator.prototype.updatePaymentStatus = function updatePaymentStatus(transactionId, status) {
+    const socket = this.getSocket();
+
+    const cmd = new UpdatePaymentStatusSimulatorCommand()
+        .setTransactionId(transactionId)
+        .setStatus(getStatus(status, PaymentStatus));
+
+    const req = new SimulatorToServerCommand()
+        .setUpdatePaymentStatus(cmd);
+
+    return new Promise((resolve, reject) => {
+        socket
+            .requestResponse({
+                data: Buffer.from(req.serializeBinary()),
+            })
+            .subscribe({
+                onComplete: (value) => {
+                    try {
+                        const res = SimulatorToServerCommandReply
+                            .deserializeBinary(value.data);
+                        const result = {
+                            status: res.getStatus(),
+                            description: res.getDescription(),
+                            message: (res.getMessage() || { toObject: () => {} }).toObject(),
+                        };
+                        resolve(result);
+                    } catch (ex) {
+                        reject(ex);
+                    }
+                },
+                onError: (error) => reject(error),
+            });
+    });
+};
+
+module.exports = Simulator;
 </pre>
     </article>
 </section>
@@ -384,7 +381,7 @@ module.exports = Elarian;
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a>
 	
-		on Wed, Jan 27, 2021 2:22 PM
+		on Wed, Jan 27, 2021 2:32 PM
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
