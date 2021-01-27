@@ -28,9 +28,9 @@ const { Elarian } = ElarianSDK;
 // ...
 
 const client = await Elarian.newInstance({
-    apiKey: 'efg', // or authToken: 'abc'
-    orgId: 'test_org_id',
-    appId: 'test_app_id',
+    apiKey: 'YOUR_API_KEY', // or authToken: 'YOUR_AUTH_TOKEN'
+    orgId: 'YOUR_ORG_ID',
+    appId: 'YOUR_APP_ID',
 });
 
 client.on('ussdSession', async ({ data, customer}, callback) => {
