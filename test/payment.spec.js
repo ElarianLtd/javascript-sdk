@@ -9,7 +9,7 @@ describe('Payment', () => {
     let customer;
 
     before(async () => {
-        client = fixtures.getClient();
+        client = await fixtures.getClient();
         customer = new Customer({
             client,
             customerNumber: fixtures.customerNumber,

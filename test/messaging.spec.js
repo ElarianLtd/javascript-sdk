@@ -9,7 +9,7 @@ describe('Messaging', () => {
     let customer;
 
     before(async () => {
-        client = fixtures.getClient();
+        client = await fixtures.getClient();
         customer = new Customer({
             client,
             customerNumber: fixtures.customerNumber,
@@ -20,24 +20,24 @@ describe('Messaging', () => {
         let resp = await client.sendMessage(
             customer,
             {
-                number: fixtures.senderId,
+                number: fixtures.alphannumericSenderId,
                 channel: 'sms',
             },
             {
                 body: {
-                    text: 'node messaging sms test',
+                    text: 'node messaging sms alphannumeric test',
                 },
             },
         );
         resp.should.have.properties(['status', 'description', 'messageId', 'customerId']);
         resp = await customer.sendMessage(
             {
-                number: fixtures.senderId,
+                number: fixtures.shortCodeSenderId,
                 channel: 'sms',
             },
             {
                 body: {
-                    text: 'node customer sms messaging test',
+                    text: 'node customer sms short code messaging test',
                 },
             },
         );
@@ -49,7 +49,24 @@ describe('Messaging', () => {
             },
             {
                 body: {
-                    text: 'node customer telegram messaging test',
+                    url: 'https://fake.localhost',
+                },
+            },
+        );
+        resp.should.have.properties(['status', 'description', 'messageId', 'customerId']);
+        resp = await customer.sendMessage(
+            {
+                number: fixtures.whatsappNumber,
+                channel: 'whatsapp',
+            },
+            {
+                body: {
+                    location: {
+                        label: 'work',
+                        address: 'Africa\'s Talking',
+                        longitude: 36.7676286,
+                        latitude: -1.2703046,
+                    },
                 },
             },
         );
@@ -63,7 +80,7 @@ describe('Messaging', () => {
                 value: 'testers',
             },
             {
-                number: fixtures.senderId,
+                number: fixtures.alphannumericSenderId,
                 channel: 'sms',
             },
             {

@@ -14,19 +14,21 @@
         "dictionaries": ["jsdoc","closure"]
     },
     "templates": {
-        "cleverLinks": false,
+        "cleverLinks": true,
         "monospaceLinks": false,
+        "footer": "",
+        "systemName": "Elarian",
 
         "systemName": "Elarian",
         "copyright":  "Elarian",
         "includeDate": true,
         "navType": "inline",
-        "theme": "united",
-        "linenums": false,
+        "theme": "simplex",
+        "linenums": true,
         "collapseSymbols": false,
-        "inverseNav": false,
-        "outputSourceFiles": false,
-        "outputSourcePath": false,
+        "inverseNav": true,
+        "outputSourceFiles": true,
+        "outputSourcePath": true,
         "dateFormat": "llll",
         "syntaxTheme": "dark",
         "sort": "longname, version, since",
@@ -36,7 +38,7 @@
     "opts": {
         "template": "node_modules/ink-docstrap/template",
         "encoding": "utf8",
-        "destination": "./docs",
+        "destination": "./docs/refrerence",
         "recurse": true
     }
 }

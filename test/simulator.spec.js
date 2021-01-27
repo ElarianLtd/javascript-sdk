@@ -4,27 +4,16 @@ const should = require('should');
 const fixtures = require('./fixtures');
 
 describe('Simulator', () => {
-    let client;
     let simulator;
     const transactionId = 'PAQ0ZZE5DI';
 
     before(async () => {
         const r = await fixtures.initializeClient();
-        client = r.client;
         simulator = r.simulator;
-
-        client.on('data', (evt, data) => {
-            console.log('App', evt, data);
-        });
 
         simulator.on('data', (evt, data) => {
             console.log('Sim', evt, data);
         });
-    });
-
-    after(async () => {
-        await client.disconnect();
-        await simulator.disconnect();
     });
 
     it('receivePayment()', (done) => {

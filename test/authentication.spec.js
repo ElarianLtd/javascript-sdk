@@ -57,7 +57,7 @@ describe('Authentication', () => {
 
     it('generateAuthToken()', async () => {
         await fixtures.initializeClient();
-        const client = fixtures.getClient();
+        const client = await fixtures.getClient();
         const resp = await client.generateAuthToken();
         resp.should.have.properties(['token', 'lifetime']);
     });

@@ -4,8 +4,6 @@ const should = require('should');
 const { Customer } = require('..');
 const fixtures = require('./fixtures');
 
-const log = console;
-
 describe('Notification', function fx() {
     this.timeout(10000);
 
@@ -14,50 +12,20 @@ describe('Notification', function fx() {
     let simulator;
 
     before(async () => {
-        client = fixtures.getClient();
+        client = await fixtures.getClient();
 
-        client.on('data', (evt, data) => {
-            log.warn('Client ->', evt, data);
-        });
+        // client.on('data', (evt, data) => {
+        //     log.warn('Client ->', evt, JSON.stringify(data, null, 2));
+        // });
 
         bob = new Customer({
             client,
             customerNumber: fixtures.customerNumber,
         });
 
-        simulator = fixtures.getSimulator();
-
-        simulator.on('data', (evt, data) => {
-            log.warn('Simulator ->', evt, data);
-        });
-
-        simulator.on('sendMessage', (data, cb) => {
-            // TODO: watch out for sms+ussd
-            log.info(data);
-            cb();
-        });
-        simulator.on('makeVoiceCall', (data, cb) => {
-            log.info(data);
-            cb();
-        });
-        simulator.on('sendCustomerPayment', (data, cb) => {
-            log.info(data);
-            cb();
-        });
-        simulator.on('sendChannelPayment', (data, cb) => {
-            log.info(data);
-            cb();
-        });
-        simulator.on('checkoutPayment', (data, cb) => {
-            log.info(data);
-            cb();
-        });
+        simulator = await fixtures.getSimulator();
 
         await bob.getState();
-    });
-
-    after(async () => {
-        await simulator.disconnect();
     });
 
     it('reminder', (done) => {
@@ -102,7 +70,7 @@ describe('Notification', function fx() {
         });
         bob.sendMessage(
             {
-                number: fixtures.shortCode,
+                number: fixtures.shortCodeSenderId,
                 channel: 'sms',
             },
             { body: { text: 'messageStatus test' } },
@@ -152,12 +120,27 @@ describe('Notification', function fx() {
             done();
         });
 
-        simulator.updatePaymentStatus('fake-txn', 'failed')
+        client.initiatePayment(
+            {
+                purseId: fixtures.purseId,
+            },
+            {
+                customerNumber: bob.customerNumber,
+                channelNumber: {
+                    number: fixtures.paybill,
+                    channel: 'cellular',
+                },
+            },
+            {
+                amount: 1.78,
+                currencyCode: 'KES',
+            },
+        )
             .then((resp) => {
                 resp.should.have.properties([
                     'status',
-                    'message',
                     'description',
+                    'transactionId',
                 ]);
             })
             .catch((ex) => done(ex));
@@ -182,6 +165,71 @@ describe('Notification', function fx() {
                 text: 'Hello test long long long text',
             },
         ];
+        const sessionId = 'some-session-id';
+        simulator.receiveMessage(customerNumber, channelNumber, sessionId, messageBodyParts)
+            .then((resp) => {
+                resp.should.have.properties([
+                    'status',
+                    'message',
+                    'description',
+                ]);
+            })
+            .catch((ex) => done(ex));
+    });
+
+    it('ussdSession', (done) => {
+        client.on('ussdSession', async ({ data, customer }, callback) => {
+            data.should.have.properties([
+                'input',
+                'messageId',
+                'sessionId',
+                'channelNumber',
+                'customerNumber',
+            ]);
+            should.exist(customer);
+            client.off('ussdSession');
+            callback(null, { text: 'Hello', isTerminal: true });
+            done();
+        });
+        const customerNumber = fixtures.customerNumber.number;
+        const channelNumber = fixtures.ussdChannel;
+        const messageBodyParts = [
+            {
+                ussd: '1',
+            },
+        ];
+        const sessionId = 'some-session-id';
+        simulator.receiveMessage(customerNumber, channelNumber, sessionId, messageBodyParts)
+            .then((resp) => {
+                resp.should.have.properties([
+                    'status',
+                    'message',
+                    'description',
+                ]);
+            })
+            .catch((ex) => done(ex));
+    });
+
+    it('voiceCall', (done) => {
+        client.on('voiceCall', async ({ data, customer }, callback) => {
+            data.should.have.properties([
+                'messageId',
+                'sessionId',
+                'channelNumber',
+                'customerNumber',
+            ]);
+            should.exist(customer);
+            client.off('voiceCall');
+            callback(null, fixtures.dialPlan);
+            done();
+        });
+        const customerNumber = fixtures.customerNumber.number;
+        const channelNumber = fixtures.voiceChannel;
+        const messageBodyParts = [{
+            voice: {
+                direction: 'inbound',
+            },
+        }];
         const sessionId = 'some-session-id';
         simulator.receiveMessage(customerNumber, channelNumber, sessionId, messageBodyParts)
             .then((resp) => {
@@ -224,7 +272,7 @@ describe('Notification', function fx() {
             done();
         });
 
-        bob.updateActivity({ number: 'www.elarian.com', channel: 'web' }, 'fake-session', 'some-key')
+        bob.updateActivity({ number: 'www.elarian.com', channel: 'web' }, { sessionId: 'some-session', key: 'kkey' })
             .catch((err) => done(err));
     });
 
@@ -302,7 +350,7 @@ describe('Notification', function fx() {
             done();
         });
 
-        // TODO: Start session
+        // TODO: Start session?
     });
 
     it('messagingConsentUpdate', (done) => {
@@ -319,7 +367,7 @@ describe('Notification', function fx() {
         client.updateMessagingConsent(
             bob,
             {
-                number: fixtures.shortCode,
+                number: fixtures.shortCodeSenderId,
                 channel: 'sms',
             },
             'block',

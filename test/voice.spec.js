@@ -4,29 +4,20 @@ const should = require('should');
 const { Customer } = require('..');
 const fixtures = require('./fixtures');
 
-describe('Voice', () => {
+describe('Voice', function fx() {
     let client;
     let customer;
     let simulator;
 
+    this.timeout(10000);
+
     before(async () => {
-        const r = await fixtures.initializeClient();
-        client = r.client;
-        simulator = r.simulator;
+        client = await fixtures.getClient();
+        simulator = await fixtures.getSimulator();
         customer = new Customer({
             client,
             customerNumber: fixtures.customerNumber,
         });
-
-        client.on('data', (evt, data) => {
-            console.log('App', evt, data);
-        });
-
-        simulator.on('data', (evt, data) => {
-            console.log('Sim', evt, data);
-        });
-
-        await customer.getState();
     });
 
     after(async () => {
@@ -35,24 +26,17 @@ describe('Voice', () => {
     });
 
     it('makeVoiceCall()', (done) => {
-        // TODO: Simulator wait for calls
+        // simulator.on('makeVoiceCall', (notif, callback) => {
+        //     done();
+        //     callback(null);
+        // });
 
-        simulator.on('makeVoiceCall', (notif, callback) => {
-            console.log(notif);
-            done();
-            callback(null);
-        });
-
-        client.makeVoiceCall(customer, {
-            number: fixtures.voiceNumber,
-            channel: 'cellular',
-        }, fixtures.dialPlan).then((resp) => {
+        client.makeVoiceCall(customer, fixtures.voiceNumber).then((resp) => {
             resp.should.have.properties(['status', 'description', 'customerId', 'sessionId']);
-            resp.status.should.equal('session_initiated');
+            // resp.status.should.equal('session_initiated');
+            done();
         }).catch((ex) => {
             done(ex);
         });
     });
-
-    // TODO: test receiveing calls
 });

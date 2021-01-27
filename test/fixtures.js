@@ -45,14 +45,25 @@ module.exports = {
         channel: 'sms',
     },
 
-    shortCode: '21414',
-    senderId: 'Elarian',
+    ussdChannel: {
+        number: '*384#',
+        channel: 'ussd',
+    },
+
+    voiceChannel: {
+        number: '+254711082000',
+        channel: 'voice',
+    },
+
+    shortCodeSenderId: '21414',
+    alphannumericSenderId: 'Elarian',
     telegramBot: 'elarian_test_bot',
     paybill: '525900',
     purseId: 'test_purse',
-    ussdCode: '*544#',
+    ussdCode: '*384#',
     voiceNumber: '+254711082000',
-    whatsappNumber: '+15012365864',
+    whatsappNumber: '+14155238886',
+    emailSenderId: 'postmaster@sandbox388ba53b1a244f41b0f9c120783a7320.mailgun.org',
 
     dialPlan: [
         {
@@ -156,9 +167,21 @@ module.exports = {
         return { client, simulator };
     },
 
-    getClient: () => client,
+    getClient: async () => {
+        if (client) {
+            return client;
+        }
+        await module.exports.initializeClient();
+        return client;
+    },
 
-    getSimulator: () => simulator,
+    getSimulator: async () => {
+        if (simulator) {
+            return simulator;
+        }
+        await module.exports.initializeClient();
+        return simulator;
+    },
 
     sleep: (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
 };
