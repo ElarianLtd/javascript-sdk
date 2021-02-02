@@ -228,6 +228,7 @@ describe('Notification', function fx() {
         const messageBodyParts = [{
             voice: {
                 direction: 'inbound',
+                status: 'dialing',
             },
         }];
         const sessionId = 'some-session-id';
@@ -259,23 +260,6 @@ describe('Notification', function fx() {
             .catch((err) => done(err));
     });
 
-    it('sentMessageReaction', (done) => {
-        client.on('sentMessageReaction', async ({ data, customer }) => {
-            data.should.have.properties([
-                'customerNumber',
-                'channelNumber',
-                'sessionId',
-                'activity',
-            ]);
-            should.exist(customer);
-            client.off('sentMessageReaction');
-            done();
-        });
-
-        bob.updateActivity({ number: 'www.elarian.com', channel: 'web' }, { sessionId: 'some-session', key: 'kkey' })
-            .catch((err) => done(err));
-    });
-
     it('walletPaymentStatus', (done) => {
         let transactionId;
         client.on('walletPaymentStatus', async ({ data, customer }) => {
@@ -291,6 +275,19 @@ describe('Notification', function fx() {
         });
 
         bob.getState()
+            .then(() => client.initiatePayment(
+                {
+                    purseId: fixtures.purseId,
+                },
+                {
+                    customerId: bob.customerId,
+                    walletId: 'bob_wallet',
+                },
+                {
+                    amount: 200,
+                    currencyCode: 'KES',
+                },
+            ))
             .then(() => client.initiatePayment(
                 {
                     customerId: bob.customerId,
@@ -312,6 +309,23 @@ describe('Notification', function fx() {
                 resp.status.should.equal('pending_confirmation');
                 transactionId = resp.transactionId;
             })
+            .catch((err) => done(err));
+    });
+
+    it('sentMessageReaction', (done) => {
+        client.on('sentMessageReaction', async ({ data, customer }) => {
+            data.should.have.properties([
+                'customerNumber',
+                'channelNumber',
+                'sessionId',
+                'activity',
+            ]);
+            should.exist(customer);
+            client.off('sentMessageReaction');
+            done();
+        });
+
+        bob.updateActivity({ number: 'www.elarian.com', channel: 'web' }, { sessionId: 'some-session', key: 'kkey' })
             .catch((err) => done(err));
     });
 
