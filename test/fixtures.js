@@ -157,7 +157,7 @@ module.exports = {
     initializeClient: async () => {
         simulator = new Simulator({
             ...clientParams,
-            appId: 'fake-debug-test',
+            // appId: 'fake-debug-test',
         });
         await simulator.connect();
 
