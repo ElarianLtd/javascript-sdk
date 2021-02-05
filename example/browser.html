@@ -4,11 +4,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <title>Elarian</title>
+    <script>
+        window.DEBUG = true;
+    </script>
     <script src="../dist/elarian.min.js"></script>
 </head>
 <body>
     <script>
         async function test() {
+
             const { Elarian, Customer } = ElarianSDK;
             const elarian = new Elarian({
                 authToken: 'test_auth_token',
@@ -18,11 +22,14 @@
             console.log('Connecting...');
             await elarian.connect();
             console.log('Connected!');
+            console.log('Getting auth token...');
+            const token = await elarian.generateAuthToken();
+            console.log(token);
             const customer = new Customer({
                 client: elarian,
                 customerNumber: {
-                    number: '+2547XXXXXXXX',
-                    provider: 'telco',
+                    number: '+254718769882',
+                    provider: 'cellular',
                 },
             });
             console.log('Gettting customer state...');

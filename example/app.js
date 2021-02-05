@@ -7,7 +7,6 @@ const client = new Elarian({
     appId: process.env.ELARIAN_APP_ID,
     orgId: process.env.ELARIAN_ORG_ID,
     apiKey: process.env.ELARIAN_API_KEY,
-    allowNotifications: false,
 });
 
 client.on('data', (event, data) => {
