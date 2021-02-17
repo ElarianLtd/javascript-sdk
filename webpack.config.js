@@ -10,4 +10,9 @@ module.exports = {
         libraryTarget: 'umd',
         library: 'ElarianSDK',
     },
+    resolve: {
+        fallback: {
+            buffer: false,
+        },
+    },
 };

@@ -13,7 +13,7 @@
     <script>
         async function test() {
 
-            const { Elarian, Customer } = ElarianSDK;
+            const { Elarian } = ElarianSDK;
             const elarian = new Elarian({
                 authToken: 'test_auth_token',
                 orgId: 'test_org',
@@ -25,8 +25,7 @@
             console.log('Getting auth token...');
             const token = await elarian.generateAuthToken();
             console.log(token);
-            const customer = new Customer({
-                client: elarian,
+            const customer = new elarian.Customer({
                 customerNumber: {
                     number: '+254718769882',
                     provider: 'cellular',

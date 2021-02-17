@@ -1,7 +1,6 @@
 const _ = require('lodash');
 const should = require('should');
 
-const { Customer } = require('..');
 const fixtures = require('./fixtures');
 
 describe('Notification', function fx() {
@@ -18,7 +17,7 @@ describe('Notification', function fx() {
         //     log.warn('Client ->', evt, JSON.stringify(data, null, 2));
         // });
 
-        bob = new Customer({
+        bob = new client.Customer({
             client,
             customerNumber: fixtures.customerNumber,
         });

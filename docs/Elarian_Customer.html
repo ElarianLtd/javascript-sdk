@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Elarian Source: voice.js</title>
+	<title>Elarian Class: Customer</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -67,112 +67,139 @@
 <div class="row">
 
 	
-	<div class="col-md-12">
+	<div class="col-md-8">
 	
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: voice.js</h1>
-    
+	<h1 class="page-title">Class: Customer</h1>
 <section>
-    <article>
-        <pre
-            class="sunlight-highlight-javascript linenums">const {
-    addCustomer,
-    ElarianMessages,
-    getMessageDeliveryStatusString,
-    addVoiceCallActions,
-} = require('./utils');
 
-const Elarian = require('./client');
-const Customer = require('./customer');
+<header>
+    
+        <h2>
+            <span class="ancestors"><a href="Elarian.html">Elarian</a>#</span>
+        
+        Customer
+        </h2>
+        
+    
+</header>
 
-const {
-    OutboundMessage,
-    MessagingChannel,
-    SendMessageCommand,
-    AppToServerCommand,
-    OutboundMessageBody,
-    MessagingChannelNumber,
-    AppToServerCommandReply,
-    VoiceCallDialplanMessageBody,
-} = ElarianMessages;
 
-/**
- * Initiate a voice call to customer from channelNumber
- * @param {Customer} customer
- * @param {string} channelNumber
- * @param {VoiceAction[]} actions
- * @returns {VoiceStatus}
- * @memberof Elarian
- */
-Elarian.prototype.makeVoiceCall = function makeVoiceCall(customer, channelNumber, actions = []) {
-    const socket = this.getSocket();
+<article>
+    <div class="container-overview">
+    
+        
+<hr>
+<dt>
+    <h4 class="name" id="Customer"><span class="type-signature"></span>new Customer()</h4>
+    
+    
+</dt>
+<dd>
 
-    if (!(customer instanceof Customer)) {
-        throw new Error('Invalid customer');
-    }
+    
+    <div class="description">
+        <p>A customer object. @see <a href="Customer.html"><code>Customer</code></a></p>
+    </div>
+    
 
-    const { customerNumber } = customer;
-    if (!customerNumber) {
-        // FIXME: Have Elarian return the customer number on fetch state?
-        throw new Error('customerNumber is not setup on this customer');
-    }
+    
 
-    let cmd = new SendMessageCommand()
-        .setChannelNumber(
-            new MessagingChannelNumber()
-                .setNumber(channelNumber)
-                .setChannel(MessagingChannel.MESSAGING_CHANNEL_VOICE),
-        );
-    cmd = addCustomer(cmd, customer);
+    
 
-    const message = new OutboundMessage();
-    const messageBody = new OutboundMessageBody();
-    const dialPlan = addVoiceCallActions(new VoiceCallDialplanMessageBody(), actions);
-    messageBody.setVoice(dialPlan);
-    message.setBody(messageBody);
-    cmd.setMessage(message);
+    
+    
 
-    const req = new AppToServerCommand()
-        .setSendMessage(cmd);
+    
+<dl class="details">
+    
 
-    return new Promise((resolve, reject) => {
-        socket
-            .requestResponse({
-                data: Buffer.from(req.serializeBinary()),
-            })
-            .subscribe({
-                onComplete: (value) => {
-                    try {
-                        const res = AppToServerCommandReply
-                            .deserializeBinary(value.data)
-                            .getSendMessage();
-                        const result = {
-                            status: getMessageDeliveryStatusString(res.getStatus()),
-                            description: res.getDescription(),
-                            sessionId: (res.getSessionId() || {
-                                getValue: () => undefined,
-                            }).getValue(),
-                            customerId: (res.getCustomerId() || {
-                                getValue: () => undefined,
-                            }).getValue(),
-                        };
-                        resolve(result);
-                    } catch (ex) {
-                        reject(ex);
-                    }
-                },
-                onError: (error) => reject(error),
-            });
-    });
-};
+	
 
-module.exports = Elarian;
-</pre>
-    </article>
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="client.js.html">client.js</a>,
+				 <a href="client.js.html#sunlight-1-line-162">line 162</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
 </section>
-
 
 
 
@@ -182,6 +209,10 @@ module.exports = Elarian;
 
 	<div class="clearfix"></div>
 
+	
+		<div class="col-md-3">
+			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
+		</div>
 	
 
 </div>

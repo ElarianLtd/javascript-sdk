@@ -1,7 +1,6 @@
 require('dotenv').config();
 
 const { Elarian } = require('..');
-const Customer = require('../lib/customer');
 
 const client = new Elarian({
     appId: process.env.ELARIAN_APP_ID,
@@ -27,8 +26,7 @@ client
                 number: '21414',
                 channel: 'sms',
             };
-            const customer = new Customer({
-                client,
+            const customer = new client.Customer({
                 customerNumber,
             });
             const tasks = [

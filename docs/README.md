@@ -17,6 +17,8 @@
 * [Elarian](#Elarian)
     * [new Elarian(config)](#new_Elarian_new)
     * _instance_
+        * [.Customer](#Elarian+Customer)
+            * [new this.Customer()](#new_Elarian+Customer_new)
         * [.generateAuthToken()](#Elarian+generateAuthToken) ⇒ <code>AuthToken</code>
         * [.connect()](#Elarian+connect)
         * [.disconnect()](#Elarian+disconnect)
@@ -58,6 +60,15 @@
 | Param | Type |
 | --- | --- |
 | config | <code>ElarianConfig</code> | 
+
+<a name="Elarian+Customer"></a>
+
+### elarian.Customer
+**Kind**: instance class of [<code>Elarian</code>](#Elarian)  
+<a name="new_Elarian+Customer_new"></a>
+
+#### new this.Customer()
+<p>A customer object. @see [Customer](#Customer)</p>
 
 <a name="Elarian+generateAuthToken"></a>
 

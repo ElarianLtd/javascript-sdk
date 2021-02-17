@@ -36,17 +36,17 @@ module.exports = {
     },
 
     paymentChannel: {
-        number: '525900',
+        number: '787878',
         channel: 'cellular',
     },
 
     messagingChannel: {
-        number: '21414',
+        number: '787878',
         channel: 'sms',
     },
 
     ussdChannel: {
-        number: '*384#',
+        number: '*544#',
         channel: 'ussd',
     },
 
@@ -55,12 +55,12 @@ module.exports = {
         channel: 'voice',
     },
 
-    shortCodeSenderId: '21414',
-    alphannumericSenderId: 'Elarian',
-    telegramBot: 'elarian_test_bot',
-    paybill: '525900',
-    purseId: 'test_purse',
-    ussdCode: '*384#',
+    shortCodeSenderId: '787878',
+    alphannumericSenderId: 'AwesomeBob',
+    telegramBot: 'awesomeBot',
+    paybill: '787878',
+    purseId: 'prs-22Ojnf',
+    ussdCode: '*544#',
     voiceNumber: '+254711082000',
     whatsappNumber: '+14155238886',
     emailSenderId: 'postmaster@sandbox388ba53b1a244f41b0f9c120783a7320.mailgun.org',
@@ -155,14 +155,15 @@ module.exports = {
     ],
 
     initializeClient: async () => {
-        simulator = new Simulator({
-            ...clientParams,
-            // appId: 'fake-debug-test',
-        });
-        await simulator.connect();
+        if (!simulator) {
+            simulator = new Simulator(clientParams);
+            await simulator.connect();
+        }
 
-        client = new Elarian(clientParams);
-        await client.connect();
+        if (!client) {
+            client = new Elarian(clientParams);
+            await client.connect();
+        }
 
         return { client, simulator };
     },

@@ -1,8 +1,7 @@
-/* eslint-disable func-names */
-/* eslint-disable no-new */
+/* eslint-disable func-names, no-new */
 const should = require('should');
 
-const { Elarian, Simulator, Customer } = require('..');
+const { Elarian, Simulator } = require('..');
 const fixtures = require('./fixtures');
 
 describe('Authentication', () => {
@@ -30,11 +29,10 @@ describe('Authentication', () => {
         }).should.not.throw();
 
         (function () {
-            new Customer();
+            new client.Customer();
         }).should.throw();
 
-        const customer = new Customer({
-            client,
+        const customer = new client.Customer({
             customerNumber: {
                 number: '0700000000',
                 provider: 'cellular',
@@ -50,9 +48,11 @@ describe('Authentication', () => {
             allowNotifications: false,
         });
         await client.disconnect();
+        await fixtures.sleep(2000);
 
         client = await Simulator.newInstance(fixtures.clientParams);
         await client.disconnect();
+        await fixtures.sleep(2000);
     });
 
     it('generateAuthToken()', async () => {

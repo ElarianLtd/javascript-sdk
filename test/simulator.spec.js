@@ -8,8 +8,7 @@ describe('Simulator', () => {
     const transactionId = 'PAQ0ZZE5DI';
 
     before(async () => {
-        const r = await fixtures.initializeClient();
-        simulator = r.simulator;
+        simulator = await fixtures.getClient();
 
         simulator.on('data', (evt, data) => {
             console.log('Sim', evt, data);

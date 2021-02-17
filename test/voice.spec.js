@@ -1,7 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 const should = require('should');
 
-const { Customer } = require('..');
 const fixtures = require('./fixtures');
 
 describe('Voice', function fx() {
@@ -14,8 +13,7 @@ describe('Voice', function fx() {
     before(async () => {
         client = await fixtures.getClient();
         simulator = await fixtures.getSimulator();
-        customer = new Customer({
-            client,
+        customer = new client.Customer({
             customerNumber: fixtures.customerNumber,
         });
     });
