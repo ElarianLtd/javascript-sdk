@@ -27,7 +27,7 @@ const { Elarian } = ElarianSDK;
 
 // ...
 
-const client = await Elarian.newInstance({
+const client = new Elarian({
     apiKey: 'YOUR_API_KEY', // or authToken: 'YOUR_AUTH_TOKEN'
     orgId: 'YOUR_ORG_ID',
     appId: 'YOUR_APP_ID',
@@ -77,6 +77,10 @@ client.on('ussdSession', async ({ data, customer}, callback) => {
     callback(null, menu);
 });
 
+client
+    .connect()
+    .then(() => console.log('App is running!'))
+    .catch(console.error);
 ```
 
 ## Documentation
