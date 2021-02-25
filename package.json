@@ -1,6 +1,6 @@
 {
   "name": "elarian",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "Elrian JavaScript SDK",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
     "posttest": "npm run build",
     "test": "nyc mocha ./test -t 10000 --slow 500 --exit",
     "lint": "eslint .",
-    "build": "rm -rf docs/ dist/ && jsdoc -c .jsdoc -R README.md -r lib/ && jsdoc2md -c .jsdoc --files lib/** > docs/README.md && webpack",
+    "build": "rm -rf docs/ dist/ && jsdoc -t node_modules/tsd-jsdoc/dist -c .jsdoc -R README.md -r lib/ && mv docs/types.d.ts ./ && jsdoc2md -c .jsdoc --files lib/** > docs/README.md && webpack",
     "prepublish": "npm run build"
   },
   "author": "Salama AB <aksalj@aksalj.com>",
@@ -17,6 +17,7 @@
     "type": "git",
     "url": "git+https://github.com/ElarianLtd/javascript-sdk"
   },
+  "types": "./types.d.ts",
   "keywords": [
     "africastalking",
     "elarian",
@@ -55,6 +56,7 @@
     "node-fetch": ">=2.6.1",
     "nyc": "^15.1.0",
     "should": "^13.2.3",
+    "tsd-jsdoc": "^2.5.0",
     "webpack": "^5.24.0",
     "webpack-cli": "^4.5.0"
   }
