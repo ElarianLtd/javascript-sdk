@@ -8,7 +8,10 @@
     "posttest": "npm run build",
     "test": "nyc mocha ./test -t 10000 --slow 500 --exit",
     "lint": "eslint .",
-    "build": "rm -rf docs/ dist/ && jsdoc -t node_modules/tsd-jsdoc/dist -c .jsdoc -R README.md -r lib/ && mv docs/types.d.ts ./ && jsdoc2md -c .jsdoc --files lib/** > docs/README.md && webpack",
+    "build": "rm -rf docs/ dist/ && npm run build:types && npm run build:docs && npm run build:web",
+    "build:types": "jsdoc -t node_modules/tsd-jsdoc/dist -c .jsdoc -r lib/ && mv docs/types.d.ts ./ ",
+    "build:docs": "jsdoc -c .jsdoc -R README.md -r lib/ && jsdoc2md -c .jsdoc --files lib/** > docs/README.md",
+    "build:web": "webpack",
     "prepublish": "npm run build"
   },
   "author": "Salama AB <aksalj@aksalj.com>",

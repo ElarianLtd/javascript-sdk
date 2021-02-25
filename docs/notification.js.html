@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Elarian Source: notification.js</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.dark.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.simplex.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">Elarian</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu inline">
+					<li><a href="Customer.html">Customer</a></li><li><a href="Elarian.html">Elarian</a></li><li><a href="Elarian_Customer.html">Elarian#Customer</a></li><li><a href="Simulator.html">Simulator</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu inline">
+					<li><a href="global.html">Global</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: notification.js</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">/* eslint-disable max-len */
+const { Single } = require('rsocket-flowable');
+
+const Elarian = require('./client');
+
+const Customer = require('./customer');
+const {
+    ElarianMessages,
+    addMessage,
+    getStatusString,
+    getMediaTypeString,
+    getChannelProviderString,
+    getMessageReactionString,
+    getCustomerEventDirectionString,
+    getCustomerNumberProviderString,
+    getMessageSessionEndReasonString,
+    getMessageConsentUpdateActionString,
+} = require('./utils');
+
+const {
+    PaymentStatus,
+    PaymentChannel,
+    ActivityChannel,
+    MessagingChannel,
+    VoiceCallStatus,
+    VoiceCallHangupCause,
+    MessageDeliveryStatus,
+    ServerToAppNotification,
+    MessagingConsentUpdateStatus,
+    ServerToAppNotificationReply,
+    ServerToSimulatorNotification,
+    ServerToSimulatorNotificationReply,
+} = ElarianMessages;
+
+const cleanUpNotificationPayload = (event, data) => {
+    /* eslint-disable no-param-reassign */
+    switch (event) {
+    // App
+    case 'reminder':
+        data.reminder.payload = data.reminder.payload.value;
+        data.reminder.remindAt = data.reminder.remindAt.seconds;
+        data.reminder.interval = data.reminder.interval ? data.reminder.interval.seconds : undefined;
+        break;
+    case 'messagingSessionStarted':
+    case 'messagingSessionRenewed':
+    case 'messagingSessionEnded':
+        data.channelNumber = {
+            number: data.channelNumber.number,
+            channel: getChannelProviderString(data.channelNumber.channel, MessagingChannel),
+        };
+        if (data.expiresAt) {
+            data.expiresAt = data.expiresAt.seconds;
+        }
+        if (data.duration) {
+            data.duration = data.duration.seconds;
+        }
+        if (data.reason) {
+            data.reason = getMessageSessionEndReasonString(data.reason);
+        }
+        break;
+    case 'paymentStatus':
+        data.status = getStatusString(data.status, PaymentStatus);
+        break;
+    case 'messageStatus':
+        data.status = getStatusString(data.status, MessageDeliveryStatus);
+        break;
+    case 'receivedMessage':
+        data.sessionId = data.sessionId ? data.sessionId.value : undefined;
+        data.parts = data.partsList.map((part) => ({
+            ...part,
+            ussd: part.ussd ? part.ussd.value : undefined,
+            location: part.location ? {
+                ...part.location,
+                label: part.location.label ? part.location.label.value : undefined,
+                address: part.location.address ? part.location.address.value : undefined,
+            } : undefined,
+            media: part.media ? {
+                ...part.media,
+                type: getMediaTypeString(part.media.type),
+            } : undefined,
+            voice: part.voice ? {
+                ...part.voice,
+                dtmfDigits: part.voice.dtmfDigits ? part.voice.dtmfDigits.value : undefined,
+                startedAt: part.voice.startedAt ? part.voice.startedAt.seconds : undefined,
+                recordingUrl: part.voice.recordingUrl ? part.voice.recordingUrl.value : undefined,
+                status: getStatusString(part.voice.status, VoiceCallStatus),
+                direction: getCustomerEventDirectionString(part.voice.direction),
+                hangupCause: getChannelProviderString(part.voice.hangupCause || 0, VoiceCallHangupCause, /^VOICE_CALL_HANGUP_CAUSE_/),
+            } : undefined,
+        }));
+        delete data.partsList;
+        data.channelNumber = {
+            number: data.channelNumber.number,
+            channel: getChannelProviderString(data.channelNumber.channel, MessagingChannel),
+        };
+
+        if (data.channelNumber.channel === 'ussd') {
+            data.input = data.parts[0].ussd;
+            delete data.parts;
+        }
+
+        if (data.channelNumber.channel === 'voice') {
+            data.input = data.parts[0].ussd;
+            data = {
+                ...data,
+                ...data.parts[0].voice,
+            };
+            delete data.parts;
+        }
+
+        break;
+    case 'receivedPayment':
+        data.status = getStatusString(data.status, PaymentStatus);
+        data.channelNumber = {
+            number: data.channelNumber.number,
+            channel: getChannelProviderString(data.channelNumber.channel, PaymentChannel),
+        };
+        break;
+    case 'walletPaymentStatus':
+        data.status = getStatusString(data.status, PaymentStatus);
+        break;
+    case 'messagingConsentUpdate':
+        data.status = getStatusString(data.status, MessagingConsentUpdateStatus);
+        data.update = getMessageConsentUpdateActionString(data.update);
+        data.channelNumber = {
+            number: data.channelNumber.number,
+            channel: getChannelProviderString(data.channelNumber.channel, MessagingChannel),
+        };
+        break;
+    case 'customerActivity':
+        data.channelNumber = {
+            number: data.channelNumber.number,
+            channel: getChannelProviderString(data.channelNumber.channel, ActivityChannel),
+        };
+        break;
+    case 'sentMessageReaction':
+        data.channelNumber = {
+            number: data.channelNumber.number,
+            channel: getChannelProviderString(data.channelNumber.channel, MessagingChannel),
+        };
+        data.reaction = getMessageReactionString(data.reaction);
+        break;
+    // Simulator
+    case 'sendMessage':
+    case 'makeVoiceCall':
+        data.channelNumber = {
+            number: data.channelNumber.number,
+            channel: getChannelProviderString(data.channelNumber.channel, MessagingChannel),
+        };
+        break;
+    case 'checkoutPayment':
+    case 'sendChannelPayment':
+    case 'sendCustomerPayment':
+        data.channelNumber = {
+            number: data.channelNumber.number,
+            channel: getChannelProviderString(data.channelNumber.channel, PaymentChannel),
+        };
+        break;
+    default:
+        break;
+    }
+
+    if (data.customerNumber) {
+        data.customerNumber = {
+            number: data.customerNumber.number,
+            provider: getCustomerNumberProviderString(data.customerNumber.provider),
+        };
+    }
+    /* eslint-enable no-param-reassign */
+    return data;
+};
+
+Elarian.prototype.notificationHandler = (client) => (incomingPayload) => {
+    let event;
+    const { log } = client.platform;
+    const { isSimulator } = client.options;
+
+    let response = isSimulator ? new ServerToSimulatorNotificationReply() : new ServerToAppNotificationReply();
+    const handlePayload = async () => {
+        let notif = isSimulator
+            ? ServerToSimulatorNotification.deserializeBinary(incomingPayload.data).toObject()
+            : ServerToAppNotification.deserializeBinary(incomingPayload.data).toObject();
+
+        if (!isSimulator) {
+            notif = notif.customer || notif.purse;
+        }
+
+        const events = Object.keys(notif);
+        event = events.find((i) => !['orgId', 'appId', 'createdAt', 'customerId', 'purseId'].includes(i) &amp;&amp; notif[i]);
+        const data = cleanUpNotificationPayload(event, { ...notif[event] });
+        const globalListener = client.eventListeners.data;
+        if (globalListener) {
+            await globalListener(event, data);
+        }
+        let channel;
+        let messagingListener;
+        if (event === 'receivedMessage') { // Split messaging into multiple events
+            channel = data.channelNumber.channel;
+            messagingListener = client.eventListeners[event];
+            switch (channel) {
+            case 'voice':
+                event = 'voiceCall';
+                break;
+            case 'ussd':
+                event = 'ussdSession';
+                break;
+            case 'sms':
+                event = 'receivedSms';
+                break;
+            case 'messenger':
+                event = 'receivedMessenger';
+                break;
+            case 'telegram':
+                event = 'receivedTelegram';
+                break;
+            case 'whatsapp':
+                event = 'receivedWhatsapp';
+                break;
+            case 'email':
+                event = 'receivedEmail';
+                break;
+            default:
+                break;
+            }
+        }
+
+        let listener = client.eventListeners[event];
+        if (!listener &amp;&amp; messagingListener) {
+            listener = messagingListener;
+        }
+
+        if (listener) {
+            let customer;
+            if (notif.customerId) {
+                customer = new Customer({
+                    client,
+                    customerId: !notif.customerNumber ? notif.customerId : undefined,
+                    customerNumber: notif.customerNumber ? {
+                        number: notif.customerNumber.number,
+                        provider: getCustomerNumberProviderString(notif.customerNumber.provider),
+                    } : undefined,
+                });
+                customer.appData = notif.appData;
+                // customer
+                //     .getState()
+                //     .catch(log.warn);
+            }
+
+            // eslint-disable-next-line no-async-promise-executor
+            const listenerExec = new Promise(async (resolve, reject) => {
+                try {
+                    const cb = (error, payload) => {
+                        if (error) {
+                            reject(error);
+                        } else {
+                            resolve(payload);
+                        }
+                    };
+                    await listener({ data, customer }, cb);
+                } catch (ex) {
+                    reject(ex);
+                }
+            });
+
+            const payload = await Promise.race([
+                listenerExec,
+                new Promise((resolve) => {
+                    setTimeout(() => resolve(false), 15000);
+                }),
+            ]);
+
+            if (payload) {
+                switch (channel) {
+                case 'voice':
+                    // payload is actions[]
+                    response = addMessage(new ServerToAppNotificationReply(), {
+                        body: {
+                            voice: payload,
+                        },
+                    });
+                    break;
+                case 'ussd':
+                    // payload is { text, isTerminal }
+                    response = addMessage(new ServerToAppNotificationReply(), {
+                        body: {
+                            ussd: payload,
+                        },
+                    });
+                    break;
+                default:
+                    response = addMessage(new ServerToAppNotificationReply(), payload);
+                    break;
+                }
+            }
+        }
+        return response;
+    };
+    return new Single((subscriber) => {
+        subscriber.onSubscribe();
+        handlePayload()
+            .then((data) => {
+                try {
+                    subscriber.onComplete(Buffer.from(data.serializeBinary()));
+                } catch (error) {
+                    log.error(`NotificationError::${event}: `, error.message || error);
+                }
+            })
+            .catch((error) => {
+                // FIXME: This returns a valid response to avoid retries...
+                //        ideally subscriber.onError(error) should be the response
+                try {
+                    log.error(`NotificationError::${event}: `, error.message || error);
+                    subscriber.onComplete(Buffer.from(response.serializeBinary()));
+                } catch (ex) {
+                    log.error(`NotificationError::${event}: `, ex.message || ex);
+                }
+            });
+    });
+};
+
+/**
+ * Register a listener to watch out for events. Can also be called with &lt;code>client.on(event,listener)&lt;/code>
+ * @param {Event} event The event whose listener to register
+ * @param {EventListener} listener A function that reacts to events
+ * @memberof Elarian
+ */
+Elarian.prototype.registerListerner = function registerListerner(event, listener) {
+    const events = Object.keys(this.eventListeners);
+    if (!events.includes(event)) {
+        throw new Error(`Unexpected event ${event}`);
+    }
+    this.eventListeners[event] = listener;
+};
+
+/**
+ * Register a listener to watch out for events. Can also be called with &lt;code>client.registerListerner(event,listener)&lt;/code>
+ * @param {Event} event The event whose listener to register
+ * @param {EventListener} listener A function that reacts to events
+ * @memberof Elarian
+ */
+Elarian.prototype.on = function on(event, listerner) { return this.registerListerner(event, listerner); };
+
+/**
+ * Remove listener registered for event. Can also be called with &lt;code>client.off(event)&lt;/code>
+ * @param {Event} event The event whose listener to remove
+ * @memberof Elarian
+ */
+Elarian.prototype.removeListener = function removeListener(event) {
+    delete this.eventListeners[event];
+};
+
+/**
+ * Remove listener registered for event. Can also be called with &lt;code>client.removeListener(event)&lt;/code>
+ * @param {Event} event The event whose listener to remove
+ * @memberof Elarian
+ */
+Elarian.prototype.off = function off(event) { return this.removeListener(event); };
+
+module.exports = Elarian;
+</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	Elarian
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a>
+	
+		on Thu, Feb 25, 2021 2:29 PM
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>

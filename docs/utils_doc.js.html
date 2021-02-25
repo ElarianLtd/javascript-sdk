@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Elarian Source: utils/doc.js</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.dark.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.simplex.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">Elarian</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu inline">
+					<li><a href="Customer.html">Customer</a></li><li><a href="Elarian.html">Elarian</a></li><li><a href="Elarian_Customer.html">Elarian#Customer</a></li><li><a href="Simulator.html">Simulator</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu inline">
+					<li><a href="global.html">Global</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: utils/doc.js</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">/* eslint-disable max-len */
+/**
+ * An object representing a tag. Tags can be used to group customers based on some similarities. e.g. loan defaulters, etc.
+ * @typedef {Object} Tag
+ * @property {string} key
+ * @property {string} value
+ * @property {number} [expiresAt]
+ */
+
+/**
+ * An object representing a secondary id. Secondary Ids can be used to add some more unique identities to a customer. e.g. driver's license, etc.
+ * @typedef {Object} SecondaryId
+ * @property {string} key
+ * @property {string} value
+ */
+
+/**
+ * An object representing a customer number.
+ * @typedef {Object} CustomerNumber
+ * @property {string} number
+ * @property {cellular|telegram|facebook|email|web} provider
+ * @property {string} [partition]
+ */
+
+/**
+ * An object representing a messaging channel number
+ * @typedef {Object} MessagingChannelNumber
+ * @property {string} number
+ * @property {sms|telegram|whatsapp|email|messenger|voice} channel
+ */
+
+/**
+ * An object representing media
+ * @typedef {Object} Media
+ * @property {string} url
+ * @property {image|video|audio|document|voice|sticker|contact} type
+ */
+
+/**
+ * An object representing location
+ * @typedef {Object} Location
+ * @property {double} latitude
+ * @property {double} longitude
+ * @property {string} label
+ * @property {string} address
+ */
+
+/**
+ * An object representing email
+ * @typedef {Object} Email
+ * @property {string} subject
+ * @property {string} bodyPlain
+ * @property {string} bodyHtml
+ * @property {string[]} ccList
+ * @property {string[]} bccList
+ * @property {string[]} attachments
+ */
+
+/**
+ * An object representing a message body
+ * @typedef {Object} Body
+ * @property {string} [text]
+ * @property {Template} [template]
+ * @property {Media} [media]
+ * @property {Location} [location]
+ * @property {Email} [email]
+ * @property {string} [url]
+ * @property {UssdMenu} [ussd]
+ * @property {VoiceAction[]} [voice]
+ */
+
+/**
+ * An object representing a message body
+ * @typedef {Object} SimulatorMessageBody
+ * @property {string} [text]
+ * @property {Media} [media]
+ * @property {Location} [location]
+ * @property {Email} [email]
+ * @property {string} [ussd]
+ * @property {VoiceCallInput} [voice]
+ */
+
+/**
+ * An object representing a voice call input
+ * @typedef {Object} VoiceCallInput
+ * @property {string} direction outbound or inbound
+ * @property {string} status
+ * @property {number} startedAt
+ * @property {string} hangupCause
+ * @property {string} dtmfDigits
+ * @property {string} recordingUrl
+ * @property {VoiceCallDialInput} dialData
+ * @property {VoiceCallQueueInput} queueData
+ */
+
+/**
+ * An object representing a voice call dial input
+ * @typedef {Object} VoiceCallDialInput
+ * @property {string} destinationNumber
+ * @property {number} startedAt
+ * @property {number} duration
+ */
+
+/**
+ * An object representing a voice call queue input
+ * @typedef {Object} VoiceCallQueueInput
+ * @property {string} destinationNumber
+ * @property {number} enqueuedAt
+ * @property {number} dequeuedAt
+ * @property {string} dequeuedToNumber
+ * @property {string} dequeuedToSessionId
+ * @property {number} queueDuration
+ */
+
+/**
+ * An object representing a message reply prompt
+ * @typedef {Object} PromptMenuItem
+ * @property {string} [text]
+ * @property {Media} [media]
+ */
+
+/**
+ * An object representing a text template
+ * @typedef {Object} Template
+ * @property {string} id
+ * @property {Object} params
+ */
+
+/**
+ * An object representing a message reply prompt
+ * @typedef {Object} ReplyPrompt
+ * @property {string} action text, phone_number, email, location, url
+ * @property {PromptMenuItem[]} menu
+ */
+
+/**
+ * An object representing a message body
+ * @typedef {Object} Message
+ * @property {Body} body
+ * @property {string[]} [labels]
+ * @property {string} [providerTag]
+ * @property {string} [replyToken]
+ * @property {ReplyPrompt} [replyPrompt]
+ */
+
+/**
+ * An object representing a customer activity
+ * @typedef {Object} Activity
+ * @property {string} sessionId
+ * @property {string} key
+ * @property {Object} [properties]
+ */
+
+/**
+ * An object representing client params
+ * @typedef {Object} ElarianConfig
+ * @property {string} apiKey
+ * @property {string} appId
+ * @property {string} orgId
+ * @property {string} [authToken] received from an client that authenticated with the API key. @see Elarian.generateAuthToken()
+ * @property {boolean} [isSimulator] Run this client as a simulator
+ * @property {boolean} [allowNotifications] allow this non-simulator client to receive notifications or not
+ * @property {ConfigOptions} [options] setup connection options
+ */
+
+/**
+ * An object representing serializer
+ * @typedef {Object} Serializer
+ * @property {text|binary} type
+ * @property {function} serialize
+ * @property {function} deserialize
+ */
+
+/**
+ * An object representing config options
+ * @typedef {Object} ConfigOptions
+ * @property {number} [lifetime]
+ * @property {number} [keepAlive]
+ * @property {Serializer} [serializer] used to (de)serialize your metadata
+ */
+
+/**
+ * An object representing cash
+ * @typedef {Object} Cash
+ * @property {double} amount
+ * @property {string} currencyCode
+ */
+
+/**
+ * An object representing wallet
+ * @typedef {Object} Wallet
+ * @property {string} customerId
+ * @property {string} walletId
+ */
+
+/**
+ * An object representing purse
+ * @typedef {Object} Purse
+ * @property {string} purseId
+ */
+
+/**
+ * An object representing a payment channel
+ * @typedef {Object} PaymentChannelNumber
+ * @property {string} number
+ * @property {string} channel number provider. Must be one of ['cellular']
+ */
+
+/**
+ * An object representing an activity channel number
+ * @typedef {Object} ActivityChannelNumber
+ * @property {string} number
+ * @property {string} channel channel type. Must be one of ['web','modile']
+ */
+
+/**
+ * An object representing a payment transaction
+ * @typedef {Object} PaymentTransaction
+ * @property {string} transactionId
+ * @property {string} appId
+ * @property {CustomerPayment|Wallet|Purse} creditParty
+ * @property {CustomerPayment|Wallet|Purse} debitParty
+ * @property {Cash} value
+ * @property {number} status
+ * @property {number} createdAt
+ * @property {number} updatedAt
+ */
+
+/**
+ * An object representing a voice channel
+ * @typedef {Object} VoiceChannelNumber
+ * @property {string} number
+ * @property {string} channel
+ */
+
+/**
+ * An object representing a ussd channel
+ * @typedef {Object} UssdChannelNumber
+ * @property {string} number
+ * @property {string} channel
+ */
+
+/**
+ * An object representing a customer's payment source or destination
+ * @typedef {Object} CustomerPayment
+ * @property {CustomerNumber} customerNumber
+ * @property {PaymentChannelNumber} channelNumber
+ */
+
+/**
+ * An object representing customer params
+ * @typedef {Object} CustomerParams
+ * @property {CustomerNumber} customerNumber
+ * @property {string} [customerId]
+ */
+
+/**
+ * An object representing a reminder
+ * @typedef {Object} Reminder
+ * @property {string} key
+ * @property {number} remindAt timestamp in seconds
+ * @property {string} payload
+ * @property {number} [interval]
+ */
+
+/**
+ * An object representing a ussd menu
+ * @typedef {Object} UssdMenu
+ * @property {string} text
+ * @property {boolean} isTerminal
+ */
+
+/**
+ * An object representing a 'say' voice action
+ * @typedef {Object} Say
+ * @property {string} text
+ * @property {boolean} [playBeep]
+ * @property {male|female} [voice]
+ */
+
+/**
+ * An object representing a 'play' voice action
+ * @typedef {Object} Play
+ * @property {string} url
+ */
+
+/**
+ * An object representing a 'getDigits' voice action
+ * @typedef {Object} GetDigits
+ * @property {number} timeout
+ * @property {string} finishOnKey
+ * @property {number} numDigits
+ * @property {Say} [say]
+ * @property {Play} [play]
+ */
+
+/**
+ * An object representing a 'dial' voice action
+ * @typedef {Object} Dial
+ * @property {CustomerNumber[]} customerNumbers
+ * @property {boolean} record
+ * @property {boolean} sequential
+ * @property {string} ringbackTone
+ * @property {string} callerId
+ * @property {number} maxDuration
+ */
+
+/**
+ * An object representing a 'recordSession' voice action
+ * @typedef {boolean} RecordSession
+ */
+
+/**
+ * An object representing a 'reject' voice action
+ * @typedef {boolean} Reject
+ */
+
+/**
+ * An object representing a 'redirect' voice action
+ * @typedef {Object} Redirect
+ * @param {string} url
+ */
+
+/**
+ * An object representing a 'enqueue' voice action
+ * @typedef {Object} Enqueue
+ * @param {string} queueName
+ * @param {string} holdMusic
+ */
+
+/**
+ * An object representing a 'dequeue' voice action
+ * @typedef {Object} Dequeue
+ * @param {string} queueName
+ * @param {boolean} record
+ * @param {ChannelNumber} channelNumber
+ */
+
+/**
+ * An object representing a 'getRecording' voice action
+ * @typedef {Object} GetRecording
+ * @property {boolean} playBeep
+ * @property {boolean} trimSilence
+ * @property {number} timeout
+ * @property {number} maxLength
+ * @property {string} finishOnKey
+ * @property {Say} [say]
+ * @property {Play} [play]
+ */
+
+/**
+ * An object representing a voice action. Note: Only one action is required in the object.
+ * @typedef {Object} VoiceAction
+ * @property {Say} say
+ * @property {Play} play
+ * @property {Dial} dial
+ * @property {RecordSession} recordSession
+ * @property {GetRecording} getRecording
+ * @property {Enqueue} enqueue
+ * @property {Dequeue} dequeue
+ * @property {Reject} reject
+ * @property {Redirect} redirect
+ */
+
+/**
+ * Notification data
+ * @typedef {Object} Notification
+ * @property {Object} data
+ * @property {Customer} customer
+ */
+
+/**
+  * Notification callback
+  * @typedef {function} NotificationCallback
+  * @param {Error} error
+  * @param {Message|UssdMenu|VoiceAction[]} [message]
+  * @returns {void}
+  */
+
+/**
+ * A function that reacts to events
+ * @typedef {function} EventListener
+ * @param {Notification} notification
+ * @param {NotificationCallback} callback A response to the event. Required for voice and ussd events
+ * @returns {void}
+ */
+
+/**
+ * An string representing an event. Must be one of:
+ * &lt;ul>
+ * &lt;li>data&lt;/li>
+ * &lt;li>--&lt;/li>
+ * &lt;li>voiceCall&lt;/li>
+ * &lt;li>ussdSession&lt;/li>
+ * &lt;li>receivedSms&lt;/li>
+ * &lt;li>receivedEmail&lt;/li>
+ * &lt;li>receivedMessenger&lt;/li>
+ * &lt;li>receivedTelegram&lt;/li>
+ * &lt;li>receivedWhatsapp&lt;/li>
+ * &lt;li>--&lt;/li>
+ * &lt;li>sendMessage&lt;/li>
+ * &lt;li>makeVoiceCall&lt;/li>
+ * &lt;li>sendCustomerPayment&lt;/li>
+ * &lt;li>sendChannelPayment&lt;/li>
+ * &lt;li>checkoutPayment&lt;li>
+ * &lt;li>--&lt;/li>
+ * &lt;li>reminder&lt;/li>
+ * &lt;li>messageStatus&lt;/li>
+ * &lt;li>paymentStatus&lt;/li>
+ * &lt;li>receivedPayment&lt;/li>
+ * &lt;li>receivedMessage&lt;/li>
+ * &lt;li>customerActivity&lt;/li>
+ * &lt;li>walletPaymentStatus&lt;/li>
+ * &lt;li>sentMessageReaction&lt;/li>
+ * &lt;li>messagingSessionEnded&lt;/li>
+ * &lt;li>messagingConsentUpdate&lt;/li>
+ * &lt;li>messagingSessionStarted&lt;/li>
+ * &lt;li>messagingSessionRenewed&lt;/li>
+ * &lt;/ul>
+ * @typedef {string} Event
+ */
+
+/**
+ *
+ * @typedef {Object} UpdateStatus
+ * @property {string} customerId
+ * @property {boolean} status
+ * @property {string} description
+ */
+
+/**
+ *
+ * @typedef {Object} WorkStatus
+ * @property {boolean} status
+ * @property {string} description
+ * @property {string} workId
+ */
+
+/**
+ *
+ * @typedef {Object} MessageStatus
+ * @property {string} status
+ * @property {string} description
+ * @property {string} customerId
+ * @property {string} messageId
+ */
+
+/**
+ *
+ * @typedef {Object} ConsentStatus
+ * @property {string} status
+ * @property {string} description
+ * @property {string} customerId
+ */
+
+/**
+ *
+ * @typedef {string|*} LeasedAppData
+ */
+
+/**
+ *
+ * @typedef {Object} AuthToken
+ * @property {string} token
+ * @property {number} lifetime in seconds
+ */
+
+/**
+ *
+ * @typedef {Object} PaymentStatus
+ * @property {number} status
+ * @property {string} description
+ * @property {string} transactionId
+ * @property {string} debitCustomerId
+ * @property {string} creditCustomerId
+ */
+
+/**
+ *
+ * @typedef {Object} VoiceStatus
+ * @property {number} status
+ * @property {string} description
+ * @property {string} sessionId
+ * @property {string} customerId
+ */
+</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	Elarian
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a>
+	
+		on Thu, Feb 25, 2021 2:29 PM
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>
