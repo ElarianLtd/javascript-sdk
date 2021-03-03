@@ -21,6 +21,7 @@
             * [new this.Customer()](#new_Elarian+Customer_new)
         * [.generateAuthToken()](#Elarian+generateAuthToken) ⇒ <code>AuthToken</code>
         * [.connect()](#Elarian+connect)
+        * [.isConnected()](#Elarian+isConnected)
         * [.disconnect()](#Elarian+disconnect)
         * [.sendMessage(customer, channelNumber, message)](#Elarian+sendMessage) ⇒ <code>MessageStatus</code>
         * [.sendMessageByTag(tag, channelNumber, body)](#Elarian+sendMessageByTag) ⇒ <code>WorkStatus</code>
@@ -80,6 +81,12 @@
 
 ### elarian.connect()
 <p>Connect to the elarian server</p>
+
+**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
+<a name="Elarian+isConnected"></a>
+
+### elarian.isConnected()
+<p>Check if client is connected</p>
 
 **Kind**: instance method of [<code>Elarian</code>](#Elarian)  
 <a name="Elarian+disconnect"></a>

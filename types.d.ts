@@ -12,6 +12,10 @@ declare class Elarian {
      */
     connect(): void;
     /**
+     * <p>Check if client is connected</p>
+     */
+    isConnected(): void;
+    /**
      * <p>Disconnect from the elarian server</p>
      */
     disconnect(): void;
