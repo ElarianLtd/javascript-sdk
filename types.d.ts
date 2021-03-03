@@ -461,6 +461,7 @@ declare type Serializer = {
 declare type ConfigOptions = {
     lifetime?: number;
     keepAlive?: number;
+    resumable?: boolean;
     serializer?: Serializer;
 };
 
