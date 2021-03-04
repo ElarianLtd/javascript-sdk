@@ -440,6 +440,7 @@ until next call to update app data.</p>
     * [.deleteSecondaryId(secondaryIds)](#Customer+deleteSecondaryId) ⇒ <code>UpdateStatus</code>
     * [.addReminder(reminder)](#Customer+addReminder) ⇒ <code>UpdateStatus</code>
     * [.cancelReminder(key)](#Customer+cancelReminder) ⇒ <code>UpdateStatus</code>
+    * [.getMetadata()](#Customer+getMetadata) ⇒ <code>Object</code>
     * [.updateMetadata(metadata)](#Customer+updateMetadata) ⇒ <code>UpdateStatus</code>
     * [.deleteMetadata(keys)](#Customer+deleteMetadata) ⇒ <code>UpdateStatus</code>
     * [.updateAppData(data)](#Customer+updateAppData) ⇒ <code>UpdateStatus</code>
@@ -544,6 +545,12 @@ until next call to update app data.</p>
 | --- | --- |
 | key | <code>string</code> | 
 
+<a name="Customer+getMetadata"></a>
+
+### customer.getMetadata() ⇒ <code>Object</code>
+<p>Fetch customer metadata</p>
+
+**Kind**: instance method of [<code>Customer</code>](#Customer)  
 <a name="Customer+updateMetadata"></a>
 
 ### customer.updateMetadata(metadata) ⇒ <code>UpdateStatus</code>

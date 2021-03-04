@@ -82,7 +82,6 @@ const { Single } = require('rsocket-flowable');
 
 const Elarian = require('./client');
 
-const Customer = require('./customer');
 const {
     ElarianMessages,
     addMessage,
@@ -97,6 +96,8 @@ const {
 } = require('./utils');
 
 const {
+    AppDataUpdate,
+    DataMapValue,
     PaymentStatus,
     PaymentChannel,
     ActivityChannel,
@@ -265,11 +266,11 @@ Elarian.prototype.notificationHandler = (client) => (incomingPayload) => {
         }
 
         const events = Object.keys(notif);
-        event = events.find((i) => !['orgId', 'appId', 'createdAt', 'customerId', 'purseId'].includes(i) &amp;&amp; notif[i]);
+        event = events.find((i) => !['orgId', 'appId', 'createdAt', 'customerId', 'purseId', 'appData'].includes(i) &amp;&amp; notif[i]);
         const data = cleanUpNotificationPayload(event, { ...notif[event] });
         const globalListener = client.eventListeners.data;
         if (globalListener) {
-            await globalListener(event, data);
+            await globalListener(event, data, notif);
         }
         let channel;
         let messagingListener;
@@ -311,15 +312,14 @@ Elarian.prototype.notificationHandler = (client) => (incomingPayload) => {
         if (listener) {
             let customer;
             if (notif.customerId) {
-                customer = new Customer({
-                    client,
-                    customerId: !notif.customerNumber ? notif.customerId : undefined,
-                    customerNumber: notif.customerNumber ? {
-                        number: notif.customerNumber.number,
-                        provider: getCustomerNumberProviderString(notif.customerNumber.provider),
-                    } : undefined,
+                customer = new client.Customer({
+                    customerId: notif.customerId || data.customerId,
+                    customerNumber: data.customerNumber,
                 });
-                customer.appData = notif.appData;
+                const appData = notif.appData || {};
+                const { serializer } = client.configOptions;
+                const item = serializer.type === 'text' ? appData.stringVal : appData.bytesVal;
+                customer.appData = item ? serializer.deserialize(item) : {};
                 // customer
                 //     .getState()
                 //     .catch(log.warn);
@@ -328,11 +328,14 @@ Elarian.prototype.notificationHandler = (client) => (incomingPayload) => {
             // eslint-disable-next-line no-async-promise-executor
             const listenerExec = new Promise(async (resolve, reject) => {
                 try {
-                    const cb = (error, payload) => {
+                    const cb = (error, payload, appData = undefined) => {
                         if (error) {
                             reject(error);
                         } else {
-                            resolve(payload);
+                            resolve({
+                                payload,
+                                appData,
+                            });
                         }
                     };
                     await listener({ data, customer }, cb);
@@ -341,7 +344,7 @@ Elarian.prototype.notificationHandler = (client) => (incomingPayload) => {
                 }
             });
 
-            const payload = await Promise.race([
+            const { payload, appData } = await Promise.race([
                 listenerExec,
                 new Promise((resolve) => {
                     setTimeout(() => resolve(false), 15000);
@@ -352,7 +355,7 @@ Elarian.prototype.notificationHandler = (client) => (incomingPayload) => {
                 switch (channel) {
                 case 'voice':
                     // payload is actions[]
-                    response = addMessage(new ServerToAppNotificationReply(), {
+                    response = addMessage(response, {
                         body: {
                             voice: payload,
                         },
@@ -360,15 +363,36 @@ Elarian.prototype.notificationHandler = (client) => (incomingPayload) => {
                     break;
                 case 'ussd':
                     // payload is { text, isTerminal }
-                    response = addMessage(new ServerToAppNotificationReply(), {
+                    response = addMessage(response, {
                         body: {
                             ussd: payload,
                         },
                     });
                     break;
                 default:
-                    response = addMessage(new ServerToAppNotificationReply(), payload);
+                    response = addMessage(response, payload);
                     break;
+                }
+
+                if (appData &amp;&amp; !isSimulator) {
+                    const appDataUpdate = new DataMapValue();
+                    const { serializer } = client.configOptions;
+                    const serializedValue = serializer.serialize(appData);
+                    switch (serializer.type) {
+                    case 'text':
+                        appDataUpdate.setStringVal(serializedValue);
+                        break;
+                    case 'binary':
+                        appDataUpdate.setBytesValue(serializedValue);
+                        break;
+                    default:
+                        throw new Error('Invalid serializer type');
+                    }
+
+                    response = response.setDataUpdate(
+                        new AppDataUpdate()
+                            .setData(appDataUpdate),
+                    );
                 }
             }
         }
@@ -379,7 +403,7 @@ Elarian.prototype.notificationHandler = (client) => (incomingPayload) => {
         handlePayload()
             .then((data) => {
                 try {
-                    subscriber.onComplete(Buffer.from(data.serializeBinary()));
+                    subscriber.onComplete({ data: Buffer.from(data.serializeBinary()) });
                 } catch (error) {
                     log.error(`NotificationReplyError::${event}: `, error.message || error);
                 }
@@ -389,7 +413,7 @@ Elarian.prototype.notificationHandler = (client) => (incomingPayload) => {
                 //        ideally subscriber.onError(error) should be the response
                 try {
                     log.error(`NotificationError::${event}: `, error.message || error);
-                    subscriber.onComplete(Buffer.from(response.serializeBinary()));
+                    subscriber.onComplete({ data: Buffer.from(response.serializeBinary()) });
                 } catch (ex) {
                     log.error(`NotificationError::${event}: `, ex.message || ex);
                 }
@@ -481,7 +505,7 @@ module.exports = Elarian;
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a>
 	
-		on Wed, Mar 3, 2021 5:28 PM
+		on Thu, Mar 4, 2021 6:25 PM
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

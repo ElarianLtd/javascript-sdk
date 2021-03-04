@@ -187,6 +187,10 @@ declare class Customer {
      */
     cancelReminder(key: string): UpdateStatus;
     /**
+     * <p>Fetch customer metadata</p>
+     */
+    getMetadata(): any;
+    /**
      * <p>Sets some metadata on the customer.
      * Values in the metadata object can either be strings or buffers,
      * depending on the set serializer</p>
