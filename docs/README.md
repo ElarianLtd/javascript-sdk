@@ -16,41 +16,38 @@
 
 * [Elarian](#Elarian)
     * [new Elarian(config)](#new_Elarian_new)
-    * _instance_
-        * [.Customer](#Elarian+Customer)
-            * [new this.Customer()](#new_Elarian+Customer_new)
-        * [.generateAuthToken()](#Elarian+generateAuthToken) ⇒ <code>AuthToken</code>
-        * [.connect()](#Elarian+connect)
-        * [.isConnected()](#Elarian+isConnected)
-        * [.disconnect()](#Elarian+disconnect)
-        * [.sendMessage(customer, channelNumber, message)](#Elarian+sendMessage) ⇒ <code>MessageStatus</code>
-        * [.sendMessageByTag(tag, channelNumber, body)](#Elarian+sendMessageByTag) ⇒ <code>WorkStatus</code>
-        * [.replyToMessage(customer, replyToMessageId, body)](#Elarian+replyToMessage) ⇒ <code>MessageStatus</code>
-        * [.updateMessagingConsent(customer, channelNumber, action)](#Elarian+updateMessagingConsent) ⇒ <code>ConsentStatus</code>
-        * [.registerListerner(event, listener)](#Elarian+registerListerner)
-        * [.on(event, listener)](#Elarian+on)
-        * [.removeListener(event)](#Elarian+removeListener)
-        * [.off(event)](#Elarian+off)
-        * [.initiatePayment(debitParty, creditParty, value)](#Elarian+initiatePayment) ⇒ <code>PaymentStatus</code>
-        * [.getCustomerState(customer)](#Elarian+getCustomerState) ⇒ <code>CustomerState</code>
-        * [.adoptCustomerState(customer, otherCustomer)](#Elarian+adoptCustomerState) ⇒ <code>UpdateStatus</code>
-        * [.updateCustomerTag(customer, tags)](#Elarian+updateCustomerTag) ⇒ <code>UpdateStatus</code>
-        * [.deleteCustomerTag(customer, tags)](#Elarian+deleteCustomerTag) ⇒ <code>UpdateStatus</code>
-        * [.updateCustomerSecondaryId(customer, secondaryIds)](#Elarian+updateCustomerSecondaryId) ⇒ <code>UpdateStatus</code>
-        * [.deleteCustomerSecondaryId(customer, secondaryIds)](#Elarian+deleteCustomerSecondaryId) ⇒ <code>UpdateStatus</code>
-        * [.addCustomerReminder(customer, reminder)](#Elarian+addCustomerReminder) ⇒ <code>UpdateStatus</code>
-        * [.cancelCustomerReminder(customer, key)](#Elarian+cancelCustomerReminder) ⇒ <code>UpdateStatus</code>
-        * [.addCustomerReminderByTag(tag, reminder)](#Elarian+addCustomerReminderByTag) ⇒ <code>WorkStatus</code>
-        * [.cancelCustomerReminderByTag(tag, key)](#Elarian+cancelCustomerReminderByTag) ⇒ <code>WorkStatus</code>
-        * [.updateCustomerMetadata(customer, metadata)](#Elarian+updateCustomerMetadata) ⇒ <code>UpdateStatus</code>
-        * [.deleteCustomerMetadata(customer, keys)](#Elarian+deleteCustomerMetadata) ⇒ <code>UpdateStatus</code>
-        * [.updateCustomerAppData(customer, data)](#Elarian+updateCustomerAppData) ⇒ <code>UpdateStatus</code>
-        * [.leaseCustomerAppData(customer)](#Elarian+leaseCustomerAppData) ⇒ <code>LeasedAppData</code>
-        * [.deleteCustomerAppData(customer)](#Elarian+deleteCustomerAppData) ⇒ <code>UpdateStatus</code>
-        * [.updateCustomerActivity(customerNumber, channelNumber, activity)](#Elarian+updateCustomerActivity) ⇒ <code>UpdateStatus</code>
-        * [.makeVoiceCall(customer, channelNumber, actions)](#Elarian+makeVoiceCall) ⇒ <code>VoiceStatus</code>
-    * _static_
-        * [.newInstance(config)](#Elarian.newInstance)
+    * [.Customer](#Elarian+Customer)
+        * [new this.Customer()](#new_Elarian+Customer_new)
+    * [.generateAuthToken()](#Elarian+generateAuthToken) ⇒ <code>AuthToken</code>
+    * [.connect()](#Elarian+connect)
+    * [.isConnected()](#Elarian+isConnected)
+    * [.disconnect()](#Elarian+disconnect)
+    * [.sendMessage(customer, channelNumber, message)](#Elarian+sendMessage) ⇒ <code>MessageStatus</code>
+    * [.sendMessageByTag(tag, channelNumber, body)](#Elarian+sendMessageByTag) ⇒ <code>WorkStatus</code>
+    * [.replyToMessage(customer, replyToMessageId, body)](#Elarian+replyToMessage) ⇒ <code>MessageStatus</code>
+    * [.updateMessagingConsent(customer, channelNumber, action)](#Elarian+updateMessagingConsent) ⇒ <code>ConsentStatus</code>
+    * [.registerListerner(event, listener)](#Elarian+registerListerner)
+    * [.on(event, listener)](#Elarian+on)
+    * [.removeListener(event)](#Elarian+removeListener)
+    * [.off(event)](#Elarian+off)
+    * [.initiatePayment(debitParty, creditParty, value)](#Elarian+initiatePayment) ⇒ <code>PaymentStatus</code>
+    * [.getCustomerState(customer)](#Elarian+getCustomerState) ⇒ <code>CustomerState</code>
+    * [.adoptCustomerState(customer, otherCustomer)](#Elarian+adoptCustomerState) ⇒ <code>UpdateStatus</code>
+    * [.updateCustomerTag(customer, tags)](#Elarian+updateCustomerTag) ⇒ <code>UpdateStatus</code>
+    * [.deleteCustomerTag(customer, tags)](#Elarian+deleteCustomerTag) ⇒ <code>UpdateStatus</code>
+    * [.updateCustomerSecondaryId(customer, secondaryIds)](#Elarian+updateCustomerSecondaryId) ⇒ <code>UpdateStatus</code>
+    * [.deleteCustomerSecondaryId(customer, secondaryIds)](#Elarian+deleteCustomerSecondaryId) ⇒ <code>UpdateStatus</code>
+    * [.addCustomerReminder(customer, reminder)](#Elarian+addCustomerReminder) ⇒ <code>UpdateStatus</code>
+    * [.cancelCustomerReminder(customer, key)](#Elarian+cancelCustomerReminder) ⇒ <code>UpdateStatus</code>
+    * [.addCustomerReminderByTag(tag, reminder)](#Elarian+addCustomerReminderByTag) ⇒ <code>WorkStatus</code>
+    * [.cancelCustomerReminderByTag(tag, key)](#Elarian+cancelCustomerReminderByTag) ⇒ <code>WorkStatus</code>
+    * [.updateCustomerMetadata(customer, metadata)](#Elarian+updateCustomerMetadata) ⇒ <code>UpdateStatus</code>
+    * [.deleteCustomerMetadata(customer, keys)](#Elarian+deleteCustomerMetadata) ⇒ <code>UpdateStatus</code>
+    * [.updateCustomerAppData(customer, data)](#Elarian+updateCustomerAppData) ⇒ <code>UpdateStatus</code>
+    * [.leaseCustomerAppData(customer)](#Elarian+leaseCustomerAppData) ⇒ <code>LeasedAppData</code>
+    * [.deleteCustomerAppData(customer)](#Elarian+deleteCustomerAppData) ⇒ <code>UpdateStatus</code>
+    * [.updateCustomerActivity(customerNumber, channelNumber, activity)](#Elarian+updateCustomerActivity) ⇒ <code>UpdateStatus</code>
+    * [.makeVoiceCall(customer, channelNumber, actions)](#Elarian+makeVoiceCall) ⇒ <code>VoiceStatus</code>
 
 <a name="new_Elarian_new"></a>
 
@@ -414,17 +411,6 @@ until next call to update app data.</p>
 | channelNumber | <code>string</code> | 
 | actions | <code>Array.&lt;VoiceAction&gt;</code> | 
 
-<a name="Elarian.newInstance"></a>
-
-### Elarian.newInstance(config)
-<p>Instantiate and connect an elarian client</p>
-
-**Kind**: static method of [<code>Elarian</code>](#Elarian)  
-
-| Param | Type |
-| --- | --- |
-| config | <code>ElarianConfig</code> | 
-
 <a name="Customer"></a>
 
 ## Customer
@@ -669,12 +655,9 @@ until next call to update app data.</p>
 
 * [Simulator](#Simulator)
     * [new Simulator(config)](#new_Simulator_new)
-    * _instance_
-        * [.receiveMessage(customerNumber, channelNumber, sessionId, messageParts)](#Simulator+receiveMessage)
-        * [.receivePayment(transactionId, customerNumber, channelNumber, value, status)](#Simulator+receivePayment)
-        * [.updatePaymentStatus(transactionId, status)](#Simulator+updatePaymentStatus)
-    * _static_
-        * [.newInstance(config)](#Simulator.newInstance)
+    * [.receiveMessage(customerNumber, channelNumber, sessionId, messageParts)](#Simulator+receiveMessage)
+    * [.receivePayment(transactionId, customerNumber, channelNumber, value, status)](#Simulator+receivePayment)
+    * [.updatePaymentStatus(transactionId, status)](#Simulator+updatePaymentStatus)
 
 <a name="new_Simulator_new"></a>
 
@@ -726,15 +709,4 @@ until next call to update app data.</p>
 | --- | --- |
 | transactionId | <code>string</code> | 
 | status | <code>string</code> | 
-
-<a name="Simulator.newInstance"></a>
-
-### Simulator.newInstance(config)
-<p>Instantiate and connect an elarian simulator client</p>
-
-**Kind**: static method of [<code>Simulator</code>](#Simulator)  
-
-| Param | Type |
-| --- | --- |
-| config | <code>ElarianConfig</code> | 
 

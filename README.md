@@ -33,13 +33,12 @@ const client = new Elarian({
     appId: 'YOUR_APP_ID',
 });
 
-client.on('ussdSession', async ({ data, customer}, callback) => {
+client.on('ussdSession', async ({ notification, customer, appData }, callback) => {
     const {
         input,
         sessionId,
-    } = data;
+    } = notification;
 
-    const appData = await customer.leaseAppData();
     let {
         name,
         state = 'newbie',
@@ -61,7 +60,7 @@ client.on('ussdSession', async ({ data, customer}, callback) => {
             menu.isTerminal = true;
             await customer.sendMessage(
                 { number: 'Elarian', provider: 'telco' },
-                { text: `Hey ${name}! Thank you for trying out Elarian` },
+                { text: { body: `Hey ${name}! Thank you for trying out Elarian` } },
             );
         }
         break;
@@ -72,15 +71,17 @@ client.on('ussdSession', async ({ data, customer}, callback) => {
         state = 'veteran';
         break;
     }
-
-    await customer.updateAppData({ state, name });
-    callback(null, menu);
+    callback(null, menu, { state, name });
 });
 
 client
     .connect()
-    .then(() => console.log('App is running!'))
-    .catch(console.error);
+    .on('connected', () => {
+        console.log('App is running!')
+    })
+    .on('error', (error) => {
+        console.error(error);
+    });
 ```
 
 ## Documentation

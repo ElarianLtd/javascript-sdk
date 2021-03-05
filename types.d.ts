@@ -20,10 +20,6 @@ declare class Elarian {
      */
     disconnect(): void;
     /**
-     * <p>Instantiate and connect an elarian client</p>
-     */
-    static newInstance(config: ElarianConfig): void;
-    /**
      * <p>Send a message</p>
      */
     sendMessage(customer: Customer, channelNumber: MessagingChannelNumber, message: Message): MessageStatus;
@@ -243,10 +239,6 @@ declare class Customer {
  */
 declare class Simulator {
     constructor(config: ElarianConfig);
-    /**
-     * <p>Instantiate and connect an elarian simulator client</p>
-     */
-    static newInstance(config: ElarianConfig): void;
     /**
      * <p>Initiate a message request</p>
      */
