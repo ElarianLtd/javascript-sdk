@@ -690,23 +690,28 @@ declare type EventListener = (notification: Notification, callback: Notification
  * <p>An string representing an event. Must be one of:</p>
  * <ul>
  * <li>data</li>
- * <li>--</li>
+ * <li>-- Connection Events--</li>
+ * <li>error</li>
+ * <li>closed</li>
+ * <li>pending</li>
+ * <li>connected</li>
+ * <li>connecting</li>
+ * <li>-- Simulator Events --</li>
+ * <li>sendMessage</li>
+ * <li>makeVoiceCall</li>
+ * <li>sendCustomerPayment</li>
+ * <li>sendChannelPayment</li>
+ * <li>checkoutPayment<li>
+ * <li>-- Customer Events --</li>
+ * <li>reminder</li>
  * <li>voiceCall</li>
+ * <li>messageStatus</li>
  * <li>ussdSession</li>
  * <li>receivedSms</li>
  * <li>receivedEmail</li>
  * <li>receivedMessenger</li>
  * <li>receivedTelegram</li>
  * <li>receivedWhatsapp</li>
- * <li>--</li>
- * <li>sendMessage</li>
- * <li>makeVoiceCall</li>
- * <li>sendCustomerPayment</li>
- * <li>sendChannelPayment</li>
- * <li>checkoutPayment<li>
- * <li>--</li>
- * <li>reminder</li>
- * <li>messageStatus</li>
  * <li>paymentStatus</li>
  * <li>receivedPayment</li>
  * <li>receivedMessage</li>
