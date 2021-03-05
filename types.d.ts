@@ -678,13 +678,13 @@ declare type Notification = {
 /**
  * <p>Notification callback</p>
  */
-declare type NotificationCallback = (error: Error, message?: Message | UssdMenu | VoiceAction[]) => void;
+declare type NotificationCallback = (error: Error, message: Message | UssdMenu | VoiceAction[], appData: any) => void;
 
 /**
  * <p>A function that reacts to events</p>
- * @param callback - <p>A response to the event. Required for voice and ussd events</p>
+ * @param [callback] - <p>A response to the event. Required for voice and ussd events</p>
  */
-declare type EventListener = (notification: Notification, callback: NotificationCallback) => void;
+declare type EventListener = (notification: Notification, callback?: NotificationCallback) => void;
 
 /**
  * <p>An string representing an event. Must be one of:</p>
