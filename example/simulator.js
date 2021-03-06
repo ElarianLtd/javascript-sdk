@@ -30,7 +30,10 @@ client.on('checkoutPayment', ({ data }) => {
 
 client
     .connect()
-    .then(() => {
+    .on('error', (error) => {
+        console.error('Failed to connect: ', error);
+    })
+    .on('connected', async () => {
         console.log('Simulator running, waiting for notifications!\n');
 
         setInterval(() => {
@@ -63,5 +66,4 @@ client
                 .then((resp) => console.info(resp))
                 .catch((ex) => console.error(ex));
         }, 5000);
-    })
-    .catch((ex) => console.log('error: ', ex));
+    });

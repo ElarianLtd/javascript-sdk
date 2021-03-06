@@ -20,20 +20,23 @@
                 appId: 'test_app',
             });
             console.log('Connecting...');
-            await elarian.connect();
-            console.log('Connected!');
-            console.log('Getting auth token...');
-            const token = await elarian.generateAuthToken();
-            console.log(token);
-            const customer = new elarian.Customer({
-                customerNumber: {
-                    number: '+254718769882',
-                    provider: 'cellular',
-                },
-            });
-            console.log('Gettting customer state...');
-            const state = await customer.getState();
-            console.log(state);
+            elarian.connect()
+                .on('error', (error) => {
+                    console.error('Failed to connect: ', error);
+                })
+                .on('connected', async () => {
+
+                    console.log('Connected!');
+                    const customer = new elarian.Customer({
+                        customerNumber: {
+                            number: '+254718769882',
+                            provider: 'cellular',
+                        },
+                    });
+                    console.log('Gettting customer state...');
+                    const state = await customer.getState();
+                    console.log(state);
+                });
         };
         window.onload = (event) => {
             test().catch(console.error);

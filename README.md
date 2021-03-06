@@ -84,6 +84,8 @@ client
     });
 ```
 
+See [example](example/) for a full sample app.
+
 ## Documentation
 
 Take a look at the [API docs here](http://docs.elarian.com). For detailed info on this SDK, see the [documentation](https://elarianltd.github.io/javascript-sdk/Elarian.html).
