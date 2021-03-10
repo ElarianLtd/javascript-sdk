@@ -84,7 +84,7 @@ describe('Customer', function fx() {
                 number: fixtures.senderId,
                 channel: 'sms',
             },
-            'block',
+            'allow',
         );
         resp.should.have.properties(['status', 'description', 'customerId']);
     });

@@ -1,13 +1,83 @@
 ## Classes
 
 <dl>
+<dt><a href="#Client">Client</a></dt>
+<dd></dd>
 <dt><a href="#Customer">Customer</a></dt>
 <dd></dd>
-<dt><a href="#Elarian">Elarian</a></dt>
+<dt><a href="#Elarian">Elarian</a> ⇐ <code><a href="#Client">Client</a></code></dt>
 <dd></dd>
-<dt><a href="#Simulator">Simulator</a></dt>
+<dt><a href="#Simulator">Simulator</a> ⇐ <code><a href="#Client">Client</a></code></dt>
 <dd></dd>
 </dl>
+
+<a name="Client"></a>
+
+## Client
+**Kind**: global class  
+
+* [Client](#Client)
+    * [new Client(config)](#new_Client_new)
+    * [.connect()](#Client+connect) ⇒ [<code>Elarian</code>](#Elarian)
+    * [.isConnected()](#Client+isConnected) ⇒ <code>boolean</code>
+    * [.disconnect()](#Client+disconnect)
+    * [.registerNotificationHandler(event, handler)](#Client+registerNotificationHandler) ⇒ [<code>Client</code>](#Client)
+    * [.on(event, handler)](#Client+on) ⇒ [<code>Client</code>](#Client)
+
+<a name="new_Client_new"></a>
+
+### new Client(config)
+<p>Instantiate an elarian client. You have to call connect() on then client to start using it</p>
+
+
+| Param | Type |
+| --- | --- |
+| config | <code>ClientConfig</code> | 
+
+<a name="Client+connect"></a>
+
+### client.connect() ⇒ [<code>Elarian</code>](#Elarian)
+<p>Connecto to elarian servers</p>
+
+**Kind**: instance method of [<code>Client</code>](#Client)  
+**Returns**: [<code>Elarian</code>](#Elarian) - <p>this instance</p>  
+<a name="Client+isConnected"></a>
+
+### client.isConnected() ⇒ <code>boolean</code>
+<p>Check if client is connected</p>
+
+**Kind**: instance method of [<code>Client</code>](#Client)  
+<a name="Client+disconnect"></a>
+
+### client.disconnect()
+<p>Disconnect from the elarian server</p>
+
+**Kind**: instance method of [<code>Client</code>](#Client)  
+<a name="Client+registerNotificationHandler"></a>
+
+### client.registerNotificationHandler(event, handler) ⇒ [<code>Client</code>](#Client)
+<p>Register a listener to watch out for events. Can also be called with <code>client.on(event,listener)</code></p>
+
+**Kind**: instance method of [<code>Client</code>](#Client)  
+**Returns**: [<code>Client</code>](#Client) - <p>this instance</p>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| event | <code>Event</code> | <p>The event whose listener to register</p> |
+| handler | <code>NotificationHandler</code> | <p>A function that reacts to events</p> |
+
+<a name="Client+on"></a>
+
+### client.on(event, handler) ⇒ [<code>Client</code>](#Client)
+<p>Register a listener to watch out for events. Can also be called with <code>client.registerListerner(event,listener)</code></p>
+
+**Kind**: instance method of [<code>Client</code>](#Client)  
+**Returns**: [<code>Client</code>](#Client) - <p>this instance</p>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| event | <code>Event</code> | <p>The event whose listener to register</p> |
+| handler | <code>NotificationHandler</code> | <p>A function that reacts to events</p> |
 
 <a name="Customer"></a>
 
@@ -234,23 +304,24 @@ depending on the set serializer</p>
 **Kind**: instance method of [<code>Customer</code>](#Customer)  
 <a name="Elarian"></a>
 
-## Elarian
+## Elarian ⇐ [<code>Client</code>](#Client)
 **Kind**: global class  
+**Extends**: [<code>Client</code>](#Client)  
 
-* [Elarian](#Elarian)
+* [Elarian](#Elarian) ⇐ [<code>Client</code>](#Client)
     * [new Elarian(config)](#new_Elarian_new)
     * [.Customer](#Elarian+Customer)
         * [new this.Customer()](#new_Elarian+Customer_new)
     * [.generateAuthToken()](#Elarian+generateAuthToken) ⇒ <code>AuthToken</code>
-    * [.connect()](#Elarian+connect) ⇒ [<code>Elarian</code>](#Elarian)
-    * [.isConnected()](#Elarian+isConnected) ⇒ <code>boolean</code>
-    * [.disconnect()](#Elarian+disconnect)
     * [.sendMessageByTag(tag, channelNumber, message)](#Elarian+sendMessageByTag) ⇒ <code>TagUpdateReply</code>
-    * [.registerNotificationHandler(event, handler)](#Elarian+registerNotificationHandler) ⇒ [<code>Elarian</code>](#Elarian)
-    * [.on(event, handler)](#Elarian+on) ⇒ [<code>Elarian</code>](#Elarian)
     * [.initiatePayment(debitParty, creditParty, value)](#Elarian+initiatePayment) ⇒ <code>InitiatePaymentReply</code>
     * [.addCustomerReminderByTag(tag, reminder)](#Elarian+addCustomerReminderByTag) ⇒ <code>TagUpdateReply</code>
     * [.cancelCustomerReminderByTag(tag, key)](#Elarian+cancelCustomerReminderByTag) ⇒ <code>TagUpdateReply</code>
+    * [.connect()](#Client+connect) ⇒ [<code>Elarian</code>](#Elarian)
+    * [.isConnected()](#Client+isConnected) ⇒ <code>boolean</code>
+    * [.disconnect()](#Client+disconnect)
+    * [.registerNotificationHandler(event, handler)](#Client+registerNotificationHandler) ⇒ [<code>Client</code>](#Client)
+    * [.on(event, handler)](#Client+on) ⇒ [<code>Client</code>](#Client)
 
 <a name="new_Elarian_new"></a>
 
@@ -260,7 +331,7 @@ depending on the set serializer</p>
 
 | Param | Type |
 | --- | --- |
-| config | <code>ElarianConfig</code> | 
+| config | <code>ClientConfig</code> | 
 
 <a name="Elarian+Customer"></a>
 
@@ -277,25 +348,6 @@ depending on the set serializer</p>
 <p>Generate a short-lived auth token to use instead of apiKey. Used for browser and mobile clients.</p>
 
 **Kind**: instance method of [<code>Elarian</code>](#Elarian)  
-<a name="Elarian+connect"></a>
-
-### elarian.connect() ⇒ [<code>Elarian</code>](#Elarian)
-<p>Connecto to elarian servers</p>
-
-**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
-**Returns**: [<code>Elarian</code>](#Elarian) - <p>this instance</p>  
-<a name="Elarian+isConnected"></a>
-
-### elarian.isConnected() ⇒ <code>boolean</code>
-<p>Check if client is connected</p>
-
-**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
-<a name="Elarian+disconnect"></a>
-
-### elarian.disconnect()
-<p>Disconnect from the elarian server</p>
-
-**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
 <a name="Elarian+sendMessageByTag"></a>
 
 ### elarian.sendMessageByTag(tag, channelNumber, message) ⇒ <code>TagUpdateReply</code>
@@ -308,32 +360,6 @@ depending on the set serializer</p>
 | tag | <code>Tag</code> | 
 | channelNumber | <code>MessagingChannelNumber</code> | 
 | message | <code>Message</code> | 
-
-<a name="Elarian+registerNotificationHandler"></a>
-
-### elarian.registerNotificationHandler(event, handler) ⇒ [<code>Elarian</code>](#Elarian)
-<p>Register a listener to watch out for events. Can also be called with <code>client.on(event,listener)</code></p>
-
-**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
-**Returns**: [<code>Elarian</code>](#Elarian) - <p>this instance</p>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| event | <code>Event</code> | <p>The event whose listener to register</p> |
-| handler | <code>NotificationHandler</code> | <p>A function that reacts to events</p> |
-
-<a name="Elarian+on"></a>
-
-### elarian.on(event, handler) ⇒ [<code>Elarian</code>](#Elarian)
-<p>Register a listener to watch out for events. Can also be called with <code>client.registerListerner(event,listener)</code></p>
-
-**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
-**Returns**: [<code>Elarian</code>](#Elarian) - <p>this instance</p>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| event | <code>Event</code> | <p>The event whose listener to register</p> |
-| handler | <code>NotificationHandler</code> | <p>A function that reacts to events</p> |
 
 <a name="Elarian+initiatePayment"></a>
 
@@ -372,16 +398,67 @@ depending on the set serializer</p>
 | tag | <code>Tag</code> | 
 | key | <code>string</code> | 
 
+<a name="Client+connect"></a>
+
+### elarian.connect() ⇒ [<code>Elarian</code>](#Elarian)
+<p>Connecto to elarian servers</p>
+
+**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
+**Returns**: [<code>Elarian</code>](#Elarian) - <p>this instance</p>  
+<a name="Client+isConnected"></a>
+
+### elarian.isConnected() ⇒ <code>boolean</code>
+<p>Check if client is connected</p>
+
+**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
+<a name="Client+disconnect"></a>
+
+### elarian.disconnect()
+<p>Disconnect from the elarian server</p>
+
+**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
+<a name="Client+registerNotificationHandler"></a>
+
+### elarian.registerNotificationHandler(event, handler) ⇒ [<code>Client</code>](#Client)
+<p>Register a listener to watch out for events. Can also be called with <code>client.on(event,listener)</code></p>
+
+**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
+**Returns**: [<code>Client</code>](#Client) - <p>this instance</p>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| event | <code>Event</code> | <p>The event whose listener to register</p> |
+| handler | <code>NotificationHandler</code> | <p>A function that reacts to events</p> |
+
+<a name="Client+on"></a>
+
+### elarian.on(event, handler) ⇒ [<code>Client</code>](#Client)
+<p>Register a listener to watch out for events. Can also be called with <code>client.registerListerner(event,listener)</code></p>
+
+**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
+**Returns**: [<code>Client</code>](#Client) - <p>this instance</p>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| event | <code>Event</code> | <p>The event whose listener to register</p> |
+| handler | <code>NotificationHandler</code> | <p>A function that reacts to events</p> |
+
 <a name="Simulator"></a>
 
-## Simulator
+## Simulator ⇐ [<code>Client</code>](#Client)
 **Kind**: global class  
+**Extends**: [<code>Client</code>](#Client)  
 
-* [Simulator](#Simulator)
+* [Simulator](#Simulator) ⇐ [<code>Client</code>](#Client)
     * [new Simulator(config)](#new_Simulator_new)
     * [.receiveMessage(phoneNumber, channelNumber, sessionId, parts)](#Simulator+receiveMessage)
     * [.receivePayment(transactionId, customerNumber, channelNumber, value, status)](#Simulator+receivePayment)
     * [.updatePaymentStatus(transactionId, status)](#Simulator+updatePaymentStatus)
+    * [.connect()](#Client+connect) ⇒ [<code>Elarian</code>](#Elarian)
+    * [.isConnected()](#Client+isConnected) ⇒ <code>boolean</code>
+    * [.disconnect()](#Client+disconnect)
+    * [.registerNotificationHandler(event, handler)](#Client+registerNotificationHandler) ⇒ [<code>Client</code>](#Client)
+    * [.on(event, handler)](#Client+on) ⇒ [<code>Client</code>](#Client)
 
 <a name="new_Simulator_new"></a>
 
@@ -391,7 +468,7 @@ depending on the set serializer</p>
 
 | Param | Type |
 | --- | --- |
-| config | <code>ElarianConfig</code> | 
+| config | <code>ClientConfig</code> | 
 
 <a name="Simulator+receiveMessage"></a>
 
@@ -433,4 +510,49 @@ depending on the set serializer</p>
 | --- | --- |
 | transactionId | <code>string</code> | 
 | status | <code>string</code> | 
+
+<a name="Client+connect"></a>
+
+### simulator.connect() ⇒ [<code>Elarian</code>](#Elarian)
+<p>Connecto to elarian servers</p>
+
+**Kind**: instance method of [<code>Simulator</code>](#Simulator)  
+**Returns**: [<code>Elarian</code>](#Elarian) - <p>this instance</p>  
+<a name="Client+isConnected"></a>
+
+### simulator.isConnected() ⇒ <code>boolean</code>
+<p>Check if client is connected</p>
+
+**Kind**: instance method of [<code>Simulator</code>](#Simulator)  
+<a name="Client+disconnect"></a>
+
+### simulator.disconnect()
+<p>Disconnect from the elarian server</p>
+
+**Kind**: instance method of [<code>Simulator</code>](#Simulator)  
+<a name="Client+registerNotificationHandler"></a>
+
+### simulator.registerNotificationHandler(event, handler) ⇒ [<code>Client</code>](#Client)
+<p>Register a listener to watch out for events. Can also be called with <code>client.on(event,listener)</code></p>
+
+**Kind**: instance method of [<code>Simulator</code>](#Simulator)  
+**Returns**: [<code>Client</code>](#Client) - <p>this instance</p>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| event | <code>Event</code> | <p>The event whose listener to register</p> |
+| handler | <code>NotificationHandler</code> | <p>A function that reacts to events</p> |
+
+<a name="Client+on"></a>
+
+### simulator.on(event, handler) ⇒ [<code>Client</code>](#Client)
+<p>Register a listener to watch out for events. Can also be called with <code>client.registerListerner(event,listener)</code></p>
+
+**Kind**: instance method of [<code>Simulator</code>](#Simulator)  
+**Returns**: [<code>Client</code>](#Client) - <p>this instance</p>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| event | <code>Event</code> | <p>The event whose listener to register</p> |
+| handler | <code>NotificationHandler</code> | <p>A function that reacts to events</p> |
 

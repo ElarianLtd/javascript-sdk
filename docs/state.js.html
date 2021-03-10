@@ -33,7 +33,7 @@
 			<li class="dropdown">
 				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
 				<ul class="dropdown-menu inline">
-					<li><a href="Customer.html">Customer</a></li><li><a href="Elarian.html">Elarian</a></li><li><a href="Elarian_Customer.html">Elarian#Customer</a></li><li><a href="Simulator.html">Simulator</a></li>
+					<li><a href="Client.html">Client</a></li><li><a href="Customer.html">Customer</a></li><li><a href="Elarian.html">Elarian</a></li><li><a href="Elarian_Customer.html">Elarian#Customer</a></li><li><a href="Simulator.html">Simulator</a></li>
 				</ul>
 			</li>
 			
@@ -302,6 +302,7 @@ Elarian.prototype._getCustomerState = function getCustomerState(customer) {
                                 })),
                                 channelNumbers: entry.channelNumbersList.map((i) => ({
                                     number: i.number,
+                                    // eslint-disable-next-line max-len
                                     channel: getChannelProviderString(i.channel, PaymentChannel),
                                 })),
                             };
@@ -319,7 +320,6 @@ Elarian.prototype._getCustomerState = function getCustomerState(customer) {
 
                                     Object.keys(state).forEach((key) => {
                                         if (state[key]) {
-                                            // customer+channel numbers
                                             state[key].customerNumber = state[key].customerNumber
                                                 ? {
                                                     number: state[key].customerNumber.number,
@@ -342,6 +342,59 @@ Elarian.prototype._getCustomerState = function getCustomerState(customer) {
                                         }
                                     });
 
+                                    if (state.active) {
+                                        state.active = {
+                                            customerNumber: state.active.customerNumber,
+                                            channelNumber: state.active.customerNumber,
+                                            messages: state.active.messagesList,
+                                            sessions: state.active.sessionsList,
+                                            replyToken: state.active.replyToken ? {
+                                                token: state.active.replyToken.token,
+                                                // eslint-disable-next-line max-len
+                                                expiresAt: state.active.replyToken.expiresAt.seconds,
+                                            } : undefined,
+                                            // eslint-disable-next-line max-len
+                                            allowedAt: state.active.allowedAt ? state.active.allowedAt.seconds : undefined,
+                                        };
+                                    }
+
+                                    if (state.blocked) {
+                                        state.blocked = {
+                                            customerNumber: state.blocked.customerNumber,
+                                            channelNumber: state.blocked.customerNumber,
+                                            messages: state.blocked.messagesList,
+                                            sessions: state.blocked.sessionsList,
+                                            replyToken: state.blocked.replyToken ? {
+                                                token: state.blocked.replyToken.token,
+                                                // eslint-disable-next-line max-len
+                                                expiresAt: state.blocked.replyToken.expiresAt.seconds,
+                                            } : undefined,
+                                        };
+                                    }
+
+                                    if (state.inSession) {
+                                        state.inSession = {
+                                            appIds: state.inSession.appIdsList,
+                                            sessionId: state.inSession.sessionId,
+                                            customerNumber: state.inSession.customerNumber,
+                                            channelNumber: state.inSession.customerNumber,
+                                            messages: state.inSession.messagesList,
+                                            sessions: state.inSession.sessionsList,
+                                            replyToken: state.inSession.replyToken ? {
+                                                token: state.inSession.replyToken.token,
+                                                // eslint-disable-next-line max-len
+                                                expiresAt: state.inSession.replyToken.expiresAt.seconds,
+                                            } : undefined,
+                                            // eslint-disable-next-line max-len
+                                            allowedAt: state.inSession.allowedAt ? state.inSession.allowedAt.seconds : undefined,
+                                            // eslint-disable-next-line max-len
+                                            startedAt: state.inSession.startedAt ? state.inSession.startedAt.seconds : undefined,
+                                            // eslint-disable-next-line max-len
+                                            expiresAt: state.inSession.expiresAt ? state.inSession.expiresAt.seconds : undefined,
+
+                                        };
+                                    }
+
                                     return state;
                                 }),
                             };
@@ -350,33 +403,44 @@ Elarian.prototype._getCustomerState = function getCustomerState(customer) {
                         // eslint-disable-next-line max-len
                         if (result.data.activityState &amp;&amp; Object.keys(result.data.activityState).length) {
                             const entry = result.data.activityState;
-                            result.data.paymentState = {
-                                appId: entry.appId,
-                                sessionId: entry.sessionId,
-                                activities: (entry.activities || []).map((i) => ({
-                                    key: i.key,
-                                    properties: i.propertiesMap.map((j) => ({
-                                        [j[0]]: j[1], // FIXME: What are the actual values?
+                            result.data.activityState = {
+                                sessions: (entry.sessionsList || []).map((sess) => ({
+                                    appId: sess.appId,
+                                    sessionId: sess.sessionId,
+                                    activities: (sess.activitiesList || []).map((i) => ({
+                                        key: i.key,
+                                        properties: i.propertiesMap.map((j) => ({
+                                            [j[0]]: j[1], // FIXME: What are the actual values?
+                                        })),
+                                        createdAt: i.createdAt ? i.createdAt.seconds : undefined,
                                     })),
-                                    createdAt: i.createdAt.seconds,
+                                    createdAt: sess.createdAt.seconds,
+                                    updatedAt: sess.updatedAt.seconds,
+                                    customerNumber: sess.customerNumber ? {
+                                        number: sess.customerNumber.number,
+                                        provider: getCustomerNumberProviderString(
+                                            sess.customerNumber.provider,
+                                        ),
+                                        // eslint-disable-next-line max-len
+                                        partition: sess.customerNumber.partition ? sess.customerNumber.partition.value : undefined,
+                                    } : undefined,
+                                    channelNumber: sess.channelNumber ? {
+                                        number: sess.channelNumber.number,
+                                        channel: getChannelProviderString(
+                                            sess.channelNumber.channel,
+                                            ActivityChannel,
+                                        ),
+                                    } : undefined,
+
                                 })),
-                                createdAt: entry.createdAt.seconds,
-                                updatedAt: entry.updatedAt.seconds,
-                                customerNumber: {
-                                    number: entry.customerNumber.number,
+                                customerNumbers: (entry.customerNumbersList || []).map((num) => ({
+                                    number: num.number,
                                     provider: getCustomerNumberProviderString(
-                                        entry.customerNumber.provider,
+                                        num.provider,
                                     ),
                                     // eslint-disable-next-line max-len
-                                    partition: entry.customerNumber.partition ? entry.customerNumber.partition.value : undefined,
-                                },
-                                channelNumber: {
-                                    number: entry.channelNumber.number,
-                                    channel: getChannelProviderString(
-                                        entry.channelNumber.channel,
-                                        ActivityChannel,
-                                    ),
-                                },
+                                    partition: num.partition ? num.partition.value : undefined,
+                                })),
                             };
                         }
 
@@ -1191,7 +1255,7 @@ module.exports = Elarian;
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a>
 	
-		on Wed, Mar 10, 2021 2:30 PM
+		on Wed, Mar 10, 2021 8:19 PM
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

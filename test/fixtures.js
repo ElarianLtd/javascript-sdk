@@ -36,33 +36,33 @@ module.exports = {
     },
 
     paymentChannel: {
-        number: '787878',
+        number: process.env.SMS_SENDER_ID,
         channel: 'cellular',
     },
 
     messagingChannel: {
-        number: '787878',
+        number: process.env.SMS_SENDER_ID,
         channel: 'sms',
     },
 
     ussdChannel: {
-        number: '*544#',
+        number: process.env.USSD_CODE,
         channel: 'ussd',
     },
 
     voiceChannel: {
-        number: '+254711082000',
+        number: process.env.VOICE_NUMBER,
         channel: 'voice',
     },
 
-    shortCodeSenderId: '787878',
-    alphannumericSenderId: 'AwesomeBob',
-    telegramBot: 'awesomeBot',
-    paybill: '787878',
-    purseId: 'prs-22Ojnf',
-    ussdCode: '*544#',
-    voiceNumber: '+254711082000',
-    whatsappNumber: '+14155238886',
+    shortCodeSenderId: process.env.SMS_SENDER_ID,
+    alphannumericSenderId: process.env.SMS_SENDER_ID,
+    telegramBot: process.env.TELEGRAM_NUMBER,
+    paybill: process.env.MPESA_PAYBILL,
+    purseId: process.env.PURSE_ID,
+    ussdCode: process.env.USSD_CODE,
+    voiceNumber: process.env.VOICE_NUMBER,
+    whatsappNumber: process.env.WHATSAPP_NUMBER,
     emailSenderId: 'postmaster@sandbox388ba53b1a244f41b0f9c120783a7320.mailgun.org',
 
     dialPlan: [
@@ -154,51 +154,33 @@ module.exports = {
         },
     ],
 
-    initializeClient: () => new Promise((resolve, reject) => {
-        if (simulator) {
-            simulator.disconnect();
-        }
-        if (client) {
-            client.disconnect();
-        }
-
-        simulator = new Simulator(clientParams);
-        client = new Elarian(clientParams);
-
-        const tasks = [
-            new Promise((rez, rej) => {
-                client
-                    .on('error', (err) => rej(err))
-                    .on('connected', () => rez(client))
-                    .connect();
-            }),
-            new Promise((rez, rej) => {
-                simulator
-                    .on('error', (err) => rej(err))
-                    .on('connected', () => rez(simulator))
-                    .connect();
-            }),
-        ];
-
-        Promise.all(tasks)
-            .then(resolve)
-            .catch(reject);
-    }),
-
     getClient: async () => {
         if (client) {
             return client;
         }
-        await module.exports.initializeClient();
-        return client;
+        client = new Elarian(clientParams);
+        return new Promise((rez, rej) => {
+            client
+                .on('error', (err) => rej(err))
+                .on('connected', () => rez(client))
+                .connect();
+        });
     },
 
     getSimulator: async () => {
         if (simulator) {
             return simulator;
         }
-        await module.exports.initializeClient();
-        return simulator;
+        simulator = new Simulator(clientParams);
+        return new Promise((rez, rej) => {
+            simulator
+                .on('error', (err) => {
+                    console.error('Sumulator Error', err);
+                    rej(err);
+                })
+                .on('connected', () => rez(simulator))
+                .connect();
+        });
     },
 
     sleep: (ms) => new Promise((resolve) => setTimeout(resolve, ms)),

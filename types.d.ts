@@ -1,4 +1,38 @@
 /**
+ * <p>Instantiate an elarian client. You have to call connect() on then client to start using it</p>
+ */
+declare class Client {
+    constructor(config: ClientConfig);
+    /**
+     * <p>Connecto to elarian servers</p>
+     * @returns <p>this instance</p>
+     */
+    connect(): Elarian;
+    /**
+     * <p>Check if client is connected</p>
+     */
+    isConnected(): boolean;
+    /**
+     * <p>Disconnect from the elarian server</p>
+     */
+    disconnect(): void;
+    /**
+     * <p>Register a listener to watch out for events. Can also be called with <code>client.on(event,listener)</code></p>
+     * @param event - <p>The event whose listener to register</p>
+     * @param handler - <p>A function that reacts to events</p>
+     * @returns <p>this instance</p>
+     */
+    registerNotificationHandler(event: Event, handler: NotificationHandler): Client;
+    /**
+     * <p>Register a listener to watch out for events. Can also be called with <code>client.registerListerner(event,listener)</code></p>
+     * @param event - <p>The event whose listener to register</p>
+     * @param handler - <p>A function that reacts to events</p>
+     * @returns <p>this instance</p>
+     */
+    on(event: Event, handler: NotificationHandler): Client;
+}
+
+/**
  * <p>A customer is your end-user, represented by a number (from a cellular, facebook or telegram)</p>
  */
 declare class Customer {
@@ -86,43 +120,16 @@ declare class Customer {
 /**
  * <p>Instantiate an elarian client. You have to call connect() on then client to start using it</p>
  */
-declare class Elarian {
-    constructor(config: ElarianConfig);
+declare class Elarian extends Client {
+    constructor(config: ClientConfig);
     /**
      * <p>Generate a short-lived auth token to use instead of apiKey. Used for browser and mobile clients.</p>
      */
     generateAuthToken(): AuthToken;
     /**
-     * <p>Connecto to elarian servers</p>
-     * @returns <p>this instance</p>
-     */
-    connect(): Elarian;
-    /**
-     * <p>Check if client is connected</p>
-     */
-    isConnected(): boolean;
-    /**
-     * <p>Disconnect from the elarian server</p>
-     */
-    disconnect(): void;
-    /**
      * <p>Send message by tag</p>
      */
     sendMessageByTag(tag: Tag, channelNumber: MessagingChannelNumber, message: Message): TagUpdateReply;
-    /**
-     * <p>Register a listener to watch out for events. Can also be called with <code>client.on(event,listener)</code></p>
-     * @param event - <p>The event whose listener to register</p>
-     * @param handler - <p>A function that reacts to events</p>
-     * @returns <p>this instance</p>
-     */
-    registerNotificationHandler(event: Event, handler: NotificationHandler): Elarian;
-    /**
-     * <p>Register a listener to watch out for events. Can also be called with <code>client.registerListerner(event,listener)</code></p>
-     * @param event - <p>The event whose listener to register</p>
-     * @param handler - <p>A function that reacts to events</p>
-     * @returns <p>this instance</p>
-     */
-    on(event: Event, handler: NotificationHandler): Elarian;
     /**
      * <p>Initiate a payment transaction</p>
      */
@@ -148,8 +155,8 @@ declare namespace Elarian {
 /**
  * <p>Instantiate an elarian simulator client</p>
  */
-declare class Simulator {
-    constructor(config: ElarianConfig);
+declare class Simulator extends Client {
+    constructor(config: ClientConfig);
     /**
      * <p>Initiate a message request</p>
      */
@@ -171,7 +178,7 @@ declare class Simulator {
  * @property [allowNotifications] - <p>allow this non-simulator client to receive notifications or not</p>
  * @property [options] - <p>setup connection options</p>
  */
-declare type ElarianConfig = {
+declare type ClientConfig = {
     apiKey: string;
     appId: string;
     orgId: string;
