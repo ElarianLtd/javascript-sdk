@@ -1,151 +1,4 @@
 /**
- * <p>Instantiate an elarian client. You have to call connect() on then client to start using it</p>
- */
-declare class Elarian {
-    constructor(config: ElarianConfig);
-    /**
-     * <p>Generate a short-lived auth token to use instead of apiKey. Used for browser and mobile clients.</p>
-     */
-    generateAuthToken(): AuthToken;
-    /**
-     * <p>Connect to the elarian server</p>
-     */
-    connect(): void;
-    /**
-     * <p>Check if client is connected</p>
-     */
-    isConnected(): void;
-    /**
-     * <p>Disconnect from the elarian server</p>
-     */
-    disconnect(): void;
-    /**
-     * <p>Send a message</p>
-     */
-    sendMessage(customer: Customer, channelNumber: MessagingChannelNumber, message: Message): MessageStatus;
-    /**
-     * <p>Send message by tag</p>
-     */
-    sendMessageByTag(tag: Tag, channelNumber: MessagingChannelNumber, body: Message): WorkStatus;
-    /**
-     * <p>Reply to a received message</p>
-     */
-    replyToMessage(customer: Customer, replyToMessageId: string, body: Message): MessageStatus;
-    /**
-     * <p>Allow or block a customer from receiving messages from a channel</p>
-     * @param action - <p>allow or block</p>
-     */
-    updateMessagingConsent(customer: Customer, channelNumber: MessagingChannelNumber, action: string): ConsentStatus;
-    /**
-     * <p>Register a listener to watch out for events. Can also be called with <code>client.on(event,listener)</code></p>
-     * @param event - <p>The event whose listener to register</p>
-     * @param listener - <p>A function that reacts to events</p>
-     */
-    registerListerner(event: Event, listener: EventListener): void;
-    /**
-     * <p>Register a listener to watch out for events. Can also be called with <code>client.registerListerner(event,listener)</code></p>
-     * @param event - <p>The event whose listener to register</p>
-     * @param listener - <p>A function that reacts to events</p>
-     */
-    on(event: Event, listener: EventListener): void;
-    /**
-     * <p>Remove listener registered for event. Can also be called with <code>client.off(event)</code></p>
-     * @param event - <p>The event whose listener to remove</p>
-     */
-    removeListener(event: Event): void;
-    /**
-     * <p>Remove listener registered for event. Can also be called with <code>client.removeListener(event)</code></p>
-     * @param event - <p>The event whose listener to remove</p>
-     */
-    off(event: Event): void;
-    /**
-     * <p>Initiate a payment transaction</p>
-     */
-    initiatePayment(debitParty: CustomerPayment | Wallet | Purse, creditParty: CustomerPayment | Wallet | Purse, value: Cash): PaymentStatus;
-    /**
-     * <p>Fetch the customer's current state.</p>
-     */
-    getCustomerState(customer: Customer): CustomerState;
-    /**
-     * <p>Adopt another customer's state</p>
-     */
-    adoptCustomerState(customer: Customer, otherCustomer: Customer): UpdateStatus;
-    /**
-     * <p>Update a customer's tag list</p>
-     */
-    updateCustomerTag(customer: Customer, tags: Tag[]): UpdateStatus;
-    /**
-     * <p>Remove tags from a customer</p>
-     */
-    deleteCustomerTag(customer: Customer, tags: string[]): UpdateStatus;
-    /**
-     * <p>Update a customer's secondary Ids</p>
-     */
-    updateCustomerSecondaryId(customer: Customer, secondaryIds: SecondaryId[]): UpdateStatus;
-    /**
-     * <p>Delete a customer's secondary Ids</p>
-     */
-    deleteCustomerSecondaryId(customer: Customer, secondaryIds: SecondaryId[]): UpdateStatus;
-    /**
-     * <p>Set a reminder to be triggered at the specified time for a particular customer</p>
-     */
-    addCustomerReminder(customer: Customer, reminder: Reminder): UpdateStatus;
-    /**
-     * <p>Cancels a previously set reminder with the key <code>key</code> on the customer</p>
-     */
-    cancelCustomerReminder(customer: Customer, key: string): UpdateStatus;
-    /**
-     * <p>Set a reminder to be triggered at the specified time for customers with the particular tag</p>
-     */
-    addCustomerReminderByTag(tag: Tag, reminder: Reminder): WorkStatus;
-    /**
-     * <p>Cancels a previously set reminder with tag <code>tag</code> and key <code>key</code></p>
-     */
-    cancelCustomerReminderByTag(tag: Tag, key: string): WorkStatus;
-    /**
-     * <p>Sets some metadata on the customer.
-     * Values in the metadata object can either be strings or buffers,
-     * depending on your serializer. @see {@link Client}</p>
-     */
-    updateCustomerMetadata(customer: Customer, metadata: any): UpdateStatus;
-    /**
-     * <p>Remove some metadata from a customer.</p>
-     */
-    deleteCustomerMetadata(customer: Customer, keys: string[]): UpdateStatus;
-    /**
-     * <p>Sets some app data on the customer.
-     * Value of the data object can either be a string or a buffer,
-     * depending on your serializer. @see {@link Client}</p>
-     */
-    updateCustomerAppData(customer: Customer, data: any): UpdateStatus;
-    /**
-     * <p>Fetches the customer's app data and lock it from fetching(for up to <b>90s</b>)
-     * until next call to update app data.</p>
-     */
-    leaseCustomerAppData(customer: Customer): LeasedAppData;
-    /**
-     * <p>Remove customer's app data.</p>
-     */
-    deleteCustomerAppData(customer: Customer): UpdateStatus;
-    /**
-     * <p>Initiate a customer activity</p>
-     */
-    updateCustomerActivity(customerNumber: CustomerNumber, channelNumber: ActivityChannelNumber, activity: Activity): UpdateStatus;
-    /**
-     * <p>Initiate a voice call to customer from channelNumber</p>
-     */
-    makeVoiceCall(customer: Customer, channelNumber: string, actions: VoiceAction[]): VoiceStatus;
-}
-
-declare namespace Elarian {
-    /**
-     * <p>A customer object. @see {@link Customer}</p>
-     */
-    class Customer {
-    }
-}
-
-/**
  * <p>A customer is your end-user, represented by a number (from a cellular, facebook or telegram)</p>
  */
 declare class Customer {
@@ -157,81 +10,139 @@ declare class Customer {
     /**
      * <p>Merge otherCustomer's state into this customer's state and discard otherCustomer</p>
      */
-    adoptState(otherCustomer: Customer): UpdateStatus;
+    adoptState(otherCustomer: Customer): CustomerStateUpdateReply;
     /**
-     * <p>Update a customer's tag list.</p>
+     * <p>Send a message to the customer from the specified channel number.</p>
      */
-    updateTag(tags: Tag[]): UpdateStatus;
+    sendMessage(channelNumber: MessagingChannelNumber, message: Message): MessageReply;
     /**
-     * <p>Remove some tags from a customer</p>
+     * <p>Reply to a message</p>
      */
-    deleteTag(tags: Tag[]): UpdateStatus;
+    replyToMessage(messageId: string, message: Message): MessageReply;
     /**
-     * <p>Update a customer's secondary Ids</p>
+     * <p>Initiate a customer activity</p>
      */
-    updateSecondaryId(secondaryIds: SecondaryId[]): UpdateStatus;
+    updateActivity(channelNumber: ActivityChannelNumber, activity: Activity): CustomerStateUpdateReply;
     /**
-     * <p>Remove some secondary Ids from a customer</p>
+     * <p>Allow or block a customer from receiving messages from a channel</p>
+     * @param action - <p>allow or block</p>
      */
-    deleteSecondaryId(secondaryIds: SecondaryId[]): UpdateStatus;
-    /**
-     * <p>Set a reminder to be triggered at the specified time for a particular customer</p>
-     */
-    addReminder(reminder: Reminder): UpdateStatus;
-    /**
-     * <p>Cancels a previously set reminder with the key <code>key</code> on the customer</p>
-     */
-    cancelReminder(key: string): UpdateStatus;
-    /**
-     * <p>Fetch customer metadata</p>
-     */
-    getMetadata(): any;
-    /**
-     * <p>Sets some metadata on the customer.
-     * Values in the metadata object can either be strings or buffers,
-     * depending on the set serializer</p>
-     */
-    updateMetadata(metadata: any): UpdateStatus;
-    /**
-     * <p>Remove some metadata from a customer. <code>keys</code> is an array of strings</p>
-     */
-    deleteMetadata(keys: string[]): UpdateStatus;
-    /**
-     * <p>Sets some app data on the customer.
-     * Values in the data object can either be strings or buffers,
-     * depending on the set serializer</p>
-     */
-    updateAppData(data: any): UpdateStatus;
+    updateMessagingConsent(channelNumber: MessagingChannelNumber, action: string): ConsentUpdateReply;
     /**
      * <p>Fetches the customer's app data and lock it from fetching(for up to <b>90s</b>)
      * until next call to update app data.</p>
      */
     leaseAppData(): LeasedAppData;
     /**
+     * <p>Sets some app data on the customer.
+     * Values in the data object can either be strings or buffers,
+     * depending on the set serializer. @see {@link ConnectionOptions}</p>
+     */
+    updateAppData(data: any): CustomerStateUpdateReply;
+    /**
      * <p>Remove customer's app data</p>
      */
-    deleteAppData(): UpdateStatus;
+    deleteAppData(): CustomerStateUpdateReply;
     /**
-     * <p>Send a message to the customer from the specified channel number.</p>
+     * <p>Sets some metadata on the customer.
+     * Values in the metadata object can either be strings or buffers,
+     * depending on the set serializer</p>
      */
-    sendMessage(channelNumber: MessagingChannelNumber, body: Body): MessageStatus;
+    updateMetadata(metadata: any): CustomerStateUpdateReply;
     /**
-     * <p>Initiate a voice call to the customer</p>
+     * <p>Remove some metadata from a customer. <code>keys</code> is an array of strings</p>
      */
-    makeVoiceCall(channelNumber: string, actions: VoiceAction[]): MessageStatus;
+    deleteMetadata(keys: string[]): CustomerStateUpdateReply;
     /**
-     * <p>Allow or block a customer from receiving messages from a channel</p>
-     * @param action - <p>allow or block</p>
+     * <p>Update a customer's secondary Ids</p>
      */
-    updateMessagingConsent(channelNumber: MessagingChannelNumber, action: string): ConsentStatus;
+    updateSecondaryIds(secondaryIds: SecondaryId[]): CustomerStateUpdateReply;
     /**
-     * <p>Initiate a customer activity</p>
+     * <p>Remove some secondary Ids from a customer</p>
      */
-    updateActivity(channelNumber: ActivityChannelNumber, sessionId: Activity): UpdateStatus;
+    deleteSecondaryIds(secondaryIds: SecondaryId[]): CustomerStateUpdateReply;
+    /**
+     * <p>Update a customer's tag list.</p>
+     */
+    updateTags(tags: Tag[]): CustomerStateUpdateReply;
+    /**
+     * <p>Remove some tags from a customer</p>
+     */
+    deleteTags(tags: string[]): CustomerStateUpdateReply;
+    /**
+     * <p>Set a reminder to be triggered at the specified time for a particular customer</p>
+     */
+    addReminder(reminder: Reminder): CustomerStateUpdateReply;
+    /**
+     * <p>Cancels a previously set reminder with the key <code>key</code> on the customer</p>
+     */
+    cancelReminder(key: string): CustomerStateUpdateReply;
+    /**
+     * <p>Fetch customer metadata</p>
+     */
+    getMetadata(): any;
+}
+
+/**
+ * <p>Instantiate an elarian client. You have to call connect() on then client to start using it</p>
+ */
+declare class Elarian {
+    constructor(config: ElarianConfig);
+    /**
+     * <p>Generate a short-lived auth token to use instead of apiKey. Used for browser and mobile clients.</p>
+     */
+    generateAuthToken(): AuthToken;
+    /**
+     * <p>Connecto to elarian servers</p>
+     * @returns <p>this instance</p>
+     */
+    connect(): Elarian;
+    /**
+     * <p>Check if client is connected</p>
+     */
+    isConnected(): boolean;
+    /**
+     * <p>Disconnect from the elarian server</p>
+     */
+    disconnect(): void;
+    /**
+     * <p>Send message by tag</p>
+     */
+    sendMessageByTag(tag: Tag, channelNumber: MessagingChannelNumber, message: Message): TagUpdateReply;
+    /**
+     * <p>Register a listener to watch out for events. Can also be called with <code>client.on(event,listener)</code></p>
+     * @param event - <p>The event whose listener to register</p>
+     * @param handler - <p>A function that reacts to events</p>
+     * @returns <p>this instance</p>
+     */
+    registerNotificationHandler(event: Event, handler: NotificationHandler): Elarian;
+    /**
+     * <p>Register a listener to watch out for events. Can also be called with <code>client.registerListerner(event,listener)</code></p>
+     * @param event - <p>The event whose listener to register</p>
+     * @param handler - <p>A function that reacts to events</p>
+     * @returns <p>this instance</p>
+     */
+    on(event: Event, handler: NotificationHandler): Elarian;
     /**
      * <p>Initiate a payment transaction</p>
      */
-    requestPayment(source: PaymentChannelNumber | Wallet, destination: Wallet | Purse, value: Cash): PaymentStatus;
+    initiatePayment(debitParty: CustomerPayment | Wallet | Purse, creditParty: CustomerPayment | Wallet | Purse, value: Cash): InitiatePaymentReply;
+    /**
+     * <p>Set a reminder to be triggered at the specified time for customers with the particular tag</p>
+     */
+    addCustomerReminderByTag(tag: Tag, reminder: Reminder): TagUpdateReply;
+    /**
+     * <p>Cancels a previously set reminder with tag <code>tag</code> and key <code>key</code></p>
+     */
+    cancelCustomerReminderByTag(tag: Tag, key: string): TagUpdateReply;
+}
+
+declare namespace Elarian {
+    /**
+     * <p>A customer object. @see {@link Customer}</p>
+     */
+    class Customer {
+    }
 }
 
 /**
@@ -242,7 +153,7 @@ declare class Simulator {
     /**
      * <p>Initiate a message request</p>
      */
-    receiveMessage(customerNumber: string, channelNumber: MessagingChannelNumber, sessionId: string, messageParts: SimulatorMessageBody[]): void;
+    receiveMessage(phoneNumber: string, channelNumber: MessagingChannelNumber, sessionId: string, parts: SimulatorMessageBody[]): void;
     /**
      * <p>Initiate payment request</p>
      */
@@ -254,7 +165,56 @@ declare class Simulator {
 }
 
 /**
+ * <p>An object representing client params</p>
+ * @property [authToken] - <p>received from an client that authenticated with the API key. @see {@link Elarian.generateAuthToken}</p>
+ * @property [isSimulator] - <p>Run this client as a simulator</p>
+ * @property [allowNotifications] - <p>allow this non-simulator client to receive notifications or not</p>
+ * @property [options] - <p>setup connection options</p>
+ */
+declare type ElarianConfig = {
+    apiKey: string;
+    appId: string;
+    orgId: string;
+    authToken?: string;
+    isSimulator?: boolean;
+    allowNotifications?: boolean;
+    options?: ConnectionOptions;
+};
+
+/**
+ * <p>An object representing serializer</p>
+ */
+declare type Serializer = {
+    type: text | binary;
+    serialize: (...params: any[]) => any;
+    deserialize: (...params: any[]) => any;
+};
+
+/**
+ * <p>An object representing config options</p>
+ * @property [serializer] - <p>used to (de)serialize your metadata</p>
+ */
+declare type ConnectionOptions = {
+    lifetime?: number;
+    keepAlive?: number;
+    resumable?: boolean;
+    notificationTimeout?: number;
+    serializer?: Serializer;
+};
+
+/**
+ * <p>An object representing customer params</p>
+ */
+declare type CustomerParams = {
+    customerId: string;
+    number: string;
+    provider?: string;
+    partition?: string;
+};
+
+/**
  * <p>An object representing a tag. Tags can be used to group customers based on some similarities. e.g. loan defaulters, etc.</p>
+ * @property [expiresAt] - <p>timestamp in seconds. e.g. 1615361861</p>
  */
 declare type Tag = {
     key: string;
@@ -263,64 +223,58 @@ declare type Tag = {
 };
 
 /**
- * <p>An object representing a secondary id. Secondary Ids can be used to add some more unique identities to a customer. e.g. driver's license, etc.</p>
+ * <p>An object representing a reminder</p>
+ * @property remindAt - <p>timestamp in seconds e.g 1615361861</p>
+ * @property [interval] - <p>duration in seconds e.g. 60</p>
  */
-declare type SecondaryId = {
+declare type Reminder = {
     key: string;
-    value: string;
+    remindAt: number;
+    payload: string;
+    interval?: number;
 };
 
 /**
- * <p>An object representing a customer number.</p>
+ * <p>An object representing auth token</p>
+ * @property lifetime - <p>in seconds</p>
  */
-declare type CustomerNumber = {
-    number: string;
-    provider: cellular | telegram | facebook | email | web;
-    partition?: string;
+declare type AuthToken = {
+    token: string;
+    lifetime: number;
 };
 
 /**
- * <p>An object representing a messaging channel number</p>
+ * <p>An obkect representing a paymennt reply</p>
  */
-declare type MessagingChannelNumber = {
-    number: string;
-    channel: sms | telegram | whatsapp | email | messenger | voice;
+declare type InitiatePaymentReply = {
+    status: number;
+    description: string;
+    transactionId: string;
+    debitCustomerId: string;
+    creditCustomerId: string;
+};
+
+declare type TagUpdateReply = {
+    status: boolean;
+    description: string;
+    workId: string;
 };
 
 /**
- * <p>An object representing media</p>
+ * <p>An object representing a message</p>
  */
-declare type Media = {
-    url: string;
-    type: image | video | audio | document | voice | sticker | contact;
-};
-
-/**
- * <p>An object representing location</p>
- */
-declare type Location = {
-    latitude: double;
-    longitude: double;
-    label: string;
-    address: string;
-};
-
-/**
- * <p>An object representing email</p>
- */
-declare type Email = {
-    subject: string;
-    bodyPlain: string;
-    bodyHtml: string;
-    ccList: string[];
-    bccList: string[];
-    attachments: string[];
+declare type Message = {
+    body: MessageBody;
+    labels?: string[];
+    providerTag?: string;
+    replyToken?: string;
+    replyPrompt?: ReplyPrompt;
 };
 
 /**
  * <p>An object representing a message body</p>
  */
-declare type Body = {
+declare type MessageBody = {
     text?: string;
     template?: Template;
     media?: Media;
@@ -332,51 +286,11 @@ declare type Body = {
 };
 
 /**
- * <p>An object representing a message body</p>
+ * <p>An object representing a ussd menu</p>
  */
-declare type SimulatorMessageBody = {
-    text?: string;
-    media?: Media;
-    location?: Location;
-    email?: Email;
-    ussd?: string;
-    voice?: VoiceCallInput;
-};
-
-/**
- * <p>An object representing a voice call input</p>
- * @property direction - <p>outbound or inbound</p>
- */
-declare type VoiceCallInput = {
-    direction: string;
-    status: string;
-    startedAt: number;
-    hangupCause: string;
-    dtmfDigits: string;
-    recordingUrl: string;
-    dialData: VoiceCallDialInput;
-    queueData: VoiceCallQueueInput;
-};
-
-/**
- * <p>An object representing a voice call dial input</p>
- */
-declare type VoiceCallDialInput = {
-    destinationNumber: string;
-    startedAt: number;
-    duration: number;
-};
-
-/**
- * <p>An object representing a voice call queue input</p>
- */
-declare type VoiceCallQueueInput = {
-    destinationNumber: string;
-    enqueuedAt: number;
-    dequeuedAt: number;
-    dequeuedToNumber: string;
-    dequeuedToSessionId: string;
-    queueDuration: number;
+declare type UssdMenu = {
+    text: string;
+    isTerminal: boolean;
 };
 
 /**
@@ -405,166 +319,60 @@ declare type ReplyPrompt = {
 };
 
 /**
- * <p>An object representing a message body</p>
+ * <p>An object representing a secondary id. Secondary Ids can be used to add some more unique identities to a customer. e.g. driver's license, etc.</p>
  */
-declare type Message = {
-    body: Body;
-    labels?: string[];
-    providerTag?: string;
-    replyToken?: string;
-    replyPrompt?: ReplyPrompt;
-};
-
-/**
- * <p>An object representing a customer activity</p>
- */
-declare type Activity = {
-    sessionId: string;
+declare type SecondaryId = {
     key: string;
-    properties?: any;
+    value: string;
 };
 
 /**
- * <p>An object representing client params</p>
- * @property [authToken] - <p>received from an client that authenticated with the API key. @see Elarian.generateAuthToken()</p>
- * @property [isSimulator] - <p>Run this client as a simulator</p>
- * @property [allowNotifications] - <p>allow this non-simulator client to receive notifications or not</p>
- * @property [options] - <p>setup connection options</p>
+ * <p>An object representing a customer number.</p>
+ * @property provider - <p>one of [cellular|telegram|facebook|email|web]</p>
  */
-declare type ElarianConfig = {
-    apiKey: string;
-    appId: string;
-    orgId: string;
-    authToken?: string;
-    isSimulator?: boolean;
-    allowNotifications?: boolean;
-    options?: ConfigOptions;
+declare type CustomerNumber = {
+    number: string;
+    provider: string;
+    partition?: string;
 };
 
 /**
- * <p>An object representing serializer</p>
+ * <p>An object representing media</p>
+ * @property type - <p>one of [image|video|audio|document|voice|sticker|contact]</p>
  */
-declare type Serializer = {
-    type: text | binary;
-    serialize: (...params: any[]) => any;
-    deserialize: (...params: any[]) => any;
+declare type Media = {
+    url: string;
+    type: string;
 };
 
 /**
- * <p>An object representing config options</p>
- * @property [serializer] - <p>used to (de)serialize your metadata</p>
+ * <p>An object representing location</p>
  */
-declare type ConfigOptions = {
-    lifetime?: number;
-    keepAlive?: number;
-    resumable?: boolean;
-    serializer?: Serializer;
+declare type Location = {
+    latitude: double;
+    longitude: double;
+    label: string;
+    address: string;
+};
+
+/**
+ * <p>An object representing email</p>
+ */
+declare type Email = {
+    subject: string;
+    bodyPlain: string;
+    bodyHtml: string;
+    ccList: string[];
+    bccList: string[];
+    attachments: string[];
 };
 
 /**
  * <p>An object representing cash</p>
  */
 declare type Cash = {
-    amount: double;
+    amount: number;
     currencyCode: string;
-};
-
-/**
- * <p>An object representing wallet</p>
- */
-declare type Wallet = {
-    customerId: string;
-    walletId: string;
-};
-
-/**
- * <p>An object representing purse</p>
- */
-declare type Purse = {
-    purseId: string;
-};
-
-/**
- * <p>An object representing a payment channel</p>
- * @property channel - <p>number provider. Must be one of ['cellular']</p>
- */
-declare type PaymentChannelNumber = {
-    number: string;
-    channel: string;
-};
-
-/**
- * <p>An object representing an activity channel number</p>
- * @property channel - <p>channel type. Must be one of ['web','modile']</p>
- */
-declare type ActivityChannelNumber = {
-    number: string;
-    channel: string;
-};
-
-/**
- * <p>An object representing a payment transaction</p>
- */
-declare type PaymentTransaction = {
-    transactionId: string;
-    appId: string;
-    creditParty: CustomerPayment | Wallet | Purse;
-    debitParty: CustomerPayment | Wallet | Purse;
-    value: Cash;
-    status: number;
-    createdAt: number;
-    updatedAt: number;
-};
-
-/**
- * <p>An object representing a voice channel</p>
- */
-declare type VoiceChannelNumber = {
-    number: string;
-    channel: string;
-};
-
-/**
- * <p>An object representing a ussd channel</p>
- */
-declare type UssdChannelNumber = {
-    number: string;
-    channel: string;
-};
-
-/**
- * <p>An object representing a customer's payment source or destination</p>
- */
-declare type CustomerPayment = {
-    customerNumber: CustomerNumber;
-    channelNumber: PaymentChannelNumber;
-};
-
-/**
- * <p>An object representing customer params</p>
- */
-declare type CustomerParams = {
-    customerNumber: CustomerNumber;
-    customerId?: string;
-};
-
-/**
- * <p>An object representing a reminder</p>
- * @property remindAt - <p>timestamp in seconds</p>
- */
-declare type Reminder = {
-    key: string;
-    remindAt: number;
-    payload: string;
-    interval?: number;
-};
-
-/**
- * <p>An object representing a ussd menu</p>
- */
-declare type UssdMenu = {
-    text: string;
-    isTerminal: boolean;
 };
 
 /**
@@ -660,111 +468,274 @@ declare type VoiceAction = {
 };
 
 /**
- * <p>Notification data</p>
+ * <p>An object representing the notification data</p>
  */
 declare type Notification = {
-    data: any;
-    customer: Customer;
+    orgId: string;
+    appId: string;
+    customerId: string;
+    createdAt: long;
+    appData: any;
 };
 
 /**
  * <p>Notification callback</p>
  */
-declare type NotificationCallback = (error: Error, message: Message | UssdMenu | VoiceAction[], appData: any) => void;
+declare type NotificationCallback = (message?: MessageBody, appData?: any) => void;
 
 /**
  * <p>A function that reacts to events</p>
  * @param [callback] - <p>A response to the event. Required for voice and ussd events</p>
  */
-declare type EventListener = (notification: Notification, callback?: NotificationCallback) => void;
+declare type NotificationHandler = (notification: Notification, customer: Customer, callback?: NotificationCallback) => void;
+
+/**
+ * <p>Reminder notification</p>
+ */
+declare type ReminderNotification = Notification;
+
+/**
+ * <p>Voice call notification</p>
+ */
+declare type VoiceCallNotification = Notification;
+
+/**
+ * <p>Message status notification</p>
+ * @property status - <p>one of [queued, sent, delivered, read, received, session_initiated, failed, no_consent, no_capability, expired, no_session_in_progress, other_session_in_progress, invalid_reply_token, invalid_channel_number, not_supported, invalid_reply_to_message_id, invalid_customer_id, duplicate_request , tag_not_found, customer_number_not_found, decommissioned_customerid, rejected, invalid_request, application_error]</p>
+ */
+declare type MessageStatusNotification = Notification;
+
+/**
+ * <p>USSD session notification</p>
+ */
+declare type UssdSessionNotification = Notification;
+
+/**
+ * <p>SMS notification</p>
+ */
+declare type ReceivedSmsNotification = Notification;
+
+/**
+ * <p>Whatsapp, telegram or email notification</p>
+ */
+declare type ReceivedMediaNotification = Notification;
+
+/**
+ * <p>Payment status notification</p>
+ * @property status - <p>one of [queued, pending_confirmation, pending_validation, validated, invalid_request, not_supported, insufficient_funds, application_error, not_allowed, duplicate_request, invalid_purse, invalid_wallet, decommissioned_customer_id, success, pass_through, failed, throttled, expired, rejected, reversed]</p>
+ */
+declare type PaymentStatusNotification = Notification;
+
+/**
+ * <p>Payment status notification</p>
+ * @property status - <p>one of [queued, pending_confirmation, pending_validation, validated, invalid_request, not_supported, insufficient_funds, application_error, not_allowed, duplicate_request, invalid_purse, invalid_wallet, decommissioned_customer_id, success, pass_through, failed, throttled, expired, rejected, reversed]</p>
+ */
+declare type ReceivedPaymentNotification = Notification;
+
+/**
+ * <p>Wallet payment status notification</p>
+ * @property status - <p>one of [queued, pending_confirmation, pending_validation, validated, invalid_request, not_supported, insufficient_funds, application_error, not_allowed, duplicate_request, invalid_purse, invalid_wallet, decommissioned_customer_id, success, pass_through, failed, throttled, expired, rejected, reversed]</p>
+ */
+declare type WalletPaymentStatusNotification = Notification;
+
+/**
+ * <p>Custoer activity notification</p>
+ */
+declare type CustomerActivityNotification = Notification;
+
+/**
+ * <p>Message reaction notification</p>
+ * @property reaction - <p>one of [clicked, unsubscribed, complained]</p>
+ */
+declare type SentMessageReactionNotification = Notification;
+
+/**
+ * <p>Messaging session ended notification</p>
+ * @property duration - <p>in seconds</p>
+ * @property reason - <p>one of [normal_clearing, inactivity, failure]</p>
+ */
+declare type MessagingSessionEndedNotification = Notification;
+
+/**
+ * <p>Messaging session initialized notification</p>
+ * @property expiresAt - <p>timestamp in seconds</p>
+ */
+declare type MessagingSessionInitializedNotification = Notification;
+
+/**
+ * <p>Messaging consent update notification</p>
+ * @property update - <p>one of [allow, block]</p>
+ * @property status - <p>one of [queued, completed, invalid_channel_number, decommissioned_customer_id, application_error]</p>
+ */
+declare type MessagingConsentUpdateNotification = Notification;
 
 /**
  * <p>An string representing an event. Must be one of:</p>
  * <ul>
- * <li>data</li>
- * <li>-- Connection Events--</li>
- * <li>error</li>
- * <li>closed</li>
- * <li>pending</li>
- * <li>connected</li>
- * <li>connecting</li>
- * <li>-- Simulator Events --</li>
- * <li>sendMessage</li>
- * <li>makeVoiceCall</li>
- * <li>sendCustomerPayment</li>
- * <li>sendChannelPayment</li>
- * <li>checkoutPayment<li>
- * <li>-- Customer Events --</li>
- * <li>reminder</li>
- * <li>voiceCall</li>
- * <li>messageStatus</li>
- * <li>ussdSession</li>
- * <li>receivedSms</li>
- * <li>receivedEmail</li>
- * <li>receivedMessenger</li>
- * <li>receivedTelegram</li>
- * <li>receivedWhatsapp</li>
- * <li>paymentStatus</li>
- * <li>receivedPayment</li>
- * <li>receivedMessage</li>
- * <li>customerActivity</li>
- * <li>walletPaymentStatus</li>
- * <li>sentMessageReaction</li>
- * <li>messagingSessionEnded</li>
- * <li>messagingConsentUpdate</li>
- * <li>messagingSessionStarted</li>
- * <li>messagingSessionRenewed</li>
+ * <li>Connection Events:
+ * <ul>
+ * <li><b>error</b>: Emitted on connection error</li>
+ * <li><b>closed</b>: Emitted on connection closed</li>
+ * <li><b>pending</b>: Emitted when not connected</li>
+ * <li><b>connected</b>: Emitted on connection success</li>
+ * <li><b>connecting</b>: Emitted when connecting </li>
+ * </ul>
+ * </li>
+ * <li>App Events
+ * <ul>
+ * <li><b>reminder</b>: @see {@link ReminderNotification}</li>
+ * <li><b>voiceCall</b>: @see {@link VoiceCallNotification}</li>
+ * <li><b>messageStatus</b>: @see {@link MessageStatusNotification}</li>
+ * <li><b>ussdSession</b>: @see {@link UssdSessionNotification}</li>
+ * <li><b>receivedSms</b>: @see {@link ReceivedSmsNotification}</li>
+ * <li><b>receivedEmail</b>: @see {@link ReceivedMediaNotification}</li>
+ * <li><b>receivedFbMessenger</b>: @see {@link ReceivedMediaNotification}</li>
+ * <li><b>receivedTelegram</b>: @see {@link ReceivedMediaNotification}</li>
+ * <li><b>receivedWhatsapp</b>: @see {@link ReceivedMediaNotification}</li>
+ * <li><b>paymentStatus</b>: @see {@link PaymentStatusNotification}</li>
+ * <li><b>receivedPayment</b>: @see {@link ReceivedPaymentNotification}</li>
+ * <li><b>customerActivity</b>: @see {@link CustomerActivityNotification}</li>
+ * <li><b>walletPaymentStatus</b>: @see {@link WalletPaymentStatusNotification}</li>
+ * <li><b>sentMessageReaction</b>: @see {@link SentMessageReactionNotification}</li>
+ * <li><b>messagingSessionEnded</b>: @see {@link MessagingSessionEndedNotification}</li>
+ * <li><b>messagingConsentUpdate</b>: @see {@link MessagingConsentUpdateNotification}</li>
+ * <li><b>messagingSessionStarted</b>: @see {@link MessagingSessionInitializedNotification}</li>
+ * <li><b>messagingSessionRenewed</b>: @see {@link MessagingSessionInitializedNotification}</li>
+ * </ul>
+ * </li>
+ * <li>Sandbox Events
+ * <ul>
+ * <li><b>sendMessage</b>: @see {@link SendMessageSimulatorNotification}</li>
+ * <li><b>makeVoiceCall</b>: @see {@link MakeVoiceCallSimulatorNotification}</li>
+ * <li><b>sendCustomerPayment</b>: @see {@link CustomerPaymentSimulatorNotification}</li>
+ * <li><b>sendChannelPayment</b>: @see {@link SendChannelPaymentSimulatorNotification}</li>
+ * <li><b>checkoutPayment</b>: @see {@link CustomerPaymentSimulatorNotification}</li>
+ * </ul>
+ * </li>
  * </ul>
  */
 declare type Event = string;
 
-declare type UpdateStatus = {
-    customerId: string;
-    status: boolean;
-    description: string;
+/**
+ * <p>An object representing a message body</p>
+ */
+declare type SimulatorMessageBody = {
+    text?: string;
+    media?: Media;
+    location?: Location;
+    email?: Email;
+    ussd?: string;
+    voice?: VoiceCallInput;
 };
-
-declare type WorkStatus = {
-    status: boolean;
-    description: string;
-    workId: string;
-};
-
-declare type MessageStatus = {
-    status: string;
-    description: string;
-    customerId: string;
-    messageId: string;
-};
-
-declare type ConsentStatus = {
-    status: string;
-    description: string;
-    customerId: string;
-};
-
-declare type LeasedAppData = string | any;
 
 /**
- * @property lifetime - <p>in seconds</p>
+ * <p>An object representing a voice call input</p>
+ * @property direction - <p>one of [outbound, inbound]</p>
+ * @property status - <p>one of [queued, answered, ringing, active, dialing, dial_completed, bridged, enqueued, dequeued, transferred, transfer_completed, completed, insufficient_credit, not_answered, invalid_phone_number, destination_not_supported, decommissioned_customerid, expired, invalid_channel_number, application_error]</p>
+ * @property hangupCause - <p>one of [unallocated_number, user_busy, normal_clearing, no_user_response, no_answer, subscriber_absent, call_rejected, normal_unspecified, normal_temporary_failure, service_unavailable, recovery_on_timer_expire, originator_cancel, lose_race, user_not_registered]</p>
  */
-declare type AuthToken = {
-    token: string;
-    lifetime: number;
+declare type VoiceCallInput = {
+    direction: string;
+    status: string;
+    startedAt: number;
+    hangupCause: string;
+    dtmfDigits: string;
+    recordingUrl: string;
+    dialData: VoiceCallDialInput;
+    queueData: VoiceCallQueueInput;
 };
 
-declare type PaymentStatus = {
-    status: number;
-    description: string;
-    transactionId: string;
-    debitCustomerId: string;
-    creditCustomerId: string;
+/**
+ * <p>An object representing a voice call dial input</p>
+ */
+declare type VoiceCallDialInput = {
+    destinationNumber: string;
+    startedAt: number;
+    duration: number;
 };
 
-declare type VoiceStatus = {
-    status: number;
-    description: string;
-    sessionId: string;
+/**
+ * <p>An object representing a voice call queue input</p>
+ */
+declare type VoiceCallQueueInput = {
+    destinationNumber: string;
+    enqueuedAt: number;
+    dequeuedAt: number;
+    dequeuedToNumber: string;
+    dequeuedToSessionId: string;
+    queueDuration: number;
+};
+
+/**
+ * <p>An object representing a customer's payment source or destination</p>
+ */
+declare type CustomerPayment = {
+    customerNumber: CustomerNumber;
+    channelNumber: PaymentChannelNumber;
+};
+
+/**
+ * <p>An object representing wallet</p>
+ */
+declare type Wallet = {
     customerId: string;
+    walletId: string;
+};
+
+/**
+ * <p>An object representing purse</p>
+ */
+declare type Purse = {
+    purseId: string;
+};
+
+/**
+ * <p>An object representing a payment channel</p>
+ * @property channel - <p>number provider. Must be one of ['cellular']</p>
+ */
+declare type PaymentChannelNumber = {
+    number: string;
+    channel: string;
+};
+
+/**
+ * <p>An object representing a messaging channel number</p>
+ * @property channel - <p>one of [sms,telegram,whatsapp,email,messenger,voice]</p>
+ */
+declare type MessagingChannelNumber = {
+    number: string;
+    channel: string;
+};
+
+/**
+ * <p>An object representing an activity channel number</p>
+ * @property channel - <p>channel type. Must be one of ['web','modile']</p>
+ */
+declare type ActivityChannelNumber = {
+    number: string;
+    channel: string;
+};
+
+declare type CustomerStateUpdateReply = {
+    customerId: string;
+    status: boolean;
+    description: string;
+};
+
+declare type ConsentUpdateReply = {
+    status: string;
+    description: string;
+    customerId: string;
+};
+
+/**
+ * @property status - <p>one of [queued, sent, delivered, read, received, session_initiated, failed, no_consent, no_capability, expired, no_session_in_progress, other_session_in_progress, invalid_reply_token, invalid_channel_number, not_supported, invalid_reply_to_message_id, invalid_customer_id, duplicate_request , tag_not_found, customer_number_not_found, decommissioned_customerid, rejected, invalid_request, application_error]</p>
+ */
+declare type MessageReply = {
+    status: string;
+    description: string;
+    customerId: string;
+    sessionId: string;
+    messageId: string;
 };
 

@@ -33,9 +33,10 @@ const client = new Elarian({
     appId: 'YOUR_APP_ID',
 });
 
-client.on('ussdSession', async ({ notification, customer, appData }, callback) => {
+client.on('ussdSession', async ({ notification, customer }, callback) => {
     const {
         input,
+        appData,
         sessionId,
     } = notification;
 
@@ -60,7 +61,7 @@ client.on('ussdSession', async ({ notification, customer, appData }, callback) =
             menu.isTerminal = true;
             await customer.sendMessage(
                 { number: 'Elarian', provider: 'telco' },
-                { text: { body: `Hey ${name}! Thank you for trying out Elarian` } },
+                { body: { text: `Hey ${name}! Thank you for trying out Elarian` } },
             );
         }
         break;
@@ -71,7 +72,7 @@ client.on('ussdSession', async ({ notification, customer, appData }, callback) =
         state = 'veteran';
         break;
     }
-    callback(null, menu, { state, name });
+    callback(menu, { state, name });
 });
 
 client
@@ -98,6 +99,8 @@ Run all tests:
 $ npm install
 $ npm test
 ```
+
+See [SDK Spec](https://github.com/ElarianLtd/sdk-spec) for reference.
 
 ## Issues
 
