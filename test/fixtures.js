@@ -7,9 +7,9 @@ let client;
 let simulator;
 
 const clientParams = {
-    appId: process.env.ELARIAN_APP_ID,
-    orgId: process.env.ELARIAN_ORG_ID,
-    apiKey: process.env.ELARIAN_API_KEY,
+    appId: process.env.APP_ID,
+    orgId: process.env.ORG_ID,
+    apiKey: process.env.API_KEY,
     receiveNotification: true,
     options: {
         lifetime: 1800000,
@@ -154,19 +154,36 @@ module.exports = {
         },
     ],
 
-    initializeClient: async () => {
-        if (!simulator) {
-            simulator = new Simulator(clientParams);
-            await simulator.connect();
+    initializeClient: () => new Promise((resolve, reject) => {
+        if (simulator) {
+            simulator.disconnect();
+        }
+        if (client) {
+            client.disconnect();
         }
 
-        if (!client) {
-            client = new Elarian(clientParams);
-            await client.connect();
-        }
+        simulator = new Simulator(clientParams);
+        client = new Elarian(clientParams);
 
-        return { client, simulator };
-    },
+        const tasks = [
+            new Promise((rez, rej) => {
+                client
+                    .on('error', (err) => rej(err))
+                    .on('connected', () => rez(client))
+                    .connect();
+            }),
+            new Promise((rez, rej) => {
+                simulator
+                    .on('error', (err) => rej(err))
+                    .on('connected', () => rez(simulator))
+                    .connect();
+            }),
+        ];
+
+        Promise.all(tasks)
+            .then(resolve)
+            .catch(reject);
+    }),
 
     getClient: async () => {
         if (client) {
