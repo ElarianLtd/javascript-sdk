@@ -245,22 +245,13 @@ const start = () => {
         orgId: process.env.ORG_ID,
         apiKey: process.env.API_KEY,
     });
-    client.on('reminder', async ({
-        customer,
-    }) => {
+    client.on('reminder', async (reminder, customer) => {
         await processReminder(customer);
     });
-    client.on('ussdSession', async ({
-        notification,
-        customer,
-        appData,
-    }, callback) => {
+    client.on('ussdSession', async (notification, customer, appData, callback) => {
         await processUssd(customer, notification, appData, callback);
     });
-    client.on('receivedPayment', async ({
-        notification,
-        customer,
-    }) => {
+    client.on('receivedPayment', async (notification, customer) => {
         await processPayment(customer, notification.value);
     });
     client

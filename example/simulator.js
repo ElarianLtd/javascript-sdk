@@ -8,23 +8,23 @@ const client = new Simulator({
     apiKey: process.env.ELARIAN_API_KEY,
 });
 
-client.on('sendMessage', ({ data }) => {
+client.on('sendMessage', (data) => {
     console.log('sendMessage', data);
 });
 
-client.on('makeVoiceCall', ({ data }) => {
+client.on('makeVoiceCall', (data) => {
     console.log('makeVoiceCall', data);
 });
 
-client.on('sendCustomerPayment', ({ data }) => {
+client.on('sendCustomerPayment', (data) => {
     console.log('sendCustomerPayment', data);
 });
 
-client.on('sendChannelPayment', ({ data }) => {
+client.on('sendChannelPayment', (data) => {
     console.log('sendChannelPayment', data);
 });
 
-client.on('checkoutPayment', ({ data }) => {
+client.on('checkoutPayment', (data) => {
     console.log('checkoutPayment', data);
 });
 
@@ -42,13 +42,13 @@ client
                 number: '21414',
                 channel: 'sms',
             };
-            const messageBodyParts = [
+            const parts = [
                 {
                     text: `${Date.now()}`,
                 },
             ];
             const tasks = [
-                client.receiveMessage(customerNumber, channelNumber, `${Date.now()}`, messageBodyParts),
+                client.receiveMessage(customerNumber, channelNumber, `${Date.now()}`, parts),
                 client.receivePayment(
                     `${Date.now()}`,
                     customerNumber,
@@ -59,7 +59,7 @@ client
                     { currencyCode: 'KES', amount: Math.floor((Math.random() * 100) + 10) },
                     'pending_confirmation',
                 ),
-                client.receiveMessage(customerNumber, channelNumber, `${Date.now()}`, messageBodyParts),
+                client.receiveMessage(customerNumber, channelNumber, `${Date.now()}`, parts),
             ];
 
             Promise.all(tasks)

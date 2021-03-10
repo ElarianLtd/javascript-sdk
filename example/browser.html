@@ -28,10 +28,8 @@
 
                     console.log('Connected!');
                     const customer = new elarian.Customer({
-                        customerNumber: {
-                            number: '+254718769882',
-                            provider: 'cellular',
-                        },
+                        number: '+254718769882',
+                        provider: 'cellular',
                     });
                     console.log('Gettting customer state...');
                     const state = await customer.getState();

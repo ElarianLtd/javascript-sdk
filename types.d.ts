@@ -475,7 +475,6 @@ declare type Notification = {
     appId: string;
     customerId: string;
     createdAt: long;
-    appData: any;
 };
 
 /**

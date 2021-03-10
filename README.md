@@ -33,10 +33,9 @@ const client = new Elarian({
     appId: 'YOUR_APP_ID',
 });
 
-client.on('ussdSession', async ({ notification, customer }, callback) => {
+client.on('ussdSession', async (notification, customer, appData, callback) => {
     const {
         input,
-        appData,
         sessionId,
     } = notification;
 
