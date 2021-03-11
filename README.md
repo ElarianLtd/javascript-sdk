@@ -27,13 +27,13 @@ const { Elarian } = ElarianSDK;
 
 // ...
 
-const app = new Elarian({
+const elarian = new Elarian({
     apiKey: 'YOUR_API_KEY', // or authToken: 'YOUR_AUTH_TOKEN'
     orgId: 'YOUR_ORG_ID',
     appId: 'YOUR_APP_ID',
 });
 
-app.on('ussdSession', async (notification, customer, appData, callback) => {
+elarian.on('ussdSession', async (notification, customer, appData, callback) => {
     const {
         input,
         sessionId,
@@ -74,7 +74,7 @@ app.on('ussdSession', async (notification, customer, appData, callback) => {
     callback(menu, { state, name });
 });
 
-app
+elarian
     .on('connected', () => {
         console.log('App is running!')
     })

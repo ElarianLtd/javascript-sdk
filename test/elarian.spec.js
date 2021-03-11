@@ -69,7 +69,8 @@ describe('Elarian', () => {
     });
 
     it('cancelCustomerReminderByTag()', async () => {
-        const resp = await client.cancelCustomerReminderByTag({ key: 'kind', value: 'premium' }, 'remByTag');
+        const tag = { key: 'kind', value: 'premium' };
+        const resp = await client.cancelCustomerReminderByTag(tag, 'remByTag');
         resp.should.have.properties(['status', 'description']);
     });
 
@@ -311,7 +312,7 @@ describe('Elarian', () => {
     });
 
     it('on(messagingSession[Started|Renewed|Ended])', (done) => {
-        client.on('messagingSessionStarted', async ({ data, customer }) => {
+        client.on('messagingSessionStarted', async (data, customer) => {
             data.should.have.properties([
                 'customerNumber',
                 'channelNumber',
@@ -321,7 +322,7 @@ describe('Elarian', () => {
             should.exist(customer);
         });
 
-        client.on('messagingSessionRenewed', async ({ data, customer }) => {
+        client.on('messagingSessionRenewed', async (data, customer) => {
             data.should.have.properties([
                 'customerNumber',
                 'channelNumber',
@@ -330,7 +331,7 @@ describe('Elarian', () => {
             ]);
             should.exist(customer);
         });
-        client.on('messagingSessionEnded', async ({ data, customer }) => {
+        client.on('messagingSessionEnded', async (data, customer) => {
             data.should.have.properties([
                 'customerNumber',
                 'channelNumber',
@@ -343,7 +344,10 @@ describe('Elarian', () => {
         });
 
         const customerNumber = fixtures.customerNumber.number;
-        const channelNumber = fixtures.telegramBot;
+        const channelNumber = {
+            number: fixtures.telegramBot,
+            channel: 'telegram',
+        };
         const messageBodyParts = [
             {
                 text: 'Hello test long long long text',
@@ -357,7 +361,6 @@ describe('Elarian', () => {
 
         simulator.receiveMessage(customerNumber, channelNumber, sessionId, messageBodyParts)
             .then((resp) => {
-                console.log(resp);
                 resp.should.have.properties([
                     'status',
                     'message',
@@ -371,7 +374,7 @@ describe('Elarian', () => {
     });
 
     it('on(messagingConsentUpdate)', (done) => {
-        client.on('messagingConsentUpdate', async ({ data, customer }) => {
+        client.on('messagingConsentUpdate', (data, customer) => {
             data.should.have.properties([
                 'customerNumber',
                 'channelNumber',
@@ -387,7 +390,7 @@ describe('Elarian', () => {
                 number: fixtures.shortCodeSenderId,
                 channel: 'sms',
             },
-            'block',
+            'allow',
         )
             .then((resp) => {
                 resp.status.should.equal('completed');
@@ -396,7 +399,7 @@ describe('Elarian', () => {
     });
 
     it('on(receivedSms)', (done) => {
-        client.on('receivedSms', async ({ data, customer }) => {
+        client.on('receivedSms', async (data, customer) => {
             data.should.have.properties([
                 'text',
                 'messageId',
@@ -426,7 +429,7 @@ describe('Elarian', () => {
     });
 
     it('on(receivedFbMessenger)', (done) => {
-        client.on('receivedMessage', async ({ data, customer }) => {
+        client.on('receivedFbMessenger', async (data, customer) => {
             data.should.have.properties([
                 'parts',
                 'messageId',
@@ -434,7 +437,6 @@ describe('Elarian', () => {
                 'customerNumber',
             ]);
             should.exist(customer);
-            client.off('receivedMessage');
             done();
         });
         const customerNumber = fixtures.customerNumber.number;
@@ -457,7 +459,7 @@ describe('Elarian', () => {
     });
 
     it('on(receivedTelegram)', (done) => {
-        client.on('receivedMessage', async ({ data, customer }) => {
+        client.on('receivedTelegram', async (data, customer) => {
             data.should.have.properties([
                 'parts',
                 'messageId',
@@ -465,14 +467,26 @@ describe('Elarian', () => {
                 'customerNumber',
             ]);
             should.exist(customer);
-            client.off('receivedMessage');
             done();
         });
         const customerNumber = fixtures.customerNumber.number;
-        const channelNumber = fixtures.messagingChannel;
+        const channelNumber = {
+            number: fixtures.telegramBot,
+            channel: 'telegram',
+        };
         const messageBodyParts = [
             {
                 text: 'Hello test long long long text',
+                media: {
+                    url: 'https://fake-image.com/img.png',
+                    type: 'image',
+                },
+            },
+            {
+                location: {
+                    longitude: 0,
+                    latitude: 0,
+                },
             },
         ];
         const sessionId = 'some-session-id';
@@ -488,7 +502,7 @@ describe('Elarian', () => {
     });
 
     it('on(receivedWhatsapp)', (done) => {
-        client.on('receivedMessage', async ({ data, customer }) => {
+        client.on('receivedWhatsapp', async ({ data, customer }) => {
             data.should.have.properties([
                 'parts',
                 'messageId',
@@ -496,14 +510,22 @@ describe('Elarian', () => {
                 'customerNumber',
             ]);
             should.exist(customer);
-            client.off('receivedMessage');
             done();
         });
         const customerNumber = fixtures.customerNumber.number;
-        const channelNumber = fixtures.messagingChannel;
+        const channelNumber = {
+            number: fixtures.whatsappNumber,
+            channel: 'whatsapp',
+        };
         const messageBodyParts = [
             {
                 text: 'Hello test long long long text',
+            },
+            {
+                location: {
+                    longitude: 0,
+                    latitude: 0,
+                },
             },
         ];
         const sessionId = 'some-session-id';
@@ -519,22 +541,24 @@ describe('Elarian', () => {
     });
 
     it('on(receivedEmail)', (done) => {
-        client.on('receivedMessage', async ({ data, customer }) => {
+        client.on('receivedEmail', async (data, customer) => {
             data.should.have.properties([
-                'parts',
+                'email',
                 'messageId',
                 'channelNumber',
                 'customerNumber',
             ]);
             should.exist(customer);
-            client.off('receivedMessage');
             done();
         });
         const customerNumber = fixtures.customerNumber.number;
-        const channelNumber = fixtures.messagingChannel;
+        const channelNumber = {
+            number: fixtures.emailSenderId,
+            channel: 'email',
+        };
         const messageBodyParts = [
             {
-                text: 'Hello test long long long text',
+                text: 'Hello test long long long email',
             },
         ];
         const sessionId = 'some-session-id';
@@ -550,7 +574,7 @@ describe('Elarian', () => {
     });
 
     it('on(voiceCall)', (done) => {
-        client.on('voiceCall', async ({ data, customer }, callback) => {
+        client.on('voiceCall', (data, customer, appData, callback) => {
             data.should.have.properties([
                 'messageId',
                 'sessionId',
@@ -558,8 +582,7 @@ describe('Elarian', () => {
                 'customerNumber',
             ]);
             should.exist(customer);
-            client.off('voiceCall');
-            callback(null, fixtures.dialPlan);
+            callback(fixtures.dialPlan, appData);
             done();
         });
         const customerNumber = fixtures.customerNumber.number;
@@ -583,7 +606,7 @@ describe('Elarian', () => {
     });
 
     it('on(ussdSession)', (done) => {
-        client.on('ussdSession', async ({ data, customer }, callback) => {
+        client.on('ussdSession', async (data, customer, appData, callback) => {
             data.should.have.properties([
                 'input',
                 'messageId',
@@ -592,15 +615,14 @@ describe('Elarian', () => {
                 'customerNumber',
             ]);
             should.exist(customer);
-            client.off('ussdSession');
-            callback(null, { text: 'Hello', isTerminal: true });
+            callback({ text: 'Hello', isTerminal: true }, appData);
             done();
         });
         const customerNumber = fixtures.customerNumber.number;
         const channelNumber = fixtures.ussdChannel;
         const messageBodyParts = [
             {
-                ussd: '1',
+                ussd: '',
             },
         ];
         const sessionId = 'some-session-id';
@@ -638,7 +660,7 @@ describe('Elarian', () => {
     });
 
     it('on(sentMessageReaction)', (done) => {
-        client.on('sentMessageReaction', async ({ data, customer }) => {
+        client.on('sentMessageReaction', async (data, customer) => {
             data.should.have.properties([
                 'customerNumber',
                 'channelNumber',
@@ -646,11 +668,12 @@ describe('Elarian', () => {
                 'activity',
             ]);
             should.exist(customer);
-            client.off('sentMessageReaction');
             done();
         });
 
-        bob.updateActivity({ number: 'www.elarian.com', channel: 'web' }, { sessionId: 'some-session', key: 'kkey' })
+        const channel = { number: 'www.elarian.com', channel: 'web' };
+        const activity = { sessionId: 'some-session', key: 'kkey' };
+        bob.updateActivity(channel, activity)
             .catch((err) => done(err));
     });
 
@@ -670,7 +693,9 @@ describe('Elarian', () => {
 
         const { number } = fixtures.customerNumber;
         const { paymentChannel } = fixtures;
-        simulator.receivePayment('fake-txn', number, paymentChannel, { currencyCode: 'KES', amount: _.random(100, 250) }, 'pending_confirmation')
+        const value = { currencyCode: 'KES', amount: _.random(100, 250) };
+        const status = 'pending_confirmation';
+        simulator.receivePayment('fake-txn', number, paymentChannel, value, status)
             .then((resp) => {
                 resp.should.have.properties([
                     'status',
@@ -781,8 +806,8 @@ describe('Elarian', () => {
             should.exist(customer);
             done();
         });
-
-        bob.updateActivity({ number: 'www.elarian.com', channel: 'web' }, { sessionId: 'some-session', key: 'kkey' })
+        const channel = { number: 'www.elarian.com', channel: 'web' };
+        bob.updateActivity(channel, { sessionId: 'some-session', key: 'kkey' })
             .catch((err) => done(err));
     });
 });

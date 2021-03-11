@@ -41,7 +41,7 @@ module.exports = {
     },
 
     messagingChannel: {
-        number: process.env.SMS_SENDER_ID,
+        number: process.env.SMS_SHORT_CODE,
         channel: 'sms',
     },
 
@@ -55,7 +55,7 @@ module.exports = {
         channel: 'voice',
     },
 
-    shortCodeSenderId: process.env.SMS_SENDER_ID,
+    shortCodeSenderId: process.env.SMS_SHORT_CODE,
     alphannumericSenderId: process.env.SMS_SENDER_ID,
     telegramBot: process.env.TELEGRAM_NUMBER,
     paybill: process.env.MPESA_PAYBILL,
@@ -155,7 +155,7 @@ module.exports = {
     ],
 
     getClient: async () => {
-        if (client) {
+        if (client && client.isConnected()) {
             return client;
         }
         client = new Elarian(clientParams);
@@ -168,7 +168,7 @@ module.exports = {
     },
 
     getSimulator: async () => {
-        if (simulator) {
+        if (simulator && simulator.isConnected()) {
             return simulator;
         }
         simulator = new Simulator(clientParams);

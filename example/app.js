@@ -11,18 +11,13 @@ const {
 let client;
 
 const smsChannel = {
-    number: process.env.SMS_SENDER_ID,
+    number: process.env.SMS_SHORT_CODE,
     channel: 'sms',
 };
 
 const mpesaChannel = {
     number: process.env.MPESA_PAYBILL,
     channel: 'cellular',
-};
-
-const voiceChannel = {
-    number: process.env.VOICE_NUMBER,
-    channel: 'voice',
 };
 
 const purseId = process.env.PURSE_ID;
@@ -66,6 +61,7 @@ const approveLoan = async (customer, amount) => {
         payload: '',
     });
 };
+
 const processPayment = async (customer, {
     amount,
 }) => {
@@ -99,6 +95,7 @@ const processPayment = async (customer, {
         );
     }
 };
+
 const processReminder = async (customer) => {
     try {
         const customerData = await customer.getMetadata();
@@ -128,12 +125,6 @@ const processReminder = async (customer) => {
                     text: `Yo ${name}!!!! you need to pay back my KES ${balance}`,
                 },
             });
-            await customer.makeVoiceCall(voiceChannel.number, [{
-                say: {
-                    text: `Yo ${name}!!!!, you need to pay back my KES ${balance}`,
-                    voice: 'male',
-                },
-            }]);
         }
         await customer.updateMetadata({
             ...customerData,
@@ -148,6 +139,7 @@ const processReminder = async (customer) => {
         console.error('Reminder Error: ', error);
     }
 };
+
 const processUssd = async (customer, notification, appData, callback) => {
     try {
         console.info(`Processing USSD from ${customer.customerNumber.number}`);
@@ -184,7 +176,7 @@ const processUssd = async (customer, notification, appData, callback) => {
             menu.text = 'Happy Coding!';
             menu.isTerminal = true;
             nextScreen = 'home';
-            callback(null, menu, {
+            callback(menu, {
                 screen: nextScreen,
             });
             break;
@@ -193,14 +185,14 @@ const processUssd = async (customer, notification, appData, callback) => {
             menu.text += balance > 0 ? `you still owe me KES ${balance}!` : 'you have repaid your loan, good for you!';
             menu.isTerminal = true;
             nextScreen = 'home';
-            callback(null, menu, {
+            callback(menu, {
                 screen: nextScreen,
             });
             break;
         case 'request-name':
             menu.text = 'Alright, what is your name?';
             nextScreen = 'request-amount';
-            callback(null, menu, {
+            callback(menu, {
                 screen: nextScreen,
             });
             break;
@@ -208,7 +200,7 @@ const processUssd = async (customer, notification, appData, callback) => {
             name = input;
             menu.text = `Okay ${name}, how much do you need?`;
             nextScreen = 'approve-amount';
-            callback(null, menu, {
+            callback(menu, {
                 screen: nextScreen,
             });
             break;
@@ -217,7 +209,7 @@ const processUssd = async (customer, notification, appData, callback) => {
             menu.text = `Awesome! ${name} we are reviewing your application and will be in touch shortly!\nHave a lovely day!`;
             menu.isTerminal = true;
             nextScreen = 'home';
-            callback(null, menu, {
+            callback(menu, {
                 screen: nextScreen,
             });
             await approveLoan(customer, balance);
@@ -226,7 +218,7 @@ const processUssd = async (customer, notification, appData, callback) => {
         default:
             menu.text = 'Welcome to MoniMoni!\n1. Apply for loan\n2. Quit';
             menu.isTerminal = false;
-            callback(null, menu, {
+            callback(menu, {
                 screen: nextScreen,
             });
             break;
