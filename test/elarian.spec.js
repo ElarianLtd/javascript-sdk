@@ -26,9 +26,8 @@ describe('Elarian', () => {
         await bob.getState();
     });
 
-    after(() => {
-        simulator.disconnect();
-        client.disconnect();
+    after(async () => {
+        await fixtures.resetClients();
     });
 
     it('generateAuthToken()', async () => {
@@ -411,13 +410,13 @@ describe('Elarian', () => {
         });
         const customerNumber = fixtures.customerNumber.number;
         const channelNumber = fixtures.messagingChannel;
-        const messageBodyParts = [
+        const parts = [
             {
-                text: 'Hello test long long long text',
+                text: 'HSSSSSSS--TT',
             },
         ];
-        const sessionId = 'some-session-id';
-        simulator.receiveMessage(customerNumber, channelNumber, sessionId, messageBodyParts)
+        const sessionId = `ss-${Date.now()}`;
+        simulator.receiveMessage(customerNumber, channelNumber, sessionId, parts)
             .then((resp) => {
                 resp.should.have.properties([
                     'status',
@@ -431,7 +430,6 @@ describe('Elarian', () => {
     it('on(receivedFbMessenger)', (done) => {
         client.on('receivedFbMessenger', async (data, customer) => {
             data.should.have.properties([
-                'parts',
                 'messageId',
                 'channelNumber',
                 'customerNumber',
@@ -440,13 +438,16 @@ describe('Elarian', () => {
             done();
         });
         const customerNumber = fixtures.customerNumber.number;
-        const channelNumber = fixtures.messagingChannel;
+        const channelNumber = {
+            number: fixtures.messengerBot,
+            channel: 'messenger',
+        };
         const messageBodyParts = [
             {
                 text: 'Hello test long long long text',
             },
         ];
-        const sessionId = 'some-session-id';
+        const sessionId = `ss-${Date.now()}`;
         simulator.receiveMessage(customerNumber, channelNumber, sessionId, messageBodyParts)
             .then((resp) => {
                 resp.should.have.properties([
@@ -461,7 +462,6 @@ describe('Elarian', () => {
     it('on(receivedTelegram)', (done) => {
         client.on('receivedTelegram', async (data, customer) => {
             data.should.have.properties([
-                'parts',
                 'messageId',
                 'channelNumber',
                 'customerNumber',
@@ -476,20 +476,24 @@ describe('Elarian', () => {
         };
         const messageBodyParts = [
             {
-                text: 'Hello test long long long text',
+                text: 'Telegram Text',
+            },
+            {
+                location: {
+                    longitude: 3.445,
+                    latitude: 8,
+                    label: 'SOme place',
+                    address: 'Yessssss Road',
+                },
+            },
+            {
                 media: {
                     url: 'https://fake-image.com/img.png',
                     type: 'image',
                 },
             },
-            {
-                location: {
-                    longitude: 0,
-                    latitude: 0,
-                },
-            },
         ];
-        const sessionId = 'some-session-id';
+        const sessionId = `ss-${Date.now()}`;
         simulator.receiveMessage(customerNumber, channelNumber, sessionId, messageBodyParts)
             .then((resp) => {
                 resp.should.have.properties([
@@ -502,9 +506,8 @@ describe('Elarian', () => {
     });
 
     it('on(receivedWhatsapp)', (done) => {
-        client.on('receivedWhatsapp', async ({ data, customer }) => {
+        client.on('receivedWhatsapp', (data, customer) => {
             data.should.have.properties([
-                'parts',
                 'messageId',
                 'channelNumber',
                 'customerNumber',
@@ -528,7 +531,7 @@ describe('Elarian', () => {
                 },
             },
         ];
-        const sessionId = 'some-session-id';
+        const sessionId = `ss-${Date.now()}`;
         simulator.receiveMessage(customerNumber, channelNumber, sessionId, messageBodyParts)
             .then((resp) => {
                 resp.should.have.properties([
@@ -561,7 +564,7 @@ describe('Elarian', () => {
                 text: 'Hello test long long long email',
             },
         ];
-        const sessionId = 'some-session-id';
+        const sessionId = `ss-${Date.now()}`;
         simulator.receiveMessage(customerNumber, channelNumber, sessionId, messageBodyParts)
             .then((resp) => {
                 resp.should.have.properties([
@@ -593,7 +596,7 @@ describe('Elarian', () => {
                 status: 'dialing',
             },
         }];
-        const sessionId = 'some-session-id';
+        const sessionId = `ss-${Date.now()}`;
         simulator.receiveMessage(customerNumber, channelNumber, sessionId, messageBodyParts)
             .then((resp) => {
                 resp.should.have.properties([
@@ -606,7 +609,7 @@ describe('Elarian', () => {
     });
 
     it('on(ussdSession)', (done) => {
-        client.on('ussdSession', async (data, customer, appData, callback) => {
+        client.on('ussdSession', (data, customer, appData, callback) => {
             data.should.have.properties([
                 'input',
                 'messageId',
@@ -625,7 +628,7 @@ describe('Elarian', () => {
                 ussd: '',
             },
         ];
-        const sessionId = 'some-session-id';
+        const sessionId = `ss-${Date.now()}`;
         simulator.receiveMessage(customerNumber, channelNumber, sessionId, messageBodyParts)
             .then((resp) => {
                 resp.should.have.properties([

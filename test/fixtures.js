@@ -58,6 +58,7 @@ module.exports = {
     shortCodeSenderId: process.env.SMS_SHORT_CODE,
     alphannumericSenderId: process.env.SMS_SENDER_ID,
     telegramBot: process.env.TELEGRAM_NUMBER,
+    messengerBot: process.env.MESSENNGER_NUMBER,
     paybill: process.env.MPESA_PAYBILL,
     purseId: process.env.PURSE_ID,
     ussdCode: process.env.USSD_CODE,
@@ -181,6 +182,18 @@ module.exports = {
                 .on('connected', () => rez(simulator))
                 .connect();
         });
+    },
+
+    resetClients: async () => {
+        if (client) {
+            client.disconnect();
+        }
+        if (simulator) {
+            simulator.disconnect();
+        }
+        client = null;
+        simulator = null;
+        return module.exports.sleep(2500);
     },
 
     sleep: (ms) => new Promise((resolve) => setTimeout(resolve, ms)),

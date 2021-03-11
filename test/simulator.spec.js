@@ -19,15 +19,16 @@ describe('Simulator', () => {
         await bob.getState();
     });
 
-    after(() => {
-        client.disconnect();
-        simulator.disconnect();
+    after(async () => {
+        await fixtures.resetClients();
     });
 
     it('receivePayment()', (done) => {
         const { number } = fixtures.customerNumber;
         const { paymentChannel } = fixtures;
-        simulator.receivePayment(transactionId, number, paymentChannel, { currencyCode: 'KES', amount: 100 }, 'pending_confirmation')
+        const cash = { currencyCode: 'KES', amount: 100 };
+        const status = 'pending_confirmation';
+        simulator.receivePayment(transactionId, number, paymentChannel, cash, status)
             .then((resp) => {
                 resp.should.have.properties([
                     'status',
@@ -106,7 +107,7 @@ describe('Simulator', () => {
             done();
         });
 
-        bob.sendMessage(fixtures.voiceChannel, { body: { voice: [] } })
+        bob.sendMessage(fixtures.voiceChannel, { body: { voice: [{ say: { text: 'TestingSimMakeVoiceCall' } }] } })
             .then((resp) => {
                 resp.status.should.equal('session_initiated');
             })

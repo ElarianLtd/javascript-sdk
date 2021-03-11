@@ -16,8 +16,8 @@ describe('Customer', function fx() {
         });
     });
 
-    after(() => {
-        client.disconnect();
+    after(async () => {
+        await fixtures.resetClients();
     });
 
     it('getState()', async () => {

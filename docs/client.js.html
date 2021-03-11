@@ -325,59 +325,81 @@ const cleanUpNotificationPayload = (event, data) => {
         data.messageId = data.messageId ? data.messageId.value : undefined;
         data.sessionId = data.sessionId ? data.sessionId.value : undefined;
         data.inReplyTo = data.inReplyTo ? data.inReplyTo.value : undefined;
-        data.parts = data.partsList.map((part) => ({
-            ...part,
-            ussd: part.ussd ? part.ussd.value : undefined,
-            location: part.location ? {
-                ...part.location,
-                label: part.location.label ? part.location.label.value : undefined,
-                address: part.location.address ? part.location.address.value : undefined,
-            } : undefined,
-            media: part.media ? {
-                ...part.media,
-                type: getMediaTypeString(part.media.type),
-            } : undefined,
-            voice: part.voice ? {
-                ...part.voice,
-                dtmfDigits: part.voice.dtmfDigits ? part.voice.dtmfDigits.value : undefined,
-                startedAt: part.voice.startedAt ? part.voice.startedAt.seconds : undefined,
-                recordingUrl: part.voice.recordingUrl ? part.voice.recordingUrl.value : undefined,
-                status: getStatusString(part.voice.status, VoiceCallStatus),
-                direction: getCustomerEventDirectionString(part.voice.direction),
-                hangupCause: getChannelProviderString(part.voice.hangupCause || 0, VoiceCallHangupCause, /^VOICE_CALL_HANGUP_CAUSE_/),
-            } : undefined,
-        }));
+        data.parts = data.partsList.map((part) => {
+            if (part.ussd) { // works because part.ussd is a StringValue lol
+                return {
+                    ussd: part.ussd.value,
+                };
+            }
+
+            if (part.location) {
+                return {
+                    location: {
+                        latitude: part.location.latitude,
+                        longitude: part.location.longitude,
+                        label: part.location.label ? part.location.label.value : undefined,
+                        address: part.location.address ? part.location.address.value : undefined,
+                    },
+                };
+            }
+
+            if (part.media) {
+                return {
+                    media: {
+                        url: part.media.url,
+                        type: getMediaTypeString(part.media.media),
+                    },
+                };
+            }
+
+            if (part.voice) {
+                return {
+                    voice: {
+                        ...part.voice,
+                        dtmfDigits: part.voice.dtmfDigits ? part.voice.dtmfDigits.value : undefined,
+                        startedAt: part.voice.startedAt ? part.voice.startedAt.seconds : undefined,
+                        recordingUrl: part.voice.recordingUrl ? part.voice.recordingUrl.value : undefined,
+                        status: getStatusString(part.voice.status, VoiceCallStatus),
+                        direction: getCustomerEventDirectionString(part.voice.direction),
+                        hangupCause: getChannelProviderString(part.voice.hangupCause || 0, VoiceCallHangupCause, /^VOICE_CALL_HANGUP_CAUSE_/),
+                    },
+                };
+            }
+
+            if (part.email) {
+                return {
+                    email: part.email,
+                };
+            }
+
+            return {
+                text: part.text,
+            };
+        });
 
         data.channelNumber = {
             number: data.channelNumber.number,
             channel: getChannelProviderString(data.channelNumber.channel, MessagingChannel),
         };
 
+        // Assumes only one part per type
         switch (data.channelNumber.channel) {
         case 'ussd':
-            data.input = data.parts.map((i) => i.ussd);
-            data.input = data.input.length > 0 ? data.input.pop() : data.input;
+            data.input = data.parts.filter((i) => Object.keys(i).includes('ussd')).map((i) => i.ussd).pop();
             break;
         case 'voice':
-            data.voice = data.parts.map((i) => i.voice);
-            data.voice = data.voice.length > 0 ? data.voice.pop() : data.voice;
+            data.voice = data.parts.filter((i) => i.voice).map((i) => i.voice).pop();
             break;
         case 'sms':
         case 'whatsapp':
         case 'telegram':
         case 'messenger':
-            data.text = data.parts.map((i) => i.text);
-            data.text = data.text.length > 0 ? data.text.pop() : data.text;
-
-            data.media = data.parts.map((i) => i.media);
-            data.media = data.media.length > 0 ? data.media.pop() : data.media;
-
-            data.location = data.parts.map((i) => i.location);
-            data.location = data.location.length > 0 ? data.location.pop() : data.location;
+            data.text = data.parts.filter((i) => i.text).map((i) => i.text).pop();
+            data.media = data.parts.filter((i) => i.media).map((i) => i.media).pop();
+            data.location = data.parts.filter((i) => i.location).map((i) => i.location).pop();
             break;
         case 'email':
-            data.email = data.parts.map((i) => i.email);
-            data.email = data.email.length > 0 ? data.email.pop() : data.email;
+            data.email = data.parts.filter((i) => i.email).map((i) => i.location).pop();
             break;
         default:
             break;
@@ -704,7 +726,7 @@ module.exports = Client;
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a>
 	
-		on Thu, Mar 11, 2021 2:51 PM
+		on Thu, Mar 11, 2021 7:37 PM
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
