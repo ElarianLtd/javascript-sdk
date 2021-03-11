@@ -8,11 +8,15 @@ describe('Simulator', () => {
     const transactionId = 'PAQ0ZZE5DI';
 
     before(async () => {
-        simulator = await fixtures.getClient();
+        simulator = await fixtures.getSimulator();
 
         simulator.on('data', (evt, data) => {
             console.log('Sim', evt, data);
         });
+    });
+
+    after(() => {
+        simulator.disconnect();
     });
 
     it('receivePayment()', (done) => {

@@ -11,7 +11,7 @@ describe('Elarian', () => {
     let bob;
     let simulator;
 
-    it('generateAuthToken()', async () => {
+    before(async () => {
         simulator = await fixtures.getSimulator();
         let connected = simulator.isConnected();
         connected.should.equal(true);
@@ -19,13 +19,21 @@ describe('Elarian', () => {
         client = await fixtures.getClient();
         connected = client.isConnected();
         connected.should.equal(true);
-        const resp = await client.generateAuthToken();
-        resp.should.have.properties(['token', 'lifetime']);
 
         bob = new client.Customer({
             ...fixtures.customerNumber,
         });
         await bob.getState();
+    });
+
+    after(() => {
+        simulator.disconnect();
+        client.disconnect();
+    });
+
+    it('generateAuthToken()', async () => {
+        const resp = await client.generateAuthToken();
+        resp.should.have.properties(['token', 'lifetime']);
     });
 
     it('sendMessageByTag()', async () => {

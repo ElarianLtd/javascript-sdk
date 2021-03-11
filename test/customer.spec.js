@@ -16,6 +16,10 @@ describe('Customer', function fx() {
         });
     });
 
+    after(() => {
+        client.disconnect();
+    });
+
     it('getState()', async () => {
         const resp = await customer.getState();
         resp.should.have.properties([
