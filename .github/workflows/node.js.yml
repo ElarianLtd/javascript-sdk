@@ -25,6 +25,14 @@ jobs:
     - run: npm run lint
     - run: npm test
       env:
-        ELARIAN_ORG_ID: ${{ secrets.ELARIAN_ORG_ID }}
-        ELARIAN_APP_ID: ${{ secrets.ELARIAN_APP_ID }}
-        ELARIAN_API_KEY: ${{ secrets.ELARIAN_API_KEY }}
+        ORG_ID: ${{ secrets.ORG_ID }}
+        APP_ID: ${{ secrets.APP_ID }}
+        API_KEY: ${{ secrets.API_KEY }}
+        PURSE_ID: ${{ secrets.PURSE_ID }}
+        USSD_CODE: ${{ secrets.USSD_CODE }}
+        VOICE_NUMBER: ${{ secrets.VOICE_NUMBER }}
+        MPESA_PAYBILL: ${{ secrets.MPESA_PAYBILL }}
+        SMS_SENDER_ID: ${{ secrets.SMS_SENDER_ID }}
+        SMS_SHORT_CODE: ${{ secrets.SMS_SHORT_CODE }}
+        TELEGRAM_NUMBER: ${{ secrets.TELEGRAM_NUMBER }}
+        WHATSAPP_NUMBER: ${{ secrets.WHATSAPP_NUMBER }}
