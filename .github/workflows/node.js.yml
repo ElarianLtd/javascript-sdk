@@ -36,3 +36,4 @@ jobs:
         SMS_SHORT_CODE: ${{ secrets.SMS_SHORT_CODE }}
         TELEGRAM_NUMBER: ${{ secrets.TELEGRAM_NUMBER }}
         WHATSAPP_NUMBER: ${{ secrets.WHATSAPP_NUMBER }}
+        MESSENNGER_NUMBER: ${{ secrets.MESSENNGER_NUMBER }}
