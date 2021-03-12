@@ -133,7 +133,7 @@ declare class Elarian extends Client {
     /**
      * <p>Initiate a payment transaction</p>
      */
-    initiatePayment(debitParty: CustomerPayment | Wallet | Purse, creditParty: CustomerPayment | Wallet | Purse, value: Cash): InitiatePaymentReply;
+    initiatePayment(debitParty: CustomerPayment | Wallet | Purse | ChannelPayment, creditParty: CustomerPayment | Wallet | Purse | ChannelPayment, value: Cash): InitiatePaymentReply;
     /**
      * <p>Set a reminder to be triggered at the specified time for customers with the particular tag</p>
      */
@@ -681,6 +681,16 @@ declare type CustomerPayment = {
 };
 
 /**
+ * <p>An object representing a channel payment source or destination</p>
+ * @property channelCode - <p>The telco's network code.</p>
+ */
+declare type ChannelPayment = {
+    account: string;
+    channelCode: NetworkCode;
+    channelNumber: PaymentChannelNumber;
+};
+
+/**
  * <p>An object representing wallet</p>
  */
 declare type Wallet = {
@@ -744,4 +754,10 @@ declare type MessageReply = {
     sessionId: string;
     messageId: string;
 };
+
+/**
+ * <p>An number representing a network code. Examples include:</p>
+ * <ul><li><code>62006</code>: AirtelTigo Ghana</li><li><code>62002</code>: Vodafone Ghana</li><li><code>62001</code>: MTN Ghana</li><li><code>62120</code>: Airtel Nigeria</li><li><code>62130</code>: MTN Nigeria</li><li><code>62150</code>: Glo Nigeria</li><li><code>62160</code>: Etisalat Nigeria</li><li><code>63510</code>: MTN Rwanda</li><li><code>63513</code>: Tigo Rwanda</li><li><code>63514</code>: Airtel Rwanda</li><li><code>63601</code>: EthioTelecom Ethiopia</li><li><code>63902</code>: Safaricom Kenya</li><li><code>63903</code>: Airtel Kenya</li><li><code>63907</code>: Orange Kenya</li><li><code>63999</code>: Equitel Kenya</li><li><code>64002</code>: Tigo Tanzania</li><li><code>64004</code>: Vodacom Tanzania</li><li><code>64005</code>: Airtel Tanzania</li><li><code>64101</code>: Airtel Uganda</li><li><code>64110</code>: MTN Uganda</li><li><code>64114</code>: Africell Uganda</li><li><code>64501</code>: Airtel Zambia</li><li><code>64502</code>: MTN Zambia</li><li><code>65001</code>: TNM Malawi</li><li><code>65010</code>: Airtel Malawi</li><li><code>65501</code>: Vodacom South Africa</li><li><code>65502</code>: Telkom South Africa</li><li><code>65507</code>: CellC South Africa</li><li><code>65510</code>: MTN South Africa</li><li><code>99999</code>: Athena (This is a custom networkCode that only applies when working in the sandbox environment).</li></ul>
+ */
+declare type NetworkCode = number;
 

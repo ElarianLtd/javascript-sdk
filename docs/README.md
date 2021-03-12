@@ -370,8 +370,8 @@ depending on the set serializer</p>
 
 | Param | Type |
 | --- | --- |
-| debitParty | <code>CustomerPayment</code> \| <code>Wallet</code> \| <code>Purse</code> | 
-| creditParty | <code>CustomerPayment</code> \| <code>Wallet</code> \| <code>Purse</code> | 
+| debitParty | <code>CustomerPayment</code> \| <code>Wallet</code> \| <code>Purse</code> \| <code>ChannelPayment</code> | 
+| creditParty | <code>CustomerPayment</code> \| <code>Wallet</code> \| <code>Purse</code> \| <code>ChannelPayment</code> | 
 | value | <code>Cash</code> | 
 
 <a name="Elarian+addCustomerReminderByTag"></a>

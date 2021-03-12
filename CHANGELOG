@@ -16,3 +16,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Message notification data
 - Simulator receiveMessage data
+
+## [0.2.2] - 2021-03-12
+
+### Added
+
+- ChannelPayment as a debit/credit party for initiatePayment()
+
+### Fixed
+
+- Simulator tests
+- Simulator notification data

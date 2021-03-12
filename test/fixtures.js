@@ -1,10 +1,6 @@
 require('dotenv').config();
 
 const _ = require('lodash');
-const { Elarian, Simulator } = require('../lib/index.node');
-
-let client;
-let simulator;
 
 const clientParams = {
     appId: process.env.APP_ID,
@@ -14,6 +10,7 @@ const clientParams = {
     options: {
         lifetime: 1800000,
         keepAlive: 2500,
+        notificationTimeout: 10,
     },
 };
 
@@ -21,17 +18,17 @@ module.exports = {
     clientParams,
 
     customerNumber: {
-        number: `+254720${_.random(100000, 999999)}`,
+        number: `+254710${_.random(100000, 999999)}`,
         provider: 'cellular',
     },
 
     adoptedCustomer: {
-        number: `+254721${_.random(100000, 999999)}`,
+        number: `+254711${_.random(100000, 999999)}`,
         provider: 'cellular',
     },
 
     notifCustomerNumber: {
-        number: `+254722${_.random(100000, 999999)}`,
+        number: `+254712${_.random(100000, 999999)}`,
         provider: 'cellular',
     },
 
@@ -154,47 +151,6 @@ module.exports = {
             },
         },
     ],
-
-    getClient: async () => {
-        if (client && client.isConnected()) {
-            return client;
-        }
-        client = new Elarian(clientParams);
-        return new Promise((rez, rej) => {
-            client
-                .on('error', (err) => rej(err))
-                .on('connected', () => rez(client))
-                .connect();
-        });
-    },
-
-    getSimulator: async () => {
-        if (simulator && simulator.isConnected()) {
-            return simulator;
-        }
-        simulator = new Simulator(clientParams);
-        return new Promise((rez, rej) => {
-            simulator
-                .on('error', (err) => {
-                    console.error('Sumulator Error', err);
-                    rej(err);
-                })
-                .on('connected', () => rez(simulator))
-                .connect();
-        });
-    },
-
-    resetClients: async () => {
-        if (client) {
-            client.disconnect();
-        }
-        if (simulator) {
-            simulator.disconnect();
-        }
-        client = null;
-        simulator = null;
-        return module.exports.sleep(2500);
-    },
 
     sleep: (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
 };

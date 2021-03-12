@@ -2,6 +2,7 @@
 const should = require('should');
 
 const fixtures = require('./fixtures');
+const { Elarian } = require('..');
 
 describe('Customer', function fx() {
     this.timeout(10000);
@@ -9,15 +10,24 @@ describe('Customer', function fx() {
     let client;
     let customer;
 
-    before(async () => {
-        client = await fixtures.getClient();
-        customer = new client.Customer({
-            ...fixtures.customerNumber,
-        });
+    before((done) => {
+        client = new Elarian(fixtures.clientParams);
+        client
+            .on('error', (err) => {
+                done(err);
+            })
+            .on('connected', () => {
+                customer = new client.Customer({
+                    ...fixtures.customerNumber,
+                });
+                done();
+            })
+            .connect();
     });
 
     after(async () => {
-        await fixtures.resetClients();
+        client.disconnect();
+        await fixtures.sleep(500);
     });
 
     it('getState()', async () => {

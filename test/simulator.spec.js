@@ -1,6 +1,8 @@
 require('should');
+const _ = require('lodash');
 
 const fixtures = require('./fixtures');
+const { Elarian, Simulator } = require('..');
 
 describe('Simulator', () => {
     let bob;
@@ -8,19 +10,29 @@ describe('Simulator', () => {
     let simulator;
     const transactionId = 'PAQ0ZZE5DI';
 
-    before(async () => {
-        client = await fixtures.getClient();
-        simulator = await fixtures.getSimulator();
-
-        bob = new client.Customer({
-            ...fixtures.customerNumber,
-        });
-
-        await bob.getState();
+    before((done) => {
+        client = new Elarian(fixtures.clientParams);
+        client
+            .on('error', done)
+            .on('connected', async () => {
+                bob = new client.Customer({
+                    number: `+254730${_.random(100000, 999999)}`,
+                    provider: 'cellular',
+                });
+                await bob.getState();
+                simulator = new Simulator(fixtures.clientParams);
+                simulator
+                    .on('connected', () => done())
+                    .on('error', done)
+                    .connect();
+            })
+            .connect();
     });
 
     after(async () => {
-        await fixtures.resetClients();
+        client.disconnect();
+        simulator.disconnect();
+        await fixtures.sleep(500);
     });
 
     it('receivePayment()', (done) => {
@@ -150,14 +162,14 @@ describe('Simulator', () => {
         }).catch((err) => done(err));
     });
 
-    it('on(sendChannelPayment)', (done) => {
+    it('on(sendChannelPayment)', function fx(done) {
+        this.timeout(30000);
         simulator.on('sendChannelPayment', (data) => {
             data.should.have.properties([
-                'customerNumber',
                 'channelNumber',
-                'status',
-                'update',
-                'sessionId',
+                'transactionId',
+                'value',
+                'account',
             ]);
             done();
         });
@@ -181,10 +193,15 @@ describe('Simulator', () => {
                     walletId: 'test_wallet',
                 },
                 {
-                    purseId: fixtures.purseId,
+                    channelCode: 99999, // Network MCC/MNC
+                    account: 'test_account',
+                    channelNumber: {
+                        number: fixtures.paybill,
+                        channel: 'cellular',
+                    },
                 },
                 {
-                    amount: 100,
+                    amount: _.random(10, 100),
                     currencyCode: 'KES',
                 },
             ).then((re) => {
