@@ -247,12 +247,12 @@ const start = () => {
         await processPayment(customer, notification.value);
     });
     client
-        .connect()
         .on('error', (error) => {
             console.error('App failed to start: ', error);
         })
         .on('connected', () => {
             console.log(`App is up and running, waiting for customers on ${process.env.USSD_CODE}`);
-        });
+        })
+        .connect();
 };
 start();
