@@ -1,8 +1,9 @@
 /*
     Simple loan disbursing app with agressive replayment reminders
 */
-const log = require('signale');
 require('dotenv').config(); // load connfigs from .env
+
+const log = require('signale');
 
 const {
     Elarian,
@@ -52,11 +53,7 @@ const approveLoan = async (customer, amount) => {
     await customer.sendMessage(
         smsChannel, {
             body: {
-                text: `
-                Congratulations ${name}!
-                Your loan of KES ${amount} has been approved!
-                You are expected to pay it back by ${new Date(repaymentDate)}
-                `,
+                text: `Congratulations ${name}!\nYour loan of KES ${amount} has been approved!\nYou are expected to pay it back by ${new Date(repaymentDate)}`,
             },
         },
     );
@@ -124,12 +121,6 @@ const processReminder = async (reminder, customer) => {
                 },
             });
         } else {
-            await customer.sendMessage(smsChannel, {
-                body: {
-                    text: `Yo ${name}!!!! you need to pay back my KES ${balance}`,
-                },
-            });
-
             await customer.sendMessage(voiceChannel, {
                 body: {
                     voice: [
