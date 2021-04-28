@@ -1,7 +1,6 @@
 /*
     Simple loan disbursing app with agressive replayment reminders
 */
-const { await } = require('signale');
 const log = require('signale');
 require('dotenv').config(); // load connfigs from .env
 
@@ -138,10 +137,10 @@ const processReminder = async (reminder, customer) => {
                             say: {
                                 text: `Yo ${name}!!!! you need to pay back my KES ${balance}`,
                                 voice: 'male',
-                            }
-                        }
-                    ]
-                }
+                            },
+                        },
+                    ],
+                },
             });
         }
         await customer.updateMetadata({
