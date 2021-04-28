@@ -42,7 +42,7 @@ elarian.on('ussdSession', async (notification, customer, appData, callback) => {
     let {
         name,
         state = 'newbie',
-    } = appData;
+    } = appData || {};
 
     const menu = {
         text: null,
