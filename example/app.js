@@ -1,7 +1,8 @@
 /*
     Simple loan disbursing app with agressive replayment reminders
 */
-
+const { await } = require('signale');
+const log = require('signale');
 require('dotenv').config(); // load connfigs from .env
 
 const {
@@ -15,6 +16,11 @@ const smsChannel = {
     channel: 'sms',
 };
 
+const voiceChannel = {
+    number: process.env.VOICE_NUMBER,
+    channel: 'voice',
+};
+
 const mpesaChannel = {
     number: process.env.MPESA_PAYBILL,
     channel: 'cellular',
@@ -23,7 +29,7 @@ const mpesaChannel = {
 const purseId = process.env.PURSE_ID;
 
 const approveLoan = async (customer, amount) => {
-    console.info(`Processing loan for ${customer.customerNumber.number}`);
+    log.info(`Processing loan for ${customer.customerNumber.number}`);
 
     const { name } = await customer.getMetadata();
     const repaymentDate = (Date.now() + 60000);
@@ -37,7 +43,7 @@ const approveLoan = async (customer, amount) => {
         currencyCode: 'KES',
     });
     if (!['success', 'queued', 'pending_confirmation', 'pending_validation'].includes(res.status)) {
-        console.error(`Failed to send KES ${amount} to ${customer.customerNumber.number}: `, res.description);
+        log.error(`Failed to send KES ${amount} to ${customer.customerNumber.number}: `, res.description);
         return;
     }
     await customer.updateMetadata({
@@ -62,10 +68,9 @@ const approveLoan = async (customer, amount) => {
     });
 };
 
-const processPayment = async (customer, {
-    amount,
-}) => {
-    console.info(`Processing payment from ${customer.customerNumber.number}`);
+const processPayment = async (payment, customer) => {
+    log.info(`Processing payment from ${customer.customerNumber.number}`);
+    const { value: { amount } } = payment;
     const {
         name,
         balance,
@@ -96,10 +101,10 @@ const processPayment = async (customer, {
     }
 };
 
-const processReminder = async (customer) => {
+const processReminder = async (reminder, customer) => {
     try {
         const customerData = await customer.getMetadata();
-        console.info(`Processing reminder for ${customer.customerNumber.number}`);
+        log.info(`Processing reminder for ${customer.customerNumber.number}`);
         const {
             name,
             balance,
@@ -125,6 +130,19 @@ const processReminder = async (customer) => {
                     text: `Yo ${name}!!!! you need to pay back my KES ${balance}`,
                 },
             });
+
+            await customer.sendMessage(voiceChannel, {
+                body: {
+                    voice: [
+                        {
+                            say: {
+                                text: `Yo ${name}!!!! you need to pay back my KES ${balance}`,
+                                voice: 'male',
+                            }
+                        }
+                    ]
+                }
+            });
         }
         await customer.updateMetadata({
             ...customerData,
@@ -136,19 +154,22 @@ const processReminder = async (customer) => {
             payload: '',
         });
     } catch (error) {
-        console.error('Reminder Error: ', error);
+        log.error('Reminder Error: ', error);
     }
 };
 
-const processUssd = async (customer, notification, appData, callback) => {
+const processUssd = async (notification, customer, appData, callback) => {
     try {
-        console.info(`Processing USSD from ${customer.customerNumber.number}`);
+        log.info(`Processing USSD from ${customer.customerNumber.number}`);
         const {
             input,
         } = notification;
-        const {
-            screen = 'home',
-        } = appData;
+
+        let screen = 'home';
+        if (appData) {
+            screen = appData.screen;
+        }
+
         const customerData = await customer.getMetadata();
         let {
             name,
@@ -228,30 +249,29 @@ const processUssd = async (customer, notification, appData, callback) => {
             balance,
         });
     } catch (error) {
-        console.error('USSD Error: ', error);
+        log.error('USSD Error: ', error);
     }
 };
+
 const start = () => {
     client = new Elarian({
         appId: process.env.APP_ID,
         orgId: process.env.ORG_ID,
         apiKey: process.env.API_KEY,
     });
-    client.on('reminder', async (reminder, customer) => {
-        await processReminder(customer);
-    });
-    client.on('ussdSession', async (notification, customer, appData, callback) => {
-        await processUssd(customer, notification, appData, callback);
-    });
-    client.on('receivedPayment', async (notification, customer) => {
-        await processPayment(customer, notification.value);
-    });
+
+    client.on('ussdSession', processUssd);
+
+    client.on('reminder', processReminder);
+
+    client.on('receivedPayment', processPayment);
+
     client
         .on('error', (error) => {
-            console.error('App failed to start: ', error);
+            log.error('Connection Error -> ', error);
         })
         .on('connected', () => {
-            console.log(`App is up and running, waiting for customers on ${process.env.USSD_CODE}`);
+            log.success(`App is connected, waiting for customers on ${process.env.USSD_CODE}`);
         })
         .connect();
 };
