@@ -163,6 +163,10 @@ declare class Simulator extends Client {
     receiveMessage(phoneNumber: string, channelNumber: MessagingChannelNumber, sessionId: string, parts: SimulatorMessageBody[]): void;
     /**
      * <p>Initiate payment request</p>
+     * @param status - <p>one of [queued, pending_confirmation, pending_validation, validated,
+     * invalid_request, not_supported, insufficient_funds, application_error, not_allowed,
+     * duplicate_request, invalid_purse, invalid_wallet, decommissioned_customer_id, success,
+     * pass_through, failed, throttled, expired, rejected, reversed]</p>
      */
     receivePayment(transactionId: string, customerNumber: string, channelNumber: PaymentChannelNumber, value: Cash, status: string): void;
     /**

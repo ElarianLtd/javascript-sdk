@@ -491,13 +491,13 @@ depending on the set serializer</p>
 
 **Kind**: instance method of [<code>Simulator</code>](#Simulator)  
 
-| Param | Type |
-| --- | --- |
-| transactionId | <code>string</code> | 
-| customerNumber | <code>string</code> | 
-| channelNumber | <code>PaymentChannelNumber</code> | 
-| value | <code>Cash</code> | 
-| status | <code>string</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| transactionId | <code>string</code> |  |
+| customerNumber | <code>string</code> |  |
+| channelNumber | <code>PaymentChannelNumber</code> |  |
+| value | <code>Cash</code> |  |
+| status | <code>string</code> | <p>one of [queued, pending_confirmation, pending_validation, validated, invalid_request, not_supported, insufficient_funds, application_error, not_allowed, duplicate_request, invalid_purse, invalid_wallet, decommissioned_customer_id, success, pass_through, failed, throttled, expired, rejected, reversed]</p> |
 
 <a name="Simulator+updatePaymentStatus"></a>
 
