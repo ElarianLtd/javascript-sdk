@@ -3,6 +3,8 @@
 [![NPM](https://nodei.co/npm/elarian.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.org/package/elarian)
 
 > A convenient way to interact with the Elarian APIs.
+>
+> **Project Status: Still under ACTIVE DEVELOPMENT, APIs are unstable and may change at any time until release of v1.0.0.**
 
 
 ## Install
