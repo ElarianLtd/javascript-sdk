@@ -5,3 +5,4 @@ node_modules/
 .nyc_output/
 .env
 tmp/
+package-lock.json
