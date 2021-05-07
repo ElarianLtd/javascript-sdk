@@ -4,6 +4,7 @@
 require('dotenv').config();
 
 const log = require('signale');
+const Throttle = require('promise-parallel-throttle');
 
 const { Simulator } = require('..');
 
@@ -28,12 +29,16 @@ client.on('makeVoiceCall', (data) => {
     log.warn(`${customerNumber.number}: Call Received`);
 });
 
+let repaidLoans = 0;
+let receivedLoans = 0;
 client.on('sendCustomerPayment', (data) => {
     const { customerNumber, channelNumber, value } = data;
-    log.success(`${customerNumber.number}: Payment Received ${value.currencyCode} ${value.amount}`);
+    // log.success(`${customerNumber.number}: Payment Received ${value.currencyCode} ${value.amount}`);
+    receivedLoans += 1;
     setTimeout(async () => {
-        log.info(`${customerNumber.number}: Repaying loan...`);
+        // log.info(`${customerNumber.number}: Repaying loan...`);
         await client.receivePayment(`sim_txn_${Date.now()}`, customerNumber.number, channelNumber, value, 'success');
+        repaidLoans += 1;
     }, 220000);
 });
 
@@ -89,20 +94,27 @@ client
                         throw new Error(res.description);
                     }
 
-                    log.success(`${customerNumber}:\n${res.message.body.ussd.text}`);
+                    // log.success(`${customerNumber}:\n${res.message.body.ussd.text}`);
                 } catch (error) {
                     log.warn(`Failed to request loan for ${customerNumber}: ${error.message}`);
                 }
             };
 
             log.info('Running loan requests...');
-            const count = 10;
-            const max = 99;
-            const prefix = '+2547108000';
+            const count = 1000;
+            const max = 999999;
+            const prefix = '+254710';
             const suffixes = Array.from(randomNumbers(count, max));
             const customerNumbers = suffixes.map((item) => `${prefix}${item.toString().padStart(max.toString().length, '0')}`);
-            const tasks = customerNumbers.map((num, idx) => dialLoanApp(num, idx + 1));
-            await Promise.all(tasks);
+            const tasks = customerNumbers.map((num, idx) => () => dialLoanApp(num, idx + 1));
+
+            setInterval(() => {
+                log.info(`\nIssued Loans: ${receivedLoans}/${count}\nRepaid Loans: ${repaidLoans}/${receivedLoans}\n`);
+            }, 5000);
+
+            await Throttle.all(tasks, {
+                maxInProgress: 10,
+            });
         } catch (error) {
             log.error(error);
         }
