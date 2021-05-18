@@ -5,10 +5,11 @@ module.exports = {
     devtool: 'source-map',
     entry: './lib/index.web.js',
     output: {
-        path: path.join(__dirname, 'dist'),
-        filename: 'elarian.min.js',
-        libraryTarget: 'umd',
-        library: 'ElarianSDK',
+        path: path.join(__dirname),
+        filename: 'web.js',
+        library: {
+            type: 'umd',
+        },
     },
     resolve: {
         fallback: {

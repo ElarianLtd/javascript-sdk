@@ -7,20 +7,19 @@
     <script>
         window.DEBUG = true;
     </script>
-    <script src="../dist/elarian.min.js"></script>
+    <script src="../web.js"></script>
 </head>
 <body>
     <script>
         async function test() {
-
-            const { Elarian } = ElarianSDK;
             const elarian = new Elarian({
                 authToken: 'test_auth_token',
                 orgId: 'test_org',
                 appId: 'test_app',
             });
             console.log('Connecting...');
-            elarian.connect()
+            elarian
+                .on('closed', () => console.error('connection closed'))
                 .on('error', (error) => {
                     console.error('Failed to connect: ', error);
                 })
@@ -31,10 +30,11 @@
                         number: '+254718769882',
                         provider: 'cellular',
                     });
-                    console.log('Gettting customer state...');
+                    console.log('Getting customer state...');
                     const state = await customer.getState();
                     console.log(state);
-                });
+                })
+                .connect();
         };
         window.onload = (event) => {
             test().catch(console.error);

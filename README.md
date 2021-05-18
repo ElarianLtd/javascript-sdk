@@ -23,8 +23,7 @@ $ npm install elarian
 const { Elarian }  = require('elarian');
 /*
 or in the browser
-<script src="dist/elarian.min.js"></script>
-const { Elarian } = ElarianSDK;
+<script src="web.js"></script>
 */
 
 // ...

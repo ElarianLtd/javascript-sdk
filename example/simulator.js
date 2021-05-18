@@ -19,21 +19,28 @@ const client = new Simulator({
     apiKey: process.env.API_KEY,
 });
 
-client.on('sendMessage', (data) => {
-    const { customerNumber, message: { body: { text } } } = data;
-    log.warn(`${customerNumber.number}: Message Received\n${text}\n`);
-});
-
-client.on('makeVoiceCall', (data) => {
-    const { customerNumber } = data;
-    log.warn(`${customerNumber.number}: Call Received`);
-});
-
 let repaidLoans = 0;
 let receivedLoans = 0;
+let receivedSms = 0;
+let receivedCalls = 0;
+
+client.on('sendMessage', () => {
+    // const { customerNumber, message: { body: { text } } } = data;
+    // log.warn(`${customerNumber.number}: Message Received\n${text}\n`);
+    receivedSms += 1;
+});
+
+client.on('makeVoiceCall', () => {
+    // const { customerNumber } = data;
+    // log.warn(`${customerNumber.number}: Call Received`);
+    receivedCalls += 1;
+});
+
 client.on('sendCustomerPayment', (data) => {
     const { customerNumber, channelNumber, value } = data;
-    // log.success(`${customerNumber.number}: Payment Received ${value.currencyCode} ${value.amount}`);
+    /*
+    log.success(`${customerNumber.number}: Payment Received ${value.currencyCode} ${value.amount}`);
+    */
     receivedLoans += 1;
     setTimeout(async () => {
         // log.info(`${customerNumber.number}: Repaying loan...`);
@@ -103,17 +110,22 @@ client
             log.info('Running loan requests...');
             const count = 1000;
             const max = 999999;
-            const prefix = '+254710';
+            const prefix = '+254719';
             const suffixes = Array.from(randomNumbers(count, max));
             const customerNumbers = suffixes.map((item) => `${prefix}${item.toString().padStart(max.toString().length, '0')}`);
             const tasks = customerNumbers.map((num, idx) => () => dialLoanApp(num, idx + 1));
 
             setInterval(() => {
-                log.info(`\nIssued Loans: ${receivedLoans}/${count}\nRepaid Loans: ${repaidLoans}/${receivedLoans}\n`);
+                log.info(`
+                Issued Loans: ${receivedLoans}/${count}
+                Repaid Loans: ${repaidLoans}/${receivedLoans}
+                Received SMSs: ${receivedSms}/${receivedLoans * 3}
+                Received Calls: ${receivedCalls}/${receivedLoans}
+            `);
             }, 5000);
 
             await Throttle.all(tasks, {
-                maxInProgress: 10,
+                maxInProgress: 500,
             });
         } catch (error) {
             log.error(error);

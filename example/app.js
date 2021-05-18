@@ -86,6 +86,7 @@ const processPayment = async (payment, customer) => {
             },
         );
         await customer.deleteMetadata(['name', 'strike', 'balance', 'screen']); // clear state
+        await customer.deleteAppData();
     } else {
         await customer.sendMessage(
             smsChannel, {
