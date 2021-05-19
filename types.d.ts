@@ -428,17 +428,19 @@ declare type Dial = {
 /**
  * <p>An object representing a 'recordSession' voice action</p>
  */
-declare type RecordSession = boolean;
+declare type RecordSession = any;
 
 /**
  * <p>An object representing a 'reject' voice action</p>
  */
-declare type Reject = boolean;
+declare type Reject = any;
 
 /**
  * <p>An object representing a 'redirect' voice action</p>
  */
-declare type Redirect = any;
+declare type Redirect = {
+    url: string;
+};
 
 /**
  * <p>An object representing a 'enqueue' voice action</p>
