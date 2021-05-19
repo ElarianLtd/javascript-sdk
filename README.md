@@ -105,3 +105,7 @@ See [SDK Spec](https://github.com/ElarianLtd/sdk-spec) for reference.
 ## Issues
 
 If you find a bug, please file an issue on [our issue tracker on GitHub](https://github.com/ElarianLtd/javascript-sdk/issues).
+
+## Known Issues
+
+- `resumable` connection options prevents app from connecting
