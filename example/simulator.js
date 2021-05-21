@@ -108,24 +108,25 @@ client
             };
 
             log.info('Running loan requests...');
-            const count = 1000;
+            const count = 10;
             const max = 999999;
-            const prefix = '+254719';
+            const prefix = '+254790';
             const suffixes = Array.from(randomNumbers(count, max));
             const customerNumbers = suffixes.map((item) => `${prefix}${item.toString().padStart(max.toString().length, '0')}`);
             const tasks = customerNumbers.map((num, idx) => () => dialLoanApp(num, idx + 1));
 
             setInterval(() => {
                 log.info(`
-                Issued Loans: ${receivedLoans}/${count}
-                Repaid Loans: ${repaidLoans}/${receivedLoans}
-                Received SMSs: ${receivedSms}/${receivedLoans * 3}
-                Received Calls: ${receivedCalls}/${receivedLoans}
+Issued Loans: ${receivedLoans}/${count}
+Repaid Loans: ${repaidLoans}/${receivedLoans}
+Received SMSs: ${receivedSms}/${receivedLoans * 4}
+Received Calls: ${receivedCalls}/${receivedLoans}
             `);
             }, 5000);
 
             await Throttle.all(tasks, {
-                maxInProgress: 500,
+                maxInProgress: 2,
+                failFast: false,
             });
         } catch (error) {
             log.error(error);

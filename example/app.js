@@ -43,7 +43,7 @@ const approveLoan = async (customer, amount) => {
         currencyCode: 'KES',
     });
     if (!['success', 'queued', 'pending_confirmation', 'pending_validation'].includes(res.status)) {
-        log.error(`Failed to send KES ${amount} to ${customer.customerNumber.number}: `, res.description);
+        log.error(`Failed to send KES ${amount} to ${customer.customerNumber.number} --> ${res.status}: `, res.description);
         return;
     }
     await customer.updateMetadata({
@@ -259,7 +259,8 @@ const start = () => {
 
     client
         .on('error', (error) => {
-            log.error('Connection Error -> ', error);
+            log.warn(`${error.message || error} Attempting to reconnect...`);
+            client.connect();
         })
         .on('connected', () => {
             log.success(`App is connected, waiting for customers on ${process.env.USSD_CODE}`);
