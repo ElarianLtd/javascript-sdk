@@ -89,7 +89,7 @@ See [example](example/) for a full sample app.
 
 ## Documentation
 
-Take a look at the [API docs here](http://docs.elarian.com). For detailed info on this SDK, see the [reference](docs/).
+Take a look at the [product documentation](https://developers.elarian.com/). For detailed info on this SDK, see the [reference](https://elarianltd.github.io/javascript-sdk/index.html).
 
 ## Development
 
