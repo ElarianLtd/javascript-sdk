@@ -551,9 +551,19 @@ declare type ReceivedPaymentNotification = Notification;
 declare type WalletPaymentStatusNotification = Notification;
 
 /**
- * <p>Custoer activity notification</p>
+ * <p>Customer activity notification</p>
  */
 declare type CustomerActivityNotification = Notification;
+
+/**
+ * <p>And object representing a customer activity</p>
+ */
+declare type Activity = {
+    key: string;
+    sessionId: string;
+    properties: any;
+    createdAt: long;
+};
 
 /**
  * <p>Message reaction notification</p>
@@ -731,7 +741,7 @@ declare type MessagingChannelNumber = {
 
 /**
  * <p>An object representing an activity channel number</p>
- * @property channel - <p>channel type. Must be one of ['web','modile']</p>
+ * @property channel - <p>channel type. Must be one of ['web','mobile']</p>
  */
 declare type ActivityChannelNumber = {
     number: string;
