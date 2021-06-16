@@ -24,6 +24,7 @@ const { Elarian }  = require('elarian');
 /*
 or in the browser
 <script src="web.js"></script>
+// or import { Elarian } from 'elarian/web'
 */
 
 // ...

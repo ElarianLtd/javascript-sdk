@@ -136,6 +136,11 @@ describe('Customer', function fx() {
         customer.identityState.metadata.should.have.properties(['key', 'hollow', 'payload']);
     });
 
+    it('getMetadata()', async () => {
+        const resp = await customer.getMetadata();
+        resp.should.have.properties(['key', 'hollow', 'payload']);
+    });
+
     it('deleteMetadata()', async () => {
         const resp = await customer.deleteMetadata(['hollow']);
         resp.should.have.properties(['status', 'description']);
@@ -160,6 +165,11 @@ describe('Customer', function fx() {
 
         await customer.getState();
         customer.identityState.secondaryIds.map((i) => i.key).should.containDeep(['passport', 'huduma']);
+    });
+
+    it('getSecondaryIds()', async () => {
+        const resp = await customer.getSecondaryIds();
+        resp.map((i) => i.key).should.containDeep(['passport', 'huduma']);
     });
 
     it('deleteSecondaryIds()', async () => {
@@ -187,6 +197,11 @@ describe('Customer', function fx() {
 
         await customer.getState();
         customer.identityState.tags.map((i) => i.key).should.containDeep(['kind', 'type']);
+    });
+
+    it('getTags()', async () => {
+        const resp = await customer.getTags();
+        resp.map((i) => i.key).should.containDeep(['kind', 'type']);
     });
 
     it('deleteTags()', async () => {

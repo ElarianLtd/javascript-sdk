@@ -95,15 +95,17 @@
     * [.leaseAppData()](#Customer+leaseAppData) ⇒ <code>LeasedAppData</code>
     * [.updateAppData(data)](#Customer+updateAppData) ⇒ <code>CustomerStateUpdateReply</code>
     * [.deleteAppData()](#Customer+deleteAppData) ⇒ <code>CustomerStateUpdateReply</code>
+    * [.getMetadata()](#Customer+getMetadata) ⇒ <code>Object</code>
     * [.updateMetadata(metadata)](#Customer+updateMetadata) ⇒ <code>CustomerStateUpdateReply</code>
     * [.deleteMetadata(keys)](#Customer+deleteMetadata) ⇒ <code>CustomerStateUpdateReply</code>
+    * [.getSecondaryIds()](#Customer+getSecondaryIds) ⇒ <code>Array.&lt;SecondaryId&gt;</code>
     * [.updateSecondaryIds(secondaryIds)](#Customer+updateSecondaryIds) ⇒ <code>CustomerStateUpdateReply</code>
     * [.deleteSecondaryIds(secondaryIds)](#Customer+deleteSecondaryIds) ⇒ <code>CustomerStateUpdateReply</code>
+    * [.getTags()](#Customer+getTags) ⇒ <code>Array.&lt;Tag&gt;</code>
     * [.updateTags(tags)](#Customer+updateTags) ⇒ <code>CustomerStateUpdateReply</code>
     * [.deleteTags(tags)](#Customer+deleteTags) ⇒ <code>CustomerStateUpdateReply</code>
     * [.addReminder(reminder)](#Customer+addReminder) ⇒ <code>CustomerStateUpdateReply</code>
     * [.cancelReminder(key)](#Customer+cancelReminder) ⇒ <code>CustomerStateUpdateReply</code>
-    * [.getMetadata()](#Customer+getMetadata) ⇒ <code>Object</code>
 
 <a name="new_Customer_new"></a>
 
@@ -206,6 +208,12 @@ depending on the set serializer. @see [ConnectionOptions](ConnectionOptions)</p>
 <p>Remove customer's app data</p>
 
 **Kind**: instance method of [<code>Customer</code>](#Customer)  
+<a name="Customer+getMetadata"></a>
+
+### customer.getMetadata() ⇒ <code>Object</code>
+<p>Fetch customer metadata</p>
+
+**Kind**: instance method of [<code>Customer</code>](#Customer)  
 <a name="Customer+updateMetadata"></a>
 
 ### customer.updateMetadata(metadata) ⇒ <code>CustomerStateUpdateReply</code>
@@ -230,6 +238,12 @@ depending on the set serializer</p>
 | --- | --- |
 | keys | <code>Array.&lt;string&gt;</code> | 
 
+<a name="Customer+getSecondaryIds"></a>
+
+### customer.getSecondaryIds() ⇒ <code>Array.&lt;SecondaryId&gt;</code>
+<p>Fetch customer secondaryIds</p>
+
+**Kind**: instance method of [<code>Customer</code>](#Customer)  
 <a name="Customer+updateSecondaryIds"></a>
 
 ### customer.updateSecondaryIds(secondaryIds) ⇒ <code>CustomerStateUpdateReply</code>
@@ -252,6 +266,12 @@ depending on the set serializer</p>
 | --- | --- |
 | secondaryIds | <code>Array.&lt;SecondaryId&gt;</code> | 
 
+<a name="Customer+getTags"></a>
+
+### customer.getTags() ⇒ <code>Array.&lt;Tag&gt;</code>
+<p>Fetch customer tags</p>
+
+**Kind**: instance method of [<code>Customer</code>](#Customer)  
 <a name="Customer+updateTags"></a>
 
 ### customer.updateTags(tags) ⇒ <code>CustomerStateUpdateReply</code>
@@ -296,12 +316,6 @@ depending on the set serializer</p>
 | --- | --- |
 | key | <code>string</code> | 
 
-<a name="Customer+getMetadata"></a>
-
-### customer.getMetadata() ⇒ <code>Object</code>
-<p>Fetch customer metadata</p>
-
-**Kind**: instance method of [<code>Customer</code>](#Customer)  
 <a name="Elarian"></a>
 
 ## Elarian ⇐ [<code>Client</code>](#Client)

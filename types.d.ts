@@ -78,6 +78,10 @@ declare class Customer {
      */
     deleteAppData(): CustomerStateUpdateReply;
     /**
+     * <p>Fetch customer metadata</p>
+     */
+    getMetadata(): any;
+    /**
      * <p>Sets some metadata on the customer.
      * Values in the metadata object can either be strings or buffers,
      * depending on the set serializer</p>
@@ -88,6 +92,10 @@ declare class Customer {
      */
     deleteMetadata(keys: string[]): CustomerStateUpdateReply;
     /**
+     * <p>Fetch customer secondaryIds</p>
+     */
+    getSecondaryIds(): SecondaryId[];
+    /**
      * <p>Update a customer's secondary Ids</p>
      */
     updateSecondaryIds(secondaryIds: SecondaryId[]): CustomerStateUpdateReply;
@@ -95,6 +103,10 @@ declare class Customer {
      * <p>Remove some secondary Ids from a customer</p>
      */
     deleteSecondaryIds(secondaryIds: SecondaryId[]): CustomerStateUpdateReply;
+    /**
+     * <p>Fetch customer tags</p>
+     */
+    getTags(): Tag[];
     /**
      * <p>Update a customer's tag list.</p>
      */
@@ -111,10 +123,6 @@ declare class Customer {
      * <p>Cancels a previously set reminder with the key <code>key</code> on the customer</p>
      */
     cancelReminder(key: string): CustomerStateUpdateReply;
-    /**
-     * <p>Fetch customer metadata</p>
-     */
-    getMetadata(): any;
 }
 
 /**
@@ -513,7 +521,7 @@ declare type VoiceCallNotification = Notification;
 
 /**
  * <p>Message status notification</p>
- * @property status - <p>one of [queued, sent, delivered, read, received, session_initiated, failed, no_consent, no_capability, expired, no_session_in_progress, other_session_in_progress, invalid_reply_token, invalid_channel_number, not_supported, invalid_reply_to_message_id, invalid_customer_id, duplicate_request , tag_not_found, customer_number_not_found, decommissioned_customerid, rejected, invalid_request, application_error]</p>
+ * @property status - <p>one of [queued, sent, delivered, read, received, session_initiated, failed, no_consent, no_capability, expired, no_session_in_progress, other_session_in_progress, invalid_reply_token, invalid_channel_number, not_supported, invalid_reply_to_message_id, invalid_customer_id, duplicate_request , tag_not_found, customer_number_not_found, decommissioned_customerid, rejected, invalid_request, insufficient_credits, application_error]</p>
  */
 declare type MessageStatusNotification = Notification;
 
