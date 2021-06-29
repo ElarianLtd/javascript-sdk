@@ -57,7 +57,7 @@ elarian.on('ussdSession', async (notification, customer, appData, callback) => {
             menu.text = `Welcome back ${name}! What is your new name?`;
             menu.isTerminal = false;
         } else {
-            name = input.value;
+            name = input.text;
             menu.text = `Thank you for trying Elarian, ${name}!`;
             menu.isTerminal = true;
             await customer.sendMessage(
