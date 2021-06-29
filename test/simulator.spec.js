@@ -229,7 +229,10 @@ describe('Simulator', () => {
 
             const messageBodyParts = [
                 {
-                    ussd: '1',
+                    ussd: {
+                        text: '1',
+                        status: 'completed',
+                    },
                 },
             ];
             const { sessionId, channelNumber, customerNumber } = data;
