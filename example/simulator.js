@@ -76,7 +76,7 @@ client
 
             const dialLoanApp = async (customerNumber, count) => {
                 try {
-                    let res = await client.receiveMessage(customerNumber, ussdChannel, `${Date.now()}`, [{ ussd: '' }]);
+                    let res = await client.receiveMessage(customerNumber, ussdChannel, `${Date.now()}`, [{ ussd: { text: '', status: 'active' } }]);
                     if (!res.status) {
                         throw new Error(res.description);
                     }
@@ -86,17 +86,17 @@ client
                         return;
                     }
 
-                    res = await client.receiveMessage(customerNumber, ussdChannel, `${Date.now()}`, [{ ussd: '1' }]);
+                    res = await client.receiveMessage(customerNumber, ussdChannel, `${Date.now()}`, [{ ussd: { text: '1', status: 'active' } }]);
                     if (!res.status) {
                         throw new Error(res.description);
                     }
 
-                    res = await client.receiveMessage(customerNumber, ussdChannel, `${Date.now()}`, [{ ussd: `Tester #${count}` }]);
+                    res = await client.receiveMessage(customerNumber, ussdChannel, `${Date.now()}`, [{ ussd: { text: `Tester #${count}`, status: 'active' } }]);
                     if (!res.status) {
                         throw new Error(res.description);
                     }
 
-                    res = await client.receiveMessage(customerNumber, ussdChannel, `${Date.now()}`, [{ ussd: '100' }]);
+                    res = await client.receiveMessage(customerNumber, ussdChannel, `${Date.now()}`, [{ ussd: { text: '100', status: 'completed' } }]);
                     if (!res.status) {
                         throw new Error(res.description);
                     }

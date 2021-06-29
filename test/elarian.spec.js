@@ -651,7 +651,10 @@ describe('Elarian', () => {
         const channelNumber = fixtures.ussdChannel;
         const messageBodyParts = [
             {
-                ussd: '',
+                ussd: {
+                    text: '',
+                    status: 'active',
+                },
             },
         ];
         const sessionId = `ss-${Date.now()}`;

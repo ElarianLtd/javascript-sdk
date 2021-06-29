@@ -70,7 +70,10 @@ describe('Simulator', () => {
         const channelNumber = fixtures.messagingChannel;
         const messageBodyParts = [
             {
-                ussd: fixtures.ussdCode,
+                ussd: {
+                    text: 'were',
+                    status: 'active',
+                },
             },
         ];
         const sessionId = 'some-session-id';

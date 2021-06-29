@@ -152,9 +152,7 @@ const processReminder = async (reminder, customer) => {
 const processUssd = async (notification, customer, appData, callback) => {
     try {
         log.info(`Processing USSD from ${customer.customerNumber.number}`);
-        const {
-            input,
-        } = notification;
+        const input = notification.input.text;
 
         let screen = 'home';
         if (appData) {
