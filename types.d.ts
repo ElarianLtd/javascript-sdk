@@ -168,7 +168,7 @@ declare class Simulator extends Client {
     /**
      * <p>Initiate a message request</p>
      */
-    receiveMessage(phoneNumber: string, channelNumber: MessagingChannelNumber, sessionId: string, parts: SimulatorMessageBody[]): void;
+    receiveMessage(phoneNumber: string, channelNumber: MessagingChannelNumber, sessionId: string, parts: SimulatorMessageBody[], cost: Cash): void;
     /**
      * <p>Initiate payment request</p>
      * @param status - <p>one of [queued, pending_confirmation, pending_validation, validated,
@@ -654,8 +654,17 @@ declare type SimulatorMessageBody = {
     media?: Media;
     location?: Location;
     email?: Email;
-    ussd?: string;
+    ussd?: UssdInput;
     voice?: VoiceCallInput;
+};
+
+/**
+ * <p>An object representing a ussd input</p>
+ * @property status - <p>one of [active, incomplete, completed, app_error]</p>
+ */
+declare type UssdInput = {
+    text: string;
+    status: string;
 };
 
 /**

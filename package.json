@@ -42,11 +42,12 @@
     "rsocket-flowable": "0.0.25",
     "rsocket-tcp-client": "0.0.25",
     "rsocket-websocket-client": "0.0.25",
-    "validate.js": "^0.13.1"
+    "validate.js": "^0.13.1",
+    "ws": "^7.5.1"
   },
   "devDependencies": {
     "dotenv": "^10.0.0",
-    "eslint": "^7.28.0",
+    "eslint": "^7.29.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-mocha": "^9.0.0",
@@ -55,14 +56,14 @@
     "jsdoc": "^3.6.7",
     "jsdoc-to-markdown": "^7.0.1",
     "lodash": "^4.17.21",
-    "mocha": "^9.0.0",
+    "mocha": "^9.0.1",
     "node-fetch": ">=2.6.1",
     "nyc": "^15.1.0",
     "promise-parallel-throttle": "^3.3.0",
     "should": "^13.2.3",
     "signale": "^1.4.0",
     "tsd-jsdoc": "^2.5.0",
-    "webpack": "^5.39.0",
+    "webpack": "^5.41.1",
     "webpack-cli": "^4.7.2"
   }
 }

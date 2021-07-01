@@ -465,7 +465,7 @@ depending on the set serializer</p>
 
 * [Simulator](#Simulator) ⇐ [<code>Client</code>](#Client)
     * [new Simulator(config)](#new_Simulator_new)
-    * [.receiveMessage(phoneNumber, channelNumber, sessionId, parts)](#Simulator+receiveMessage)
+    * [.receiveMessage(phoneNumber, channelNumber, sessionId, parts, cost)](#Simulator+receiveMessage)
     * [.receivePayment(transactionId, customerNumber, channelNumber, value, status)](#Simulator+receivePayment)
     * [.updatePaymentStatus(transactionId, status)](#Simulator+updatePaymentStatus)
     * [.connect()](#Client+connect) ⇒ [<code>Elarian</code>](#Elarian)
@@ -486,7 +486,7 @@ depending on the set serializer</p>
 
 <a name="Simulator+receiveMessage"></a>
 
-### simulator.receiveMessage(phoneNumber, channelNumber, sessionId, parts)
+### simulator.receiveMessage(phoneNumber, channelNumber, sessionId, parts, cost)
 <p>Initiate a message request</p>
 
 **Kind**: instance method of [<code>Simulator</code>](#Simulator)  
@@ -497,6 +497,7 @@ depending on the set serializer</p>
 | channelNumber | <code>MessagingChannelNumber</code> | 
 | sessionId | <code>string</code> | 
 | parts | <code>Array.&lt;SimulatorMessageBody&gt;</code> | 
+| cost | <code>Cash</code> | 
 
 <a name="Simulator+receivePayment"></a>
 

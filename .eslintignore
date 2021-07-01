@@ -4,3 +4,4 @@ lib/utils/service
 docs/
 dist/
 web.js*
+tmp/
