@@ -686,7 +686,6 @@ describe('Elarian', () => {
             { body: { text: 'messageStatus test' } },
         )
             .then((resp) => {
-                console.log(resp);
                 resp.status.should.equal('sent');
             })
             .catch((err) => done(err));

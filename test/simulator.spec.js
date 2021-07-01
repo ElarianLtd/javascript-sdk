@@ -108,7 +108,6 @@ describe('Simulator', () => {
             { body: { text: 'simulator send message event test' } },
         )
             .then((resp) => {
-                console.log(resp);
                 resp.status.should.equal('sent');
             })
             .catch((err) => done(err));
@@ -125,7 +124,6 @@ describe('Simulator', () => {
 
         bob.sendMessage(fixtures.voiceChannel, { body: { voice: [{ say: { text: 'TestingSimMakeVoiceCall' } }] } })
             .then((resp) => {
-                console.log(resp);
                 resp.status.should.equal('session_initiated');
             })
             .catch((err) => done(err));
