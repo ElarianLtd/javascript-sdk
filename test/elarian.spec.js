@@ -25,9 +25,9 @@ describe('Elarian', () => {
                 simulator
                     .on('connected', () => done())
                     .on('error', done)
-                    .connect();
+                    .connect({ host: 'tcp.elarian.dev', port: 8082 });
             })
-            .connect();
+            .connect({ host: 'tcp.elarian.dev', port: 8082 });
     });
 
     after(async () => {

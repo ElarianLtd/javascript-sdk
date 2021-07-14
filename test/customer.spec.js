@@ -22,7 +22,7 @@ describe('Customer', function fx() {
                 });
                 done();
             })
-            .connect();
+            .connect({ host: 'tcp.elarian.dev', port: 8082 });
     });
 
     after(async () => {
