@@ -131,7 +131,7 @@ export class Customer {
  * <p>Instantiate an elarian client. You have to call connect() on then client to start using it</p>
  */
 export class Elarian extends Client {
-    Customer: Customer;
+    Customer = Customer;
 
     constructor(config: ClientConfig);
     /**
