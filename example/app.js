@@ -262,6 +262,6 @@ const start = () => {
         .on('connected', async () => {
             log.success(`App is connected, waiting for customers on ${process.env.USSD_CODE}`);
         })
-        .connect({ host: 'tcp.elarian.dev', port: 8082 });
+        .connect();
 };
 start();
