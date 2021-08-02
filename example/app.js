@@ -41,7 +41,7 @@ const approveLoan = async (customer, amount) => {
     }, {
         amount,
         currencyCode: 'KES',
-    });
+    }, 'hosted');
     if (!['success', 'queued', 'pending_confirmation', 'pending_validation'].includes(res.status)) {
         log.error(`Failed to send KES ${amount} to ${customer.customerNumber.number} --> ${res.status}: `, res.description);
         return;
@@ -257,12 +257,11 @@ const start = () => {
 
     client
         .on('error', (error) => {
-            log.warn(`${error.message || error} Attempting to reconnect...`);
-            client.connect();
+            log.warn(`${error.message || error}`);
         })
-        .on('connected', () => {
+        .on('connected', async () => {
             log.success(`App is connected, waiting for customers on ${process.env.USSD_CODE}`);
         })
-        .connect();
+        .connect({ host: 'tcp.elarian.dev', port: 8082 });
 };
 start();
