@@ -328,7 +328,7 @@ depending on the set serializer</p>
         * [new this.Customer()](#new_Elarian+Customer_new)
     * [.generateAuthToken()](#Elarian+generateAuthToken) ⇒ <code>AuthToken</code>
     * [.sendMessageByTag(tag, channelNumber, message)](#Elarian+sendMessageByTag) ⇒ <code>TagUpdateReply</code>
-    * [.initiatePayment(debitParty, creditParty, value)](#Elarian+initiatePayment) ⇒ <code>InitiatePaymentReply</code>
+    * [.initiatePayment(debitParty, creditParty, value, mode)](#Elarian+initiatePayment) ⇒ <code>InitiatePaymentReply</code>
     * [.addCustomerReminderByTag(tag, reminder)](#Elarian+addCustomerReminderByTag) ⇒ <code>TagUpdateReply</code>
     * [.cancelCustomerReminderByTag(tag, key)](#Elarian+cancelCustomerReminderByTag) ⇒ <code>TagUpdateReply</code>
     * [.connect()](#Client+connect) ⇒ [<code>Elarian</code>](#Elarian)
@@ -377,16 +377,17 @@ depending on the set serializer</p>
 
 <a name="Elarian+initiatePayment"></a>
 
-### elarian.initiatePayment(debitParty, creditParty, value) ⇒ <code>InitiatePaymentReply</code>
+### elarian.initiatePayment(debitParty, creditParty, value, mode) ⇒ <code>InitiatePaymentReply</code>
 <p>Initiate a payment transaction</p>
 
 **Kind**: instance method of [<code>Elarian</code>](#Elarian)  
 
-| Param | Type |
-| --- | --- |
-| debitParty | <code>CustomerPayment</code> \| <code>Wallet</code> \| <code>Purse</code> \| <code>ChannelPayment</code> | 
-| creditParty | <code>CustomerPayment</code> \| <code>Wallet</code> \| <code>Purse</code> \| <code>ChannelPayment</code> | 
-| value | <code>Cash</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| debitParty | <code>CustomerPayment</code> \| <code>Wallet</code> \| <code>Purse</code> \| <code>ChannelPayment</code> |  |
+| creditParty | <code>CustomerPayment</code> \| <code>Wallet</code> \| <code>Purse</code> \| <code>ChannelPayment</code> |  |
+| value | <code>Cash</code> |  |
+| mode | <code>string</code> | <p>on of [hosted, virtual]</p> |
 
 <a name="Elarian+addCustomerReminderByTag"></a>
 

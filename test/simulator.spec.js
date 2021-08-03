@@ -16,7 +16,7 @@ describe('Simulator', () => {
             .on('error', done)
             .on('connected', async () => {
                 bob = new client.Customer({
-                    number: `+254730${_.random(100000, 999999)}`,
+                    number: '+254718769882', // `+254730${_.random(100000, 999999)}`,
                     provider: 'cellular',
                 });
                 await bob.getState();
@@ -154,6 +154,7 @@ describe('Simulator', () => {
                 amount: 10,
                 currencyCode: 'KES',
             },
+            'virtual',
         ).then((resp) => {
             resp.should.have.properties([
                 'status',
@@ -169,7 +170,7 @@ describe('Simulator', () => {
         this.timeout(30000);
         simulator.on('sendChannelPayment', (data) => {
             data.should.have.properties([
-                'channelNumber',
+                'channel',
                 'transactionId',
                 'value',
                 'account',
@@ -189,6 +190,7 @@ describe('Simulator', () => {
                 amount: 150,
                 currencyCode: 'KES',
             },
+            'virtual',
         ).then(() => {
             client.initiatePayment(
                 {
@@ -198,15 +200,15 @@ describe('Simulator', () => {
                 {
                     channelCode: 99999, // Network MCC/MNC
                     account: 'test_account',
-                    channelNumber: {
-                        number: fixtures.paybill,
-                        channel: 'cellular',
-                    },
+                    channel: 'cellular',
+                    source: fixtures.paybill,
+                    destination: 'test_account',
                 },
                 {
                     amount: _.random(10, 100),
                     currencyCode: 'KES',
                 },
+                'virtual',
             ).then((re) => {
                 re.should.have.properties([
                     'status',
@@ -265,6 +267,7 @@ describe('Simulator', () => {
                 amount: 154,
                 currencyCode: 'KES',
             },
+            'virtual',
         ).then((resp) => {
             resp.should.have.properties([
                 'status',

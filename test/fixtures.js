@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-const _ = require('lodash');
+// const _ = require('lodash');
 
 const clientParams = {
     appId: process.env.APP_ID,
@@ -18,17 +18,17 @@ module.exports = {
     clientParams,
 
     customerNumber: {
-        number: `+254710${_.random(100000, 999999)}`,
+        number: '+254718769882', // `+254710${_.random(100000, 999999)}`,
         provider: 'cellular',
     },
 
     adoptedCustomer: {
-        number: `+254711${_.random(100000, 999999)}`,
+        number: '+254718769882', // `+254711${_.random(100000, 999999)}`,
         provider: 'cellular',
     },
 
     notifCustomerNumber: {
-        number: `+254712${_.random(100000, 999999)}`,
+        number: '+254718769882', // `+254712${_.random(100000, 999999)}`,
         provider: 'cellular',
     },
 
