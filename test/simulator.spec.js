@@ -16,7 +16,7 @@ describe('Simulator', () => {
             .on('error', done)
             .on('connected', async () => {
                 bob = new client.Customer({
-                    number: '+254718769882', // `+254730${_.random(100000, 999999)}`,
+                    number: `+254730${_.random(100000, 999999)}`,
                     provider: 'cellular',
                 });
                 await bob.getState();
