@@ -575,39 +575,36 @@ describe('Elarian', () => {
     });
 
     it('on(receivedEmail)', (done) => {
-        // client.on('receivedEmail', async (data, customer) => {
-        //     data.should.have.properties([
-        //         'email',
-        //         'messageId',
-        //         'channelNumber',
-        //         'customerNumber',
-        //     ]);
-        //     should.exist(customer);
-        //     done();
-        // });
-        // const customerNumber = fixtures.customerNumber.number;
-        // const channelNumber = {
-        //     number: fixtures.emailSenderId,
-        //     channel: 'email',
-        // };
-        // const messageBodyParts = [
-        //     {
-        //         text: 'Hello test long long long email',
-        //     },
-        // ];
-        // const sessionId = `ss-${Date.now()}`;
-        // simulator.receiveMessage(customerNumber, channelNumber, sessionId, messageBodyParts)
-        //     .then((resp) => {
-        //         resp.should.have.properties([
-        //             'status',
-        //             'message',
-        //             'description',
-        //         ]);
-        //     })
-        //     .catch((ex) => done(ex));
-
-        console.warn('Warning: on(receivedEmail) not functional');
-        done();
+        client.on('receivedEmail', async (data, customer) => {
+            data.should.have.properties([
+                'email',
+                'messageId',
+                'channelNumber',
+                'customerNumber',
+            ]);
+            should.exist(customer);
+            done();
+        });
+        const customerNumber = fixtures.customerNumber.number;
+        const channelNumber = {
+            number: fixtures.emailSenderId,
+            channel: 'email',
+        };
+        const messageBodyParts = [
+            {
+                text: 'Hello test long long long email',
+            },
+        ];
+        const sessionId = `ss-${Date.now()}`;
+        simulator.receiveMessage(customerNumber, channelNumber, sessionId, messageBodyParts)
+            .then((resp) => {
+                resp.should.have.properties([
+                    'status',
+                    'message',
+                    'description',
+                ]);
+            })
+            .catch((ex) => done(ex));
     });
 
     it('on(voiceCall)', (done) => {
@@ -845,7 +842,7 @@ describe('Elarian', () => {
         client.on('customerActivity', async (data, customer) => {
             data.should.have.properties([
                 'customerNumber',
-                'channelNumber',
+                'source',
                 'sessionId',
                 'activity',
             ]);
@@ -853,8 +850,7 @@ describe('Elarian', () => {
             await fixtures.sleep(5000);
             done();
         });
-        const channel = { number: 'www.elarian.com', channel: 'web' };
-        bob.updateActivity(channel, { sessionId: 'some-session', key: 'kkey' })
+        bob.updateActivity('www.elarian.com', { sessionId: 'some-session', key: 'kkey' })
             .catch((err) => done(err));
     });
 });

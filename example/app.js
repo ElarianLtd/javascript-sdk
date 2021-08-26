@@ -41,7 +41,7 @@ const approveLoan = async (customer, amount) => {
     }, {
         amount,
         currencyCode: 'KES',
-    }, 'hosted');
+    });
     if (!['success', 'queued', 'pending_confirmation', 'pending_validation'].includes(res.status)) {
         log.error(`Failed to send KES ${amount} to ${customer.customerNumber.number} --> ${res.status}: `, res.description);
         return;

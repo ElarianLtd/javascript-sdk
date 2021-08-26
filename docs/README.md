@@ -90,7 +90,7 @@
     * [.adoptState(otherCustomer)](#Customer+adoptState) ⇒ <code>CustomerStateUpdateReply</code>
     * [.sendMessage(channelNumber, message)](#Customer+sendMessage) ⇒ <code>MessageReply</code>
     * [.replyToMessage(messageId, message)](#Customer+replyToMessage) ⇒ <code>MessageReply</code>
-    * [.updateActivity(channelNumber, activity)](#Customer+updateActivity) ⇒ <code>CustomerStateUpdateReply</code>
+    * [.updateActivity(source, activity)](#Customer+updateActivity) ⇒ <code>CustomerStateUpdateReply</code>
     * [.updateMessagingConsent(channelNumber, action)](#Customer+updateMessagingConsent) ⇒ <code>ConsentUpdateReply</code>
     * [.leaseAppData()](#Customer+leaseAppData) ⇒ <code>LeasedAppData</code>
     * [.updateAppData(data)](#Customer+updateAppData) ⇒ <code>CustomerStateUpdateReply</code>
@@ -160,14 +160,14 @@
 
 <a name="Customer+updateActivity"></a>
 
-### customer.updateActivity(channelNumber, activity) ⇒ <code>CustomerStateUpdateReply</code>
+### customer.updateActivity(source, activity) ⇒ <code>CustomerStateUpdateReply</code>
 <p>Initiate a customer activity</p>
 
 **Kind**: instance method of [<code>Customer</code>](#Customer)  
 
 | Param | Type |
 | --- | --- |
-| channelNumber | <code>ActivityChannelNumber</code> | 
+| source | <code>string</code> | 
 | activity | <code>Activity</code> | 
 
 <a name="Customer+updateMessagingConsent"></a>
@@ -328,7 +328,7 @@ depending on the set serializer</p>
         * [new this.Customer()](#new_Elarian+Customer_new)
     * [.generateAuthToken()](#Elarian+generateAuthToken) ⇒ <code>AuthToken</code>
     * [.sendMessageByTag(tag, channelNumber, message)](#Elarian+sendMessageByTag) ⇒ <code>TagUpdateReply</code>
-    * [.initiatePayment(debitParty, creditParty, value, mode)](#Elarian+initiatePayment) ⇒ <code>InitiatePaymentReply</code>
+    * [.initiatePayment(debitParty, creditParty, value)](#Elarian+initiatePayment) ⇒ <code>InitiatePaymentReply</code>
     * [.addCustomerReminderByTag(tag, reminder)](#Elarian+addCustomerReminderByTag) ⇒ <code>TagUpdateReply</code>
     * [.cancelCustomerReminderByTag(tag, key)](#Elarian+cancelCustomerReminderByTag) ⇒ <code>TagUpdateReply</code>
     * [.connect()](#Client+connect) ⇒ [<code>Elarian</code>](#Elarian)
@@ -377,17 +377,16 @@ depending on the set serializer</p>
 
 <a name="Elarian+initiatePayment"></a>
 
-### elarian.initiatePayment(debitParty, creditParty, value, mode) ⇒ <code>InitiatePaymentReply</code>
+### elarian.initiatePayment(debitParty, creditParty, value) ⇒ <code>InitiatePaymentReply</code>
 <p>Initiate a payment transaction</p>
 
 **Kind**: instance method of [<code>Elarian</code>](#Elarian)  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| debitParty | <code>CustomerPayment</code> \| <code>Wallet</code> \| <code>Purse</code> \| <code>ChannelPayment</code> |  |
-| creditParty | <code>CustomerPayment</code> \| <code>Wallet</code> \| <code>Purse</code> \| <code>ChannelPayment</code> |  |
-| value | <code>Cash</code> |  |
-| mode | <code>string</code> | <p>on of [hosted, virtual]</p> |
+| Param | Type |
+| --- | --- |
+| debitParty | <code>CustomerPayment</code> \| <code>Wallet</code> \| <code>Purse</code> \| <code>ChannelPayment</code> | 
+| creditParty | <code>CustomerPayment</code> \| <code>Wallet</code> \| <code>Purse</code> \| <code>ChannelPayment</code> | 
+| value | <code>Cash</code> | 
 
 <a name="Elarian+addCustomerReminderByTag"></a>
 

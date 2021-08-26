@@ -78,7 +78,7 @@ describe('Customer', function fx() {
 
     it('updateActivity()', async () => {
         const resp = await customer.updateActivity(
-            { number: 'what-is-this-number', channel: 'web' },
+            'source----',
             {
                 sessionId: 'fake-session-id',
                 key: 'some-key',
