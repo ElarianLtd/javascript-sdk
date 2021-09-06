@@ -331,6 +331,7 @@ depending on the set serializer</p>
     * [.initiatePayment(debitParty, creditParty, value)](#Elarian+initiatePayment) ⇒ <code>InitiatePaymentReply</code>
     * [.addCustomerReminderByTag(tag, reminder)](#Elarian+addCustomerReminderByTag) ⇒ <code>TagUpdateReply</code>
     * [.cancelCustomerReminderByTag(tag, key)](#Elarian+cancelCustomerReminderByTag) ⇒ <code>TagUpdateReply</code>
+    * [._createCustomer(customerNumber)](#Elarian+_createCustomer) ⇒ <code>CustomerStateUpdateReply</code>
     * [.connect()](#Client+connect) ⇒ [<code>Elarian</code>](#Elarian)
     * [.isConnected()](#Client+isConnected) ⇒ <code>boolean</code>
     * [.disconnect()](#Client+disconnect)
@@ -411,6 +412,17 @@ depending on the set serializer</p>
 | --- | --- |
 | tag | <code>Tag</code> | 
 | key | <code>string</code> | 
+
+<a name="Elarian+_createCustomer"></a>
+
+### elarian.\_createCustomer(customerNumber) ⇒ <code>CustomerStateUpdateReply</code>
+<p>Create a customer</p>
+
+**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
+
+| Param | Type |
+| --- | --- |
+| customerNumber | <code>\*</code> | 
 
 <a name="Client+connect"></a>
 
