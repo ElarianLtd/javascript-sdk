@@ -22,7 +22,7 @@ describe('Customer', function fx() {
                 });
                 done();
             })
-            .connect();
+            .connect(fixtures.connectOpts);
     });
 
     after(async () => {

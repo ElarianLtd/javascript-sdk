@@ -17,6 +17,8 @@ const clientParams = {
 module.exports = {
     clientParams,
 
+    connectOpts: { host: process.env.HOST, port: process.env.PORT },
+
     customerNumber: {
         number: `+254710${_.random(100000, 999999)}`,
         provider: 'cellular',

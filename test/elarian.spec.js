@@ -25,9 +25,9 @@ describe('Elarian', () => {
                 simulator
                     .on('connected', () => done())
                     .on('error', done)
-                    .connect();
+                    .connect(fixtures.connectOpts);
             })
-            .connect();
+            .connect(fixtures.connectOpts);
     });
 
     after(async () => {

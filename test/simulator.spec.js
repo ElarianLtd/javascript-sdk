@@ -26,7 +26,7 @@ describe('Simulator', () => {
                     .on('error', done)
                     .connect();
             })
-            .connect();
+            .connect(fixtures.connectOpts);
     });
 
     after(async () => {
