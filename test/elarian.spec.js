@@ -107,7 +107,6 @@ describe('Elarian', () => {
                 amount: 15456,
                 currencyCode: 'KES',
             },
-            'virtual',
         );
         resp.should.have.properties([
             'status',
@@ -133,7 +132,6 @@ describe('Elarian', () => {
                 amount: 178.78,
                 currencyCode: 'KES',
             },
-            'virtual',
         );
         resp.should.have.properties([
             'status',
@@ -156,7 +154,6 @@ describe('Elarian', () => {
                 amount: 123.78,
                 currencyCode: 'KES',
             },
-            'virtual',
         );
         resp.should.have.properties([
             'status',
@@ -182,7 +179,6 @@ describe('Elarian', () => {
                 amount: 1.78,
                 currencyCode: 'KES',
             },
-            'virtual',
         );
         resp.should.have.properties([
             'status',
@@ -212,7 +208,6 @@ describe('Elarian', () => {
                 amount: 1.78,
                 currencyCode: 'KES',
             },
-            'virtual',
         );
         resp.should.have.properties([
             'status',
@@ -241,7 +236,6 @@ describe('Elarian', () => {
                 amount: 1.78,
                 currencyCode: 'KES',
             },
-            'virtual',
         );
         resp.should.have.properties([
             'status',
@@ -265,7 +259,6 @@ describe('Elarian', () => {
                 amount: 10.78,
                 currencyCode: 'KES',
             },
-            'virtual',
         );
         resp.should.have.properties([
             'status',
@@ -287,7 +280,6 @@ describe('Elarian', () => {
                 amount: 10.78,
                 currencyCode: 'KES',
             },
-            'virtual',
         );
         resp.should.have.properties([
             'status',
@@ -734,8 +726,8 @@ describe('Elarian', () => {
         const { number } = fixtures.customerNumber;
         const { paymentChannel } = fixtures;
         const value = { currencyCode: 'KES', amount: _.random(100, 250) };
-        const status = 'pending_confirmation';
-        simulator.receivePayment('fake-txn', number, paymentChannel, value, status, 'virtual')
+        const status = 'success';
+        simulator.receivePayment('fake-txn', number, paymentChannel, value, status)
             .then((resp) => {
                 resp.should.have.properties([
                     'status',
@@ -771,7 +763,6 @@ describe('Elarian', () => {
                 amount: 1.78,
                 currencyCode: 'KES',
             },
-            'virtual',
         )
             .then((resp) => {
                 resp.should.have.properties([
@@ -809,7 +800,6 @@ describe('Elarian', () => {
                     amount: 10,
                     currencyCode: 'KES',
                 },
-                'virtual',
             ))
             .then(() => client.initiatePayment(
                 {
@@ -827,7 +817,6 @@ describe('Elarian', () => {
                     amount: 10,
                     currencyCode: 'KES',
                 },
-                'virtual',
             ))
             .then((resp) => {
                 resp.status.should.equal('pending_confirmation');
