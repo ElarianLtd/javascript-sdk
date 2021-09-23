@@ -9,7 +9,7 @@
 You can install the package from [npm](https://www.npmjs.com/package/elarian) by running: 
 
 ```bash
-$ npm install elarian
+$ npm install elarian@latest
 ```
 
 ## Usage
