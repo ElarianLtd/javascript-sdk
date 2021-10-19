@@ -35,7 +35,7 @@ const elarian = new Elarian({
 elarian
     .on('connected', async () => {
         console.log('App is running!');
-        const customer = new client.Customer({ number: '+XXXXXXXXXXXX', provider: 'cellular' });
+        const customer = new elarian.Customer({ number: '+XXXXXXXXXXXX', provider: 'cellular' });
         
         const state = await customer.getState();
         console.log(state);
