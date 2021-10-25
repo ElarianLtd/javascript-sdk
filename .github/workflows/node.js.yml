@@ -25,6 +25,8 @@ jobs:
     - run: npm run lint
     - run: npm test
       env:
+        HOST: ${{ secrets.HOST }}
+        PORT: ${{ secrets.PORT }}
         ORG_ID: ${{ secrets.ORG_ID }}
         APP_ID: ${{ secrets.APP_ID }}
         API_KEY: ${{ secrets.API_KEY }}
