@@ -584,7 +584,17 @@ describe('Elarian', () => {
         };
         const messageBodyParts = [
             {
-                text: 'Hello test long long long email',
+                email: {
+                    subject: 'Test Email',
+                    bodyPlain: 'This is a long long email gone email long',
+                    ccList: [
+                        'test-one@elarian.com',
+                    ],
+                    bccList: [
+                        'test-two@elarian.com',
+                    ],
+
+                },
             },
         ];
         const sessionId = `ss-${Date.now()}`;

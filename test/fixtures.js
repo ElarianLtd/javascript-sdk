@@ -35,7 +35,7 @@ module.exports = {
     },
 
     paymentChannel: {
-        number: process.env.SMS_SENDER_ID,
+        number: process.env.MPESA_PAYBILL,
         channel: 'cellular',
     },
 

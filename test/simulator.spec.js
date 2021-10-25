@@ -102,7 +102,7 @@ describe('Simulator', () => {
 
         bob.sendMessage(
             {
-                number: fixtures.shortCodeSenderId,
+                number: fixtures.alphannumericSenderId,
                 channel: 'sms',
             },
             { body: { text: 'simulator send message event test' } },
