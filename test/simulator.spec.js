@@ -154,7 +154,6 @@ describe('Simulator', () => {
                 amount: 10,
                 currencyCode: 'KES',
             },
-            'virtual',
         ).then((resp) => {
             resp.should.have.properties([
                 'status',
@@ -190,7 +189,6 @@ describe('Simulator', () => {
                 amount: 150,
                 currencyCode: 'KES',
             },
-            'virtual',
         ).then(() => {
             client.initiatePayment(
                 {
@@ -198,7 +196,7 @@ describe('Simulator', () => {
                     walletId: 'test_wallet',
                 },
                 {
-                    channelCode: 99999, // Network MCC/MNC
+                    code: 99999, // Network MCC/MNC
                     account: 'test_account',
                     channel: 'cellular',
                     source: fixtures.paybill,
@@ -208,7 +206,6 @@ describe('Simulator', () => {
                     amount: _.random(10, 100),
                     currencyCode: 'KES',
                 },
-                'virtual',
             ).then((re) => {
                 re.should.have.properties([
                     'status',

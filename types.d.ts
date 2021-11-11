@@ -164,7 +164,7 @@ export class Simulator extends Client {
     /**
      * <p>Initiate a message request</p>
      */
-    receiveMessage(phoneNumber: string, channelNumber: MessagingChannelNumber, sessionId: string, parts: SimulatorMessageBody[], cost: Cash): void;
+    receiveMessage(phoneNumber: string, channelNumber: MessagingChannelNumber, sessionId: string, parts: InboundMessageBody[], cost: Cash): void;
     /**
      * <p>Initiate payment request</p>
      * @param status - <p>one of [queued, pending_confirmation, pending_validation, validated,
@@ -650,7 +650,7 @@ type Event = string;
 /**
  * <p>An object representing a message body</p>
  */
-type SimulatorMessageBody = {
+type InboundMessageBody = {
     text?: string;
     media?: Media;
     location?: Location;

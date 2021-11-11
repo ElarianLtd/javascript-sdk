@@ -755,7 +755,79 @@
 
         <tr>
             
-                <td class="name"><code>channelCode</code></td>
+                <td class="name"><code>source</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>destination</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>channel</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>one of [cellular, airtime]</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>code</code></td>
             
 
             <td class="type">
@@ -773,30 +845,6 @@
             
 
             <td class="description last"><p>The telco's network code.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>channelNumber</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#PaymentChannelNumber">PaymentChannelNumber</a></span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
         </tr>
 
     
@@ -838,7 +886,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="utils_types.js.html">utils/types.js</a>,
-				 <a href="utils_types.js.html#sunlight-1-line-546">line 546</a>
+				 <a href="utils_types.js.html#sunlight-1-line-590">line 590</a>
 			</li>
 		</ul>
 	</dd>
@@ -1686,7 +1734,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="utils_types.js.html">utils/types.js</a>,
-				 <a href="utils_types.js.html#sunlight-1-line-589">line 589</a>
+				 <a href="utils_types.js.html#sunlight-1-line-635">line 635</a>
 			</li>
 		</ul>
 	</dd>
@@ -2510,7 +2558,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="utils_types.js.html">utils/types.js</a>,
-				 <a href="utils_types.js.html#sunlight-1-line-539">line 539</a>
+				 <a href="utils_types.js.html#sunlight-1-line-583">line 583</a>
 			</li>
 		</ul>
 	</dd>
@@ -2688,7 +2736,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="utils_types.js.html">utils/types.js</a>,
-				 <a href="utils_types.js.html#sunlight-1-line-581">line 581</a>
+				 <a href="utils_types.js.html#sunlight-1-line-627">line 627</a>
 			</li>
 		</ul>
 	</dd>
@@ -3457,7 +3505,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="utils_types.js.html">utils/types.js</a>,
-				 <a href="utils_types.js.html#sunlight-1-line-442">line 442</a>
+				 <a href="utils_types.js.html#sunlight-1-line-486">line 486</a>
 			</li>
 		</ul>
 	</dd>
@@ -4050,6 +4098,310 @@
 			<li>
 				<a href="utils_types.js.html">utils/types.js</a>,
 				 <a href="utils_types.js.html#sunlight-1-line-250">line 250</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<hr>
+<dt class="name" id="InboundMessageBody">
+    <h4 id="InboundMessageBody">InboundMessageBody</h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>An object representing a message body</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Object</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    <dl>
+
+<table class="props table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Argument</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>text</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>media</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#Media">Media</a></span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>location</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#Location">Location</a></span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>email</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#Email">Email</a></span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>ussd</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#UssdInput">UssdInput</a></span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>voice</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#VoiceCallInput">VoiceCallInput</a></span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+</dl>
+
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="utils_types.js.html">utils/types.js</a>,
+				 <a href="utils_types.js.html#sunlight-1-line-533">line 533</a>
 			</li>
 		</ul>
 	</dd>
@@ -5507,7 +5859,237 @@
 		<ul class="dummy">
 			<li>
 				<a href="utils_types.js.html">utils/types.js</a>,
-				 <a href="utils_types.js.html#sunlight-1-line-597">line 597</a>
+				 <a href="utils_types.js.html#sunlight-1-line-643">line 643</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<hr>
+<dt class="name" id="MessageSessionUpdate">
+    <h4 id="MessageSessionUpdate">MessageSessionUpdate</h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Replay message session update</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Object</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    <dl>
+
+<table class="props table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>sessionId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>startedAt</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>timestamp in seconds e.g 1615361861</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>duration</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>in seconds e.g. 67</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cost</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#Cash">Cash</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>reason</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>one of [normal_clearing, inactivity, failure]</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+</dl>
+
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="utils_types.js.html">utils/types.js</a>,
+				 <a href="utils_types.js.html#sunlight-1-line-476">line 476</a>
 			</li>
 		</ul>
 	</dd>
@@ -5685,6 +6267,212 @@
             
                 
 <hr>
+<dt class="name" id="MessageStatusUpdate">
+    <h4 id="MessageStatusUpdate">MessageStatusUpdate</h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Replay message status update</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Object</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    <dl>
+
+<table class="props table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>messageId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>updatedAt</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>timestamp in seconds e.g 1615361861</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cost</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#Cash">Cash</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>status</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>one of [queued, sent, delivered, read, received, session_initiated, failed, no_consent, no_capability, expired, no_session_in_progress, other_session_in_progress, invalid_reply_token, invalid_channel_number, not_supported, invalid_reply_to_message_id, invalid_customer_id, duplicate_request , tag_not_found, customer_number_not_found, decommissioned_customerid, rejected, invalid_request, insufficient_credits, application_error]</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+</dl>
+
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="utils_types.js.html">utils/types.js</a>,
+				 <a href="utils_types.js.html#sunlight-1-line-467">line 467</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<hr>
 <dt class="name" id="MessagingChannelNumber">
     <h4 id="MessagingChannelNumber">MessagingChannelNumber</h4>
 
@@ -5823,7 +6611,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="utils_types.js.html">utils/types.js</a>,
-				 <a href="utils_types.js.html#sunlight-1-line-574">line 574</a>
+				 <a href="utils_types.js.html#sunlight-1-line-620">line 620</a>
 			</li>
 		</ul>
 	</dd>
@@ -6571,7 +7359,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="utils_types.js.html">utils/types.js</a>,
-				 <a href="utils_types.js.html#sunlight-1-line-607">line 607</a>
+				 <a href="utils_types.js.html#sunlight-1-line-653">line 653</a>
 			</li>
 		</ul>
 	</dd>
@@ -7387,7 +8175,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="utils_types.js.html">utils/types.js</a>,
-				 <a href="utils_types.js.html#sunlight-1-line-567">line 567</a>
+				 <a href="utils_types.js.html#sunlight-1-line-613">line 613</a>
 			</li>
 		</ul>
 	</dd>
@@ -8035,7 +8823,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="utils_types.js.html">utils/types.js</a>,
-				 <a href="utils_types.js.html#sunlight-1-line-561">line 561</a>
+				 <a href="utils_types.js.html#sunlight-1-line-607">line 607</a>
 			</li>
 		</ul>
 	</dd>
@@ -8428,6 +9216,284 @@
 			<li>
 				<a href="utils_types.js.html">utils/types.js</a>,
 				 <a href="utils_types.js.html#sunlight-1-line-345">line 345</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<hr>
+<dt class="name" id="ReceivedMessage">
+    <h4 id="ReceivedMessage">ReceivedMessage</h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Replay recieved message</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Object</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    <dl>
+
+<table class="props table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>sessionId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>messageId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>receivedAt</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>timestamp in seconds e.g 1615361861</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>parts</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="global.html#InboundMessageBody">InboundMessageBody</a>></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>inReplyTo</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cost</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#Cash">Cash</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>provider</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>one of [at, twilio, mailgun, facebook, telegram]</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+</dl>
+
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="utils_types.js.html">utils/types.js</a>,
+				 <a href="utils_types.js.html#sunlight-1-line-442">line 442</a>
 			</li>
 		</ul>
 	</dd>
@@ -10144,6 +11210,308 @@
             
                 
 <hr>
+<dt class="name" id="SentMessage">
+    <h4 id="SentMessage">SentMessage</h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Replay sent message</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Object</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    <dl>
+
+<table class="props table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>sessionId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>messageId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>sentAt</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>timestamp in seconds e.g 1615361861</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#Message">Message</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>inReplyTo</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cost</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#Cash">Cash</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>status</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>one of [queued, sent, delivered, read, received, session_initiated, failed, no_consent, no_capability, expired, no_session_in_progress, other_session_in_progress, invalid_reply_token, invalid_channel_number, not_supported, invalid_reply_to_message_id, invalid_customer_id, duplicate_request , tag_not_found, customer_number_not_found, decommissioned_customerid, rejected, invalid_request, insufficient_credits, application_error]</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>provider</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>one of [at, twilio, mailgun, facebook, telegram]</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+</dl>
+
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="utils_types.js.html">utils/types.js</a>,
+				 <a href="utils_types.js.html#sunlight-1-line-454">line 454</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<hr>
 <dt class="name" id="SentMessageReactionNotification">
     <h4 id="SentMessageReactionNotification">SentMessageReactionNotification</h4>
 
@@ -10516,310 +11884,6 @@
 			<li>
 				<a href="utils_types.js.html">utils/types.js</a>,
 				 <a href="utils_types.js.html#sunlight-1-line-15">line 15</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-</dd>
-
-            
-                
-<hr>
-<dt class="name" id="SimulatorMessageBody">
-    <h4 id="SimulatorMessageBody">SimulatorMessageBody</h4>
-
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>An object representing a message body</p>
-    </div>
-    
-
-    
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type">Object</span>
-
-
-
-            </li>
-        </ul>
-    
-
-    
-<dl class="details">
-    
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    <dl>
-
-<table class="props table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Argument</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>text</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>media</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#Media">Media</a></span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>location</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#Location">Location</a></span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>email</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#Email">Email</a></span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>ussd</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#UssdInput">UssdInput</a></span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>voice</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#VoiceCallInput">VoiceCallInput</a></span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-</dl>
-
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="utils_types.js.html">utils/types.js</a>,
-				 <a href="utils_types.js.html#sunlight-1-line-489">line 489</a>
 			</li>
 		</ul>
 	</dd>
@@ -11517,7 +12581,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="utils_types.js.html">utils/types.js</a>,
-				 <a href="utils_types.js.html#sunlight-1-line-500">line 500</a>
+				 <a href="utils_types.js.html#sunlight-1-line-544">line 544</a>
 			</li>
 		</ul>
 	</dd>
@@ -12413,7 +13477,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="utils_types.js.html">utils/types.js</a>,
-				 <a href="utils_types.js.html#sunlight-1-line-520">line 520</a>
+				 <a href="utils_types.js.html#sunlight-1-line-564">line 564</a>
 			</li>
 		</ul>
 	</dd>
@@ -12715,7 +13779,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="utils_types.js.html">utils/types.js</a>,
-				 <a href="utils_types.js.html#sunlight-1-line-507">line 507</a>
+				 <a href="utils_types.js.html#sunlight-1-line-551">line 551</a>
 			</li>
 		</ul>
 	</dd>
@@ -13175,7 +14239,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="utils_types.js.html">utils/types.js</a>,
-				 <a href="utils_types.js.html#sunlight-1-line-528">line 528</a>
+				 <a href="utils_types.js.html#sunlight-1-line-572">line 572</a>
 			</li>
 		</ul>
 	</dd>
@@ -13333,7 +14397,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="utils_types.js.html">utils/types.js</a>,
-				 <a href="utils_types.js.html#sunlight-1-line-554">line 554</a>
+				 <a href="utils_types.js.html#sunlight-1-line-600">line 600</a>
 			</li>
 		</ul>
 	</dd>
@@ -13584,7 +14648,7 @@
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a>
 	
-		on Wed, Nov 3, 2021 12:57 PM
+		on Thu, Nov 11, 2021 3:49 PM
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

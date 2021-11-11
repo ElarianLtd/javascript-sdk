@@ -328,6 +328,12 @@ depending on the set serializer</p>
         * [new this.Customer()](#new_Elarian+Customer_new)
     * [.generateAuthToken()](#Elarian+generateAuthToken) ⇒ <code>AuthToken</code>
     * [.sendMessageByTag(tag, channelNumber, message)](#Elarian+sendMessageByTag) ⇒ <code>TagUpdateReply</code>
+    * [.replayMessagingConsentUpdate(customerNumber, channelNumber, consent, updatedAt)](#Elarian+replayMessagingConsentUpdate)
+    * [.replayMessageReactionUpdate(customerNumber, channelNumber, messageId, reaction, updatedAt)](#Elarian+replayMessageReactionUpdate)
+    * [.replayMessagingSession(customerNumber, channelNumber, sessionUpdate)](#Elarian+replayMessagingSession)
+    * [.replayMessageStatusUpdate(customerNumber, channelNumber, statusUpdate)](#Elarian+replayMessageStatusUpdate)
+    * [.replayReceivedMessage(customerNumber, channelNumber, receivedMessage)](#Elarian+replayReceivedMessage)
+    * [.replaySentMessage(customerNumber, channelNumber, sentMessage)](#Elarian+replaySentMessage)
     * [.initiatePayment(debitParty, creditParty, value)](#Elarian+initiatePayment) ⇒ <code>InitiatePaymentReply</code>
     * [.addCustomerReminderByTag(tag, reminder)](#Elarian+addCustomerReminderByTag) ⇒ <code>TagUpdateReply</code>
     * [.cancelCustomerReminderByTag(tag, key)](#Elarian+cancelCustomerReminderByTag) ⇒ <code>TagUpdateReply</code>
@@ -375,6 +381,87 @@ depending on the set serializer</p>
 | tag | <code>Tag</code> | 
 | channelNumber | <code>MessagingChannelNumber</code> | 
 | message | <code>Message</code> | 
+
+<a name="Elarian+replayMessagingConsentUpdate"></a>
+
+### elarian.replayMessagingConsentUpdate(customerNumber, channelNumber, consent, updatedAt)
+<p>Replay a messaging consent update event</p>
+
+**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
+
+| Param | Type |
+| --- | --- |
+| customerNumber | <code>CustomerNumber</code> | 
+| channelNumber | <code>MessagingChannel</code> | 
+| consent | <code>string</code> | 
+| updatedAt | <code>number</code> | 
+
+<a name="Elarian+replayMessageReactionUpdate"></a>
+
+### elarian.replayMessageReactionUpdate(customerNumber, channelNumber, messageId, reaction, updatedAt)
+<p>Replay a message reaction update event</p>
+
+**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
+
+| Param | Type |
+| --- | --- |
+| customerNumber | <code>CustomerNumber</code> | 
+| channelNumber | <code>MessagingChannel</code> | 
+| messageId | <code>string</code> | 
+| reaction | <code>string</code> | 
+| updatedAt | <code>number</code> | 
+
+<a name="Elarian+replayMessagingSession"></a>
+
+### elarian.replayMessagingSession(customerNumber, channelNumber, sessionUpdate)
+<p>Replay a messaging session event</p>
+
+**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
+
+| Param | Type |
+| --- | --- |
+| customerNumber | <code>CustomerNumber</code> | 
+| channelNumber | <code>MessagingChannel</code> | 
+| sessionUpdate | <code>MessageSessionUpdate</code> | 
+
+<a name="Elarian+replayMessageStatusUpdate"></a>
+
+### elarian.replayMessageStatusUpdate(customerNumber, channelNumber, statusUpdate)
+<p>Replay a messaging status event</p>
+
+**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
+
+| Param | Type |
+| --- | --- |
+| customerNumber | <code>CustomerNumber</code> | 
+| channelNumber | <code>MessagingChannel</code> | 
+| statusUpdate | <code>MessageStatusUpdate</code> | 
+
+<a name="Elarian+replayReceivedMessage"></a>
+
+### elarian.replayReceivedMessage(customerNumber, channelNumber, receivedMessage)
+<p>Replay a received message event</p>
+
+**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
+
+| Param | Type |
+| --- | --- |
+| customerNumber | <code>CustomerNumber</code> | 
+| channelNumber | <code>MessagingChannel</code> | 
+| receivedMessage | <code>ReceivedMessage</code> | 
+
+<a name="Elarian+replaySentMessage"></a>
+
+### elarian.replaySentMessage(customerNumber, channelNumber, sentMessage)
+<p>Replay a sent message event</p>
+
+**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
+
+| Param | Type |
+| --- | --- |
+| customerNumber | <code>CustomerNumber</code> | 
+| channelNumber | <code>MessagingChannel</code> | 
+| sentMessage | <code>SentMessage</code> | 
 
 <a name="Elarian+initiatePayment"></a>
 
@@ -508,7 +595,7 @@ depending on the set serializer</p>
 | phoneNumber | <code>string</code> | 
 | channelNumber | <code>MessagingChannelNumber</code> | 
 | sessionId | <code>string</code> | 
-| parts | <code>Array.&lt;SimulatorMessageBody&gt;</code> | 
+| parts | <code>Array.&lt;InboundMessageBody&gt;</code> | 
 | cost | <code>Cash</code> | 
 
 <a name="Simulator+receivePayment"></a>

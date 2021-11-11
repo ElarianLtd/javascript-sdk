@@ -87,6 +87,7 @@ describe('Elarian', () => {
         const { customerId } = resp;
 
         // B2C is purse to wallet, purse to mpesa, wallet to mpesa
+        // B2C wallet to airtime, purse to airtime
         // C2B is wallet to purse, mpesa to wallet, mpesa to purse
         // B2B is wallet to wallet(C2C), purse to purse
 
@@ -288,6 +289,173 @@ describe('Elarian', () => {
             'debitCustomerId',
             'creditCustomerId',
         ]);
+
+        // B2C: Airtime
+        resp = await client.initiatePayment(
+            {
+                purseId: fixtures.purseId,
+            },
+            {
+                customerNumber: {
+                    number: '+254718769882',
+                    provider: 'cellular',
+                },
+                channelNumber: {
+                    number: fixtures.paybill,
+                    channel: 'airtime',
+                },
+            },
+            {
+                amount: 10.78,
+                currencyCode: 'KES',
+            },
+        );
+        resp.should.have.properties([
+            'status',
+            'description',
+            'transactionId',
+            'debitCustomerId',
+            'creditCustomerId',
+        ]);
+    });
+
+    it('replayMessagingConsentUpdate()', async () => {
+        const customerNumber = {
+            number: '+254718769882',
+            provider: 'cellular',
+        };
+        const channel = {
+            number: fixtures.alphannumericSenderId,
+            channel: 'sms',
+        };
+        const resp = await client.replayMessagingConsentUpdate(customerNumber, channel, 'block', Date.now() / 1000);
+        resp.should.have.properties(['status', 'description', 'customerId']);
+    });
+
+    it('replayMessageReactionUpdate()', async () => {
+        const customerNumber = {
+            number: '+254718769882',
+            provider: 'cellular',
+        };
+        const channel = {
+            number: fixtures.alphannumericSenderId,
+            channel: 'sms',
+        };
+        const resp = await client.replayMessageReactionUpdate(customerNumber, channel, 'some-message-id', 'complained', Date.now() / 1000);
+        resp.should.have.properties(['status', 'description', 'customerId']);
+    });
+
+    it('replayMessagingSession()', async () => {
+        const customerNumber = {
+            number: '+254718769882',
+            provider: 'cellular',
+        };
+        const channel = {
+            number: fixtures.alphannumericSenderId,
+            channel: 'sms',
+        };
+        const sessionUpdate = {
+            sessionId: 'some-session-id',
+            startedAt: (Date.now() - 1189768) / 1000,
+            duration: 10,
+            reason: 'inactivity',
+            cost: {
+                currencyCode: 'KES',
+                amount: 10,
+            },
+        };
+        const resp = await client.replayMessagingSession(customerNumber, channel, sessionUpdate);
+        resp.should.have.properties(['status', 'description', 'customerId']);
+    });
+
+    it('replayMessageStatusUpdate()', async () => {
+        const customerNumber = {
+            number: '+254718769882',
+            provider: 'cellular',
+        };
+        const channel = {
+            number: fixtures.alphannumericSenderId,
+            channel: 'sms',
+        };
+        const messageStatus = {
+            messageId: '123dkhjbfsjkw',
+            updatedAt: Date.now() / 1000,
+            status: 'failed',
+            cost: {
+                currencyCode: 'KES',
+                amount: 10,
+            },
+        };
+        const resp = await client.replayMessageStatusUpdate(customerNumber, channel, messageStatus);
+        resp.should.have.properties(['status', 'description', 'customerId']);
+    });
+
+    it('replayReceivedMessage()', async () => {
+        const customerNumber = {
+            number: '+254718769882',
+            provider: 'cellular',
+        };
+        const channel = {
+            number: fixtures.alphannumericSenderId,
+            channel: 'sms',
+        };
+        const message = {
+            sessionId: 'some-session-id',
+            messageId: '123dkhjbfsjkw',
+            receivedAt: Date.now() / 1000,
+            parts: [
+                { text: 'Hello Test' },
+                {
+                    location: {
+                        label: 'place',
+                        address: 'The Place',
+                        latitude: 2,
+                        longitude: 123,
+                    },
+                },
+            ],
+            inReplyTo: 'some-message-id',
+            provider: 'twilio',
+            cost: {
+                currencyCode: 'KES',
+                amount: 10,
+            },
+        };
+        const resp = await client.replayReceivedMessage(customerNumber, channel, message);
+        resp.should.have.properties(['status', 'description', 'customerId']);
+    });
+
+    it('replaySentMessage()', async () => {
+        const customerNumber = {
+            number: '+254718769882',
+            provider: 'cellular',
+        };
+        const channel = {
+            number: fixtures.alphannumericSenderId,
+            channel: 'sms',
+        };
+        const message = {
+            sessionId: 'some-session-id',
+            messageId: '123dkhjbfsjkw',
+            sentAt: Date.now() / 1000,
+            message: {
+                body: {
+                    text: 'Hi There',
+                },
+                labels: ['abc', 'def'],
+                providerTag: '4443',
+                replyToken: 'dewdwe',
+            },
+            inReplyTo: 'some-message-id',
+            provider: 'twilio',
+            status: 'sent',
+            cost: {
+                currencyCode: 'KES',
+                amount: 10,
+            },
+        };
+        const resp = await client.replaySentMessage(customerNumber, channel, message);
+        resp.should.have.properties(['status', 'description', 'customerId']);
     });
 
     it('on(reminder)', (done) => {
