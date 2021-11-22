@@ -334,7 +334,9 @@ depending on the set serializer</p>
     * [.replayMessageStatusUpdate(customerNumber, channelNumber, statusUpdate)](#Elarian+replayMessageStatusUpdate)
     * [.replayReceivedMessage(customerNumber, channelNumber, receivedMessage)](#Elarian+replayReceivedMessage)
     * [.replaySentMessage(customerNumber, channelNumber, sentMessage)](#Elarian+replaySentMessage)
-    * [.initiatePayment(debitParty, creditParty, value)](#Elarian+initiatePayment) ⇒ <code>InitiatePaymentReply</code>
+    * [.initiatePayment(debitParty, creditParty, value, narration)](#Elarian+initiatePayment) ⇒ <code>InitiatePaymentReply</code>
+    * [.replayPayment(transactionId, debitParty, creditParty, status, value, narration, updatedAt)](#Elarian+replayPayment) ⇒ <code>ReplayPaymentReply</code>
+    * [.replayPaymentStatusUpdate(customerNumber, transactionId, status, updatedAt)](#Elarian+replayPaymentStatusUpdate) ⇒ <code>ReplayPaymentReply</code>
     * [.addCustomerReminderByTag(tag, reminder)](#Elarian+addCustomerReminderByTag) ⇒ <code>TagUpdateReply</code>
     * [.cancelCustomerReminderByTag(tag, key)](#Elarian+cancelCustomerReminderByTag) ⇒ <code>TagUpdateReply</code>
     * [._createCustomer(customerNumber)](#Elarian+_createCustomer) ⇒ <code>CustomerStateUpdateReply</code>
@@ -465,7 +467,7 @@ depending on the set serializer</p>
 
 <a name="Elarian+initiatePayment"></a>
 
-### elarian.initiatePayment(debitParty, creditParty, value) ⇒ <code>InitiatePaymentReply</code>
+### elarian.initiatePayment(debitParty, creditParty, value, narration) ⇒ <code>InitiatePaymentReply</code>
 <p>Initiate a payment transaction</p>
 
 **Kind**: instance method of [<code>Elarian</code>](#Elarian)  
@@ -475,6 +477,38 @@ depending on the set serializer</p>
 | debitParty | <code>CustomerPayment</code> \| <code>Wallet</code> \| <code>Purse</code> \| <code>ChannelPayment</code> | 
 | creditParty | <code>CustomerPayment</code> \| <code>Wallet</code> \| <code>Purse</code> \| <code>ChannelPayment</code> | 
 | value | <code>Cash</code> | 
+| narration | <code>string</code> | 
+
+<a name="Elarian+replayPayment"></a>
+
+### elarian.replayPayment(transactionId, debitParty, creditParty, status, value, narration, updatedAt) ⇒ <code>ReplayPaymentReply</code>
+<p>Replay a payment</p>
+
+**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| transactionId | <code>string</code> |  |
+| debitParty | <code>CustomerPayment</code> \| <code>Wallet</code> \| <code>Purse</code> \| <code>ChannelPayment</code> |  |
+| creditParty | <code>CustomerPayment</code> \| <code>Wallet</code> \| <code>Purse</code> \| <code>ChannelPayment</code> |  |
+| status | <code>string</code> | <p>one of [queued, pending_confirmation, pending_validation, validated, invalid_request, not_supported, insufficient_funds, application_error, not_allowed, duplicate_request, invalid_purse, invalid_wallet, decommissioned_customer_id, success, failed, throttled, expired, rejected, reversed]</p> |
+| value | <code>Cash</code> |  |
+| narration | <code>string</code> |  |
+| updatedAt | <code>number</code> |  |
+
+<a name="Elarian+replayPaymentStatusUpdate"></a>
+
+### elarian.replayPaymentStatusUpdate(customerNumber, transactionId, status, updatedAt) ⇒ <code>ReplayPaymentReply</code>
+<p>Replay a payment status update</p>
+
+**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| customerNumber | <code>CustomerNumber</code> |  |
+| transactionId | <code>string</code> |  |
+| status | <code>string</code> | <p>one of [queued, pending_confirmation, pending_validation, validated, invalid_request, not_supported, insufficient_funds, application_error, not_allowed, duplicate_request, invalid_purse, invalid_wallet, decommissioned_customer_id, success, failed, throttled, expired, rejected, reversed]</p> |
+| updatedAt | <code>number</code> |  |
 
 <a name="Elarian+addCustomerReminderByTag"></a>
 

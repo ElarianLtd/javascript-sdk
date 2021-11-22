@@ -154,6 +154,7 @@ describe('Simulator', () => {
                 amount: 10,
                 currencyCode: 'KES',
             },
+            'test-payment',
         ).then((resp) => {
             resp.should.have.properties([
                 'status',
@@ -189,6 +190,7 @@ describe('Simulator', () => {
                 amount: 150,
                 currencyCode: 'KES',
             },
+            'test-payment',
         ).then(() => {
             client.initiatePayment(
                 {
@@ -206,6 +208,7 @@ describe('Simulator', () => {
                     amount: _.random(10, 100),
                     currencyCode: 'KES',
                 },
+                'test-payment',
             ).then((re) => {
                 re.should.have.properties([
                     'status',
@@ -264,7 +267,7 @@ describe('Simulator', () => {
                 amount: 154,
                 currencyCode: 'KES',
             },
-            'virtual',
+            'test-payment',
         ).then((resp) => {
             resp.should.have.properties([
                 'status',

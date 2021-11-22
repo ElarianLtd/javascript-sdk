@@ -1113,7 +1113,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="initiatePayment"><span class="type-signature"></span>initiatePayment(debitParty, creditParty, value)</h4>
+    <h4 class="name" id="initiatePayment"><span class="type-signature"></span>initiatePayment(debitParty, creditParty, value, narration)</h4>
     
     
 </dt>
@@ -1243,6 +1243,30 @@
         </tr>
 
     
+
+        <tr>
+            
+                <td class="name"><code>narration</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
     </tbody>
 </table>
 
@@ -1284,7 +1308,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="payment.js.html">payment.js</a>,
-				 <a href="payment.js.html#sunlight-1-line-25">line 25</a>
+				 <a href="payment.js.html#sunlight-1-line-34">line 34</a>
 			</li>
 		</ul>
 	</dd>
@@ -1592,7 +1616,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="client.js.html">client.js</a>,
-				 <a href="client.js.html#sunlight-1-line-611">line 611</a>
+				 <a href="client.js.html#sunlight-1-line-608">line 608</a>
 			</li>
 		</ul>
 	</dd>
@@ -1787,7 +1811,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="client.js.html">client.js</a>,
-				 <a href="client.js.html#sunlight-1-line-596">line 596</a>
+				 <a href="client.js.html#sunlight-1-line-593">line 593</a>
 			</li>
 		</ul>
 	</dd>
@@ -2660,6 +2684,556 @@
             
 <hr>
 <dt>
+    <h4 class="name" id="replayPayment"><span class="type-signature"></span>replayPayment(transactionId, debitParty, creditParty, status, value, narration, updatedAt)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Replay a payment</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>transactionId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>debitParty</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#CustomerPayment">CustomerPayment</a></span>
+|
+
+<span class="param-type"><a href="global.html#Wallet">Wallet</a></span>
+|
+
+<span class="param-type"><a href="global.html#Purse">Purse</a></span>
+|
+
+<span class="param-type"><a href="global.html#ChannelPayment">ChannelPayment</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>creditParty</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#CustomerPayment">CustomerPayment</a></span>
+|
+
+<span class="param-type"><a href="global.html#Wallet">Wallet</a></span>
+|
+
+<span class="param-type"><a href="global.html#Purse">Purse</a></span>
+|
+
+<span class="param-type"><a href="global.html#ChannelPayment">ChannelPayment</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>status</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>one of [queued, pending_confirmation, pending_validation, validated, invalid_request, not_supported, insufficient_funds, application_error, not_allowed, duplicate_request, invalid_purse, invalid_wallet, decommissioned_customer_id, success, failed, throttled, expired, rejected, reversed]</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#Cash">Cash</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>narration</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>updatedAt</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="payment.js.html">payment.js</a>,
+				 <a href="payment.js.html#sunlight-1-line-91">line 91</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="global.html#ReplayPaymentReply">ReplayPaymentReply</a></span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="replayPaymentStatusUpdate"><span class="type-signature"></span>replayPaymentStatusUpdate(customerNumber, transactionId, status, updatedAt)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Replay a payment status update</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>customerNumber</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#CustomerNumber">CustomerNumber</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>transactionId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>status</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>one of [queued, pending_confirmation, pending_validation, validated, invalid_request, not_supported, insufficient_funds, application_error, not_allowed, duplicate_request, invalid_purse, invalid_wallet, decommissioned_customer_id, success, failed, throttled, expired, rejected, reversed]</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>updatedAt</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="payment.js.html">payment.js</a>,
+				 <a href="payment.js.html#sunlight-1-line-149">line 149</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="global.html#ReplayPaymentReply">ReplayPaymentReply</a></span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
     <h4 class="name" id="replayReceivedMessage"><span class="type-signature"></span>replayReceivedMessage(customerNumber, channelNumber, receivedMessage)</h4>
     
     
@@ -3288,7 +3862,7 @@
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a>
 	
-		on Mon, Nov 22, 2021 9:48 AM
+		on Mon, Nov 22, 2021 1:03 PM
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

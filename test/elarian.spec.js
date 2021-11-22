@@ -108,6 +108,7 @@ describe('Elarian', () => {
                 amount: 15456,
                 currencyCode: 'KES',
             },
+            'test-payment',
         );
         resp.should.have.properties([
             'status',
@@ -133,6 +134,7 @@ describe('Elarian', () => {
                 amount: 178.78,
                 currencyCode: 'KES',
             },
+            'test-payment',
         );
         resp.should.have.properties([
             'status',
@@ -155,6 +157,7 @@ describe('Elarian', () => {
                 amount: 123.78,
                 currencyCode: 'KES',
             },
+            'test-payment',
         );
         resp.should.have.properties([
             'status',
@@ -180,6 +183,7 @@ describe('Elarian', () => {
                 amount: 1.78,
                 currencyCode: 'KES',
             },
+            'test-payment',
         );
         resp.should.have.properties([
             'status',
@@ -209,6 +213,7 @@ describe('Elarian', () => {
                 amount: 1.78,
                 currencyCode: 'KES',
             },
+            'test-payment',
         );
         resp.should.have.properties([
             'status',
@@ -237,6 +242,7 @@ describe('Elarian', () => {
                 amount: 1.78,
                 currencyCode: 'KES',
             },
+            'test-payment',
         );
         resp.should.have.properties([
             'status',
@@ -260,6 +266,7 @@ describe('Elarian', () => {
                 amount: 10.78,
                 currencyCode: 'KES',
             },
+            'test-payment',
         );
         resp.should.have.properties([
             'status',
@@ -281,6 +288,7 @@ describe('Elarian', () => {
                 amount: 10.78,
                 currencyCode: 'KES',
             },
+            'test-payment',
         );
         resp.should.have.properties([
             'status',
@@ -309,6 +317,7 @@ describe('Elarian', () => {
                 amount: 10.78,
                 currencyCode: 'KES',
             },
+            'test-payment',
         );
         resp.should.have.properties([
             'status',
@@ -317,6 +326,45 @@ describe('Elarian', () => {
             'debitCustomerId',
             'creditCustomerId',
         ]);
+    });
+
+    it('replayPayment()', async () => {
+        let resp = await bob.getState();
+        const { customerId } = resp;
+
+        resp = await client.replayPayment(
+            'some-transaction',
+            {
+                customerNumber: bob.customerNumber,
+                channelNumber: {
+                    number: fixtures.paybill,
+                    channel: 'cellular',
+                },
+            },
+            {
+                customerId,
+                walletId: 'test_wallet',
+            },
+            'success',
+            {
+                amount: 15456,
+                currencyCode: 'KES',
+            },
+            'test narration',
+            Date.now() / 1000,
+        );
+        resp.should.have.properties(['status', 'description', 'transactionId']);
+    });
+
+    it('replayPaymentStatusUpdate()', async () => {
+        let resp = await bob.getState();
+        resp = await client.replayPaymentStatusUpdate(
+            bob.customerNumber,
+            'some-transaction',
+            'failed',
+            Date.now() / 1000,
+        );
+        resp.should.have.properties(['status', 'description', 'transactionId']);
     });
 
     it('replayMessagingConsentUpdate()', async () => {
@@ -941,6 +989,7 @@ describe('Elarian', () => {
                 amount: 1.78,
                 currencyCode: 'KES',
             },
+            'test-payment',
         )
             .then((resp) => {
                 resp.should.have.properties([
@@ -950,59 +999,6 @@ describe('Elarian', () => {
                 ]);
             })
             .catch((ex) => done(ex));
-    });
-
-    it('on(walletPaymentStatus)', (done) => {
-        let transactionId;
-        client.on('walletPaymentStatus', (data, customer) => {
-            data.should.have.properties([
-                'walletId',
-                'transactionId',
-                'status',
-            ]);
-            should.exist(customer);
-            data.transactionId.should.equal(transactionId);
-            done();
-        });
-
-        bob.getState()
-            .then(() => client.initiatePayment(
-                {
-                    purseId: fixtures.purseId,
-                },
-                {
-                    customerId: bob.customerId,
-                    walletId: 'bob_virtual_wallet',
-                },
-                {
-                    amount: 10,
-                    currencyCode: 'KES',
-                },
-            ))
-            .then(() => client.initiatePayment(
-                {
-                    customerId: bob.customerId,
-                    walletId: 'bob_virtual_wallet',
-                },
-                {
-                    customerNumber: bob.customerNumber,
-                    channelNumber: {
-                        number: fixtures.paybill,
-                        channel: 'cellular',
-                    },
-                },
-                {
-                    amount: 10,
-                    currencyCode: 'KES',
-                },
-            ))
-            .then((resp) => {
-                resp.status.should.equal('pending_confirmation');
-                transactionId = resp.transactionId;
-            })
-            .catch((err) => {
-                done(err);
-            });
     });
 
     it('on(customerActivity)', (done) => {
