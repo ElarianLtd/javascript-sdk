@@ -474,7 +474,7 @@ depending on the set serializer</p>
 
 | Param | Type |
 | --- | --- |
-| debitParty | <code>CustomerPayment</code> \| <code>Wallet</code> \| <code>Purse</code> \| <code>ChannelPayment</code> | 
+| debitParty | <code>CustomerPayment</code> \| <code>Wallet</code> \| <code>Purse</code> | 
 | creditParty | <code>CustomerPayment</code> \| <code>Wallet</code> \| <code>Purse</code> \| <code>ChannelPayment</code> | 
 | value | <code>Cash</code> | 
 | narration | <code>string</code> | 
@@ -489,7 +489,7 @@ depending on the set serializer</p>
 | Param | Type | Description |
 | --- | --- | --- |
 | transactionId | <code>string</code> |  |
-| debitParty | <code>CustomerPayment</code> \| <code>Wallet</code> \| <code>Purse</code> \| <code>ChannelPayment</code> |  |
+| debitParty | <code>CustomerPayment</code> \| <code>Wallet</code> \| <code>Purse</code> |  |
 | creditParty | <code>CustomerPayment</code> \| <code>Wallet</code> \| <code>Purse</code> \| <code>ChannelPayment</code> |  |
 | status | <code>string</code> | <p>one of [queued, pending_confirmation, pending_validation, validated, invalid_request, not_supported, insufficient_funds, application_error, not_allowed, duplicate_request, invalid_purse, invalid_wallet, decommissioned_customer_id, success, failed, throttled, expired, rejected, reversed]</p> |
 | value | <code>Cash</code> |  |

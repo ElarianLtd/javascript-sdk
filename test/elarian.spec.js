@@ -317,7 +317,7 @@ describe('Elarian', () => {
                 amount: 10.78,
                 currencyCode: 'KES',
             },
-            'test-payment',
+            'test-airtime',
         );
         resp.should.have.properties([
             'status',
