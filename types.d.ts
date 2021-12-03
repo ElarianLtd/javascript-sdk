@@ -506,9 +506,12 @@ type NotificationCallback = (message?: MessageBody, appData?: Record<string, unk
 
 /**
  * <p>A function that reacts to events</p>
+ * @param notification
+ * @param customer
+ * @param appData
  * @param [callback] - <p>A response to the event. Required for voice and ussd events</p>
  */
-type NotificationHandler = (notification: Notification, customer: Customer, callback?: NotificationCallback) => void;
+type NotificationHandler = (notification: Notification, customer: Customer, appData?: Record<string, unknown>, callback?: NotificationCallback) => void;
 
 /**
  * <p>Reminder notification</p>
