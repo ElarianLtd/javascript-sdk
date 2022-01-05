@@ -50,13 +50,11 @@ const approveLoan = async (customer, amount) => {
         name,
         balance: amount,
     });
-    await customer.sendMessage(
-        smsChannel, {
-            body: {
-                text: `Congratulations ${name}!\nYour loan of KES ${amount} has been approved!\nYou are expected to pay it back by ${new Date(repaymentDate)}`,
-            },
+    await customer.sendMessage(smsChannel, {
+        body: {
+            text: `Congratulations ${name}!\nYour loan of KES ${amount} has been approved!\nYou are expected to pay it back by ${new Date(repaymentDate)}`,
         },
-    );
+    });
     await customer.addReminder({
         key: 'moni',
         remindAt: repaymentDate / 1000,
@@ -78,23 +76,19 @@ const processPayment = async (payment, customer) => {
     });
     if (newBalance <= 0) {
         await customer.cancelReminder('moni');
-        await customer.sendMessage(
-            smsChannel, {
-                body: {
-                    text: `Thank you for your payment ${name}, your loan has been fully repaid!!`,
-                },
+        await customer.sendMessage(smsChannel, {
+            body: {
+                text: `Thank you for your payment ${name}, your loan has been fully repaid!!`,
             },
-        );
+        });
         await customer.deleteMetadata(['name', 'strike', 'balance', 'screen']); // clear state
         await customer.deleteAppData();
     } else {
-        await customer.sendMessage(
-            smsChannel, {
-                body: {
-                    text: `Hey ${name}!\nThank you for your payment, but you still owe me KES ${newBalance}`,
-                },
+        await customer.sendMessage(smsChannel, {
+            body: {
+                text: `Hey ${name}!\nThank you for your payment, but you still owe me KES ${newBalance}`,
             },
-        );
+        });
     }
 };
 
