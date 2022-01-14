@@ -11,6 +11,15 @@
 <dd></dd>
 </dl>
 
+## Functions
+
+<dl>
+<dt><a href="#initializeClient">initializeClient(config)</a> ⇒ <code><a href="#Elarian">Elarian</a></code></dt>
+<dd><p>Initialize a client</p></dd>
+<dt><a href="#initializeSimulator">initializeSimulator(config)</a> ⇒ <code><a href="#Simulator">Simulator</a></code></dt>
+<dd><p>Initialize a simulator client</p></dd>
+</dl>
+
 <a name="Client"></a>
 
 ## Client
@@ -327,6 +336,7 @@ depending on the set serializer</p>
     * [.Customer](#Elarian+Customer)
         * [new this.Customer()](#new_Elarian+Customer_new)
     * [.generateAuthToken()](#Elarian+generateAuthToken) ⇒ <code>AuthToken</code>
+    * [.initializeCustomer(params)](#Elarian+initializeCustomer) ⇒
     * [.sendMessageByTag(tag, channelNumber, message)](#Elarian+sendMessageByTag) ⇒ <code>TagUpdateReply</code>
     * [.replayMessagingConsentUpdate(customerNumber, channelNumber, consent, updatedAt)](#Elarian+replayMessagingConsentUpdate)
     * [.replayMessageReactionUpdate(customerNumber, channelNumber, messageId, reaction, updatedAt)](#Elarian+replayMessageReactionUpdate)
@@ -371,6 +381,18 @@ depending on the set serializer</p>
 <p>Generate a short-lived auth token to use instead of apiKey. Used for browser and mobile clients.</p>
 
 **Kind**: instance method of [<code>Elarian</code>](#Elarian)  
+<a name="Elarian+initializeCustomer"></a>
+
+### elarian.initializeCustomer(params) ⇒
+<p>Iitialize a customer</p>
+
+**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
+**Returns**: <p>Customer</p>  
+
+| Param | Type |
+| --- | --- |
+| params | <code>CustomerParams</code> | 
+
 <a name="Elarian+sendMessageByTag"></a>
 
 ### elarian.sendMessageByTag(tag, channelNumber, message) ⇒ <code>TagUpdateReply</code>
@@ -703,4 +725,26 @@ depending on the set serializer</p>
 | --- | --- | --- |
 | event | <code>Event</code> | <p>The event whose listener to register</p> |
 | handler | <code>NotificationHandler</code> | <p>A function that reacts to events</p> |
+
+<a name="initializeClient"></a>
+
+## initializeClient(config) ⇒ [<code>Elarian</code>](#Elarian)
+<p>Initialize a client</p>
+
+**Kind**: global function  
+
+| Param | Type |
+| --- | --- |
+| config | <code>ClientConfig</code> | 
+
+<a name="initializeSimulator"></a>
+
+## initializeSimulator(config) ⇒ [<code>Simulator</code>](#Simulator)
+<p>Initialize a simulator client</p>
+
+**Kind**: global function  
+
+| Param | Type |
+| --- | --- |
+| config | <code>ClientConfig</code> | 
 

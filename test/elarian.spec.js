@@ -5,29 +5,20 @@ const _ = require('lodash');
 const should = require('should');
 
 const fixtures = require('./fixtures');
-const { Elarian, Simulator } = require('..');
+const { initializeClient, initializeSimulator } = require('..');
 
 describe('Elarian', () => {
     let client;
     let bob;
     let simulator;
 
-    before((done) => {
-        client = new Elarian(fixtures.clientParams);
-        client
-            .on('error', done)
-            .on('connected', () => {
-                bob = new client.Customer({
-                    ...fixtures.customerNumber,
-                });
-                bob.getState().catch(done);
-                simulator = new Simulator(fixtures.clientParams);
-                simulator
-                    .on('connected', () => done())
-                    .on('error', done)
-                    .connect(fixtures.connectOpts);
-            })
-            .connect(fixtures.connectOpts);
+    before(async () => {
+        client = await initializeClient(fixtures.clientParams, fixtures.connectOpts);
+        bob = client.initializeCustomer({
+            ...fixtures.customerNumber,
+        });
+        await bob.getState();
+        simulator = await initializeSimulator(fixtures.clientParams, fixtures.connectOpts);
     });
 
     after(async () => {

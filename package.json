@@ -1,6 +1,6 @@
 {
   "name": "elarian",
-  "version": "0.2.22",
+  "version": "0.2.23",
   "description": "Elarian JavaScript SDK",
   "main": "index.js",
   "scripts": {
