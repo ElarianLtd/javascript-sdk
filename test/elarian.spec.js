@@ -1000,6 +1000,15 @@ describe('Elarian', () => {
                 'sessionId',
                 'activity',
             ]);
+            data.source.should.equal('www.elarian.com');
+            data.sessionId.should.equal('some-session');
+            data.activity.should.have.properties([
+                'key',
+                'source',
+                'sessionId',
+                'properties',
+                'createdAt',
+            ]);
             should.exist(customer);
             await fixtures.sleep(5000);
             done();
