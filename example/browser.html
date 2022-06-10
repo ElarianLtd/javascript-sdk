@@ -13,9 +13,10 @@
     <script>
         async function test() {
             const elarian = new Elarian({
-                authToken: 'el_tkn_....',
-                orgId: 'og-...',
-                appId: '...',
+                authToken: "el_tkn_19c22166788cf1ce0fdf36cef2e7f2e0c61b7f1b687fc0208429f222b12bc4db",
+                orgId: "el_org_eu_REKj4n",
+                appId: "el_app_lzf9fi",
+                debug: true,
             });
             elarian
                 .on('closed', () => console.error('connection closed'))
