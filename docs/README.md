@@ -359,7 +359,7 @@ depending on the set serializer</p>
 <a name="new_Elarian_new"></a>
 
 ### new Elarian(config)
-<p>Instantiate an elarian client. You have to call connect() on then client to start using it</p>
+<p>Instantiate an elarian client. You have to call connect() on the client to start using it</p>
 
 
 | Param | Type |
