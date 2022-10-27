@@ -668,7 +668,15 @@ describe('Elarian', () => {
         };
         const parts = [
             {
-                text: 'Hello test long long long text',
+                text: 'FB FB Hello test long long long text',
+            },
+            {
+                location: {
+                    longitude: 3.445,
+                    latitude: 8,
+                    label: 'SOme place',
+                    address: 'Yessssss Road',
+                },
             },
             {
                 media: {

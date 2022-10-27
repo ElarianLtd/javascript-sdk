@@ -192,6 +192,11 @@ describe('Customer', function fx() {
                 value: 'premium',
                 expiresAt: new Date(2025, 1, 1).getTime() / 1000,
             },
+            {
+                key: 'sort',
+                value: 'lasting',
+                expiresAt: new Date(2025, 1, 1).getTime() / 1000,
+            },
         ]);
         resp.should.have.properties(['status', 'description', 'customerId']);
 
@@ -209,6 +214,7 @@ describe('Customer', function fx() {
         resp.should.have.properties(['status', 'description', 'customerId']);
 
         await customer.getState();
+        customer.identityState.tags.map((i) => i.key).should.containDeep(['sort']);
         customer.identityState.tags.map((i) => i.key).should.not.containDeep(['kind', 'type']);
     });
 

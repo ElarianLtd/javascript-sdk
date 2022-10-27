@@ -45,7 +45,7 @@ module.exports = {
     },
 
     ussdChannel: {
-        number: process.env.USSD_CODE,
+        number: `*${process.env.USSD_CODE}#`,
         channel: 'ussd',
     },
 
@@ -60,7 +60,7 @@ module.exports = {
     messengerBot: process.env.MESSENNGER_NUMBER,
     paybill: process.env.MPESA_PAYBILL,
     purseId: process.env.PURSE_ID,
-    ussdCode: process.env.USSD_CODE,
+    ussdCode: `*${process.env.USSD_CODE}#`,
     voiceNumber: process.env.VOICE_NUMBER,
     whatsappNumber: process.env.WHATSAPP_NUMBER,
     emailSenderId: 'postmaster@sandbox388ba53b1a244f41b0f9c120783a7320.mailgun.org',
