@@ -64,6 +64,13 @@ $ npm test
 
 See [SDK Spec](https://github.com/ElarianLtd/sdk-spec) for reference.
 
+## Contributing
+
+Pull requests are welcome. For major changes, please open an issue first
+to discuss what you would like to change.
+
+Read the [contribution guide](CONTRIBUTING.md) for more information.
+
 ## Issues
 
 If you find a bug, please file an issue on [our issue tracker on GitHub](https://github.com/ElarianLtd/javascript-sdk/issues).
