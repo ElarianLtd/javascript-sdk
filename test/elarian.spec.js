@@ -1,5 +1,4 @@
-/* eslint-disable func-names */
-/* eslint-disable no-new */
+/* eslint-disable func-names, no-new */
 // eslint-disable-next-line no-unused-vars
 const _ = require('lodash');
 const should = require('should');

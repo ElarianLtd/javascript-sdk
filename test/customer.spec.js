@@ -82,7 +82,7 @@ describe('Customer', function fx() {
             {
                 sessionId: 'fake-session-id',
                 key: 'some-key',
-                properties: { ok: 1, val: false },
+                properties: { ok: 'val', val: 'foo' },
             },
         );
         resp.should.have.properties([
