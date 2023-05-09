@@ -18,8 +18,6 @@
         "monospaceLinks": false,
         "footer": "",
         "systemName": "Elarian",
-
-        "systemName": "Elarian",
         "copyright":  "Elarian",
         "includeDate": true,
         "navType": "inline",
@@ -36,7 +34,6 @@
     },
 
     "opts": {
-        "template": "node_modules/ink-docstrap/template",
         "encoding": "utf8",
         "destination": "./docs",
         "recurse": true

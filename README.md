@@ -26,25 +26,22 @@ or in the browser
 
 // ...
 
-const client = await initializeClient({
+const elarian = await initializeClient({
     apiKey: 'YOUR_API_KEY', // or authToken: 'YOUR_AUTH_TOKEN'
     orgId: 'YOUR_ORG_ID',
     appId: 'YOUR_APP_ID',
 });
 
-client.on('receivedMessage', (data, customer) => {
+elarian.on('reminder', (data, customer) => {
     // ...
 });
 
-const customer = await client.initializeCustomer({ number: '+XXXXXXXXXXXX', provider: 'cellular' });
+const humanId = 'abc';
+const data = await elarian.leaseAppData(humanId);
+await elarian.updateAppData(humanId, { ...data, status: 'good boy' });
+await elarian.updateMetadata(humanId, { name: 'alice', age: 25 });
+const { name } = await elarian.getMetadata(humanId);
 
-const state = await customer.getState();
-console.log(state);
-
-await customer.updateMetadata({ name: 'alice', age: 25 });
-const { name } = await customer.getMetadata();
-
-await customer.sendMessage({ number: 'MyAPP', channel: 'sms' }, { body: { text: `Hi ${name}, how are you?` }});
 ```
 
 See [example](example/) for a full sample app.
