@@ -6,7 +6,7 @@
   "scripts": {
     "pretest": "npm run lint",
     "posttest": "npm run build",
-    "test": "nyc mocha ./test -t 10000 --slow 500 --exit",
+    "test": "DEBUG=1 nyc mocha ./test -t 10000 --slow 500 --exit",
     "lint": "eslint .",
     "build": "rm -rf docs/ && npm run build:docs && npm run build:web",
     "build:types": "jsdoc -t node_modules/tsd-jsdoc/dist -c .jsdoc -r lib/ && mv docs/types.d.ts ./ ",
@@ -50,7 +50,7 @@
   },
   "devDependencies": {
     "dotenv": "^16.0.3",
-    "eslint": "^8.40.0",
+    "eslint": "^8.41.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-mocha": "^10.1.0",
@@ -65,7 +65,7 @@
     "promise-parallel-throttle": "^3.3.0",
     "should": "^13.2.3",
     "signale": "^1.4.0",
-    "webpack": "^5.82.0",
+    "webpack": "^5.84.1",
     "webpack-cli": "^5.1.1"
   }
 }

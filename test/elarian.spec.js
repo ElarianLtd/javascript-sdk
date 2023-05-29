@@ -96,7 +96,10 @@ describe('Elarian', () => {
     });
 
     it('updateMetadata()', async () => {
-        const resp = await client.updateMetadata(fixtures.humanId, { abc: { stringVal: 'de' /* , bytesVal: 'b3923' */ } });
+        const resp = await client.updateMetadata(
+            fixtures.humanId,
+            { abc: { stringVal: 'de' /* , bytesVal: 'b3923' */ } },
+        );
         resp.should.have.properties(['status', 'description']);
     });
 
