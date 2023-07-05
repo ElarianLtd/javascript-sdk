@@ -1,6 +1,7 @@
 /* eslint-disable func-names, no-new */
 // eslint-disable-next-line no-unused-vars
 const _ = require('lodash');
+require('should');
 
 const fixtures = require('./fixtures');
 const { initializeClient } = require('..');
@@ -83,7 +84,7 @@ describe('Elarian', () => {
                         key: 'grou_id',
                         value: 'abc',
                     },
-                    expiresAt: 123,
+                    expiresAt: (Date.now() / 1000) + 120,
                 },
             ],
         );
