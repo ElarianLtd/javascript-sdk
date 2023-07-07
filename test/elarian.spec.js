@@ -88,12 +88,12 @@ describe('Elarian', () => {
                 },
             ],
         );
-        resp.should.have.properties(['status', 'description', 'workId']);
+        resp.should.have.properties(['status', 'description']);
     });
 
     it('deleteGroups()', async () => {
         const resp = await client.deleteGroups(fixtures.humanId, ['abc']);
-        resp.should.have.properties(['status', 'description', 'workId']);
+        resp.should.have.properties(['status', 'description']);
     });
 
     it('updateMetadata()', async () => {

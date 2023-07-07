@@ -1,4 +1,32 @@
-const Client = require('./client');
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: elarian.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: elarian.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const Client = require('./client');
 
 const {
     ElarianMessages,
@@ -86,6 +114,9 @@ Elarian.prototype.createHuman = function createHuman(id) {
                         const result = {
                             status: res.getStatus(),
                             description: res.getDescription(),
+                            workId: (res.getWorkId() || {
+                                getValue: () => undefined,
+                            }).getValue(),
                         };
                         resolve(result);
                     } catch (ex) {
@@ -139,6 +170,9 @@ Elarian.prototype.addReminder = function addReminder(id, reminder) {
                         const result = {
                             status: res.getStatus(),
                             description: res.getDescription(),
+                            workId: (res.getWorkId() || {
+                                getValue: () => undefined,
+                            }).getValue(),
                         };
                         resolve(result);
                     } catch (ex) {
@@ -242,6 +276,9 @@ Elarian.prototype.cancelReminder = function cancelReminder(id, reminder) {
                         const result = {
                             status: res.getStatus(),
                             description: res.getDescription(),
+                            workId: (res.getWorkId() || {
+                                getValue: () => undefined,
+                            }).getValue(),
                         };
                         resolve(result);
                     } catch (ex) {
@@ -340,10 +377,13 @@ Elarian.prototype.updateGroups = function updateGroups(id, groups) {
                     try {
                         const res = AppToServerCommandReply
                             .deserializeBinary(value.data)
-                            .getUpdateState();
+                            .getGroupCommand();
                         const result = {
                             status: res.getStatus(),
                             description: res.getDescription(),
+                            workId: (res.getWorkId() || {
+                                getValue: () => undefined,
+                            }).getValue(),
                         };
                         resolve(result);
                     } catch (ex) {
@@ -388,10 +428,13 @@ Elarian.prototype.deleteGroups = function deleteGroups(id, groups) {
                     try {
                         const res = AppToServerCommandReply
                             .deserializeBinary(value.data)
-                            .getUpdateState();
+                            .getGroupCommand();
                         const result = {
                             status: res.getStatus(),
                             description: res.getDescription(),
+                            workId: (res.getWorkId() || {
+                                getValue: () => undefined,
+                            }).getValue(),
                         };
                         resolve(result);
                     } catch (ex) {
@@ -406,7 +449,7 @@ Elarian.prototype.deleteGroups = function deleteGroups(id, groups) {
 /**
  * Update a human's metadata
  * @param {string} id a human id
- * @param {map<string, DataMapValue>} updates
+ * @param {map&lt;string, DataMapValue>} updates
  * @returns {Reply}
  * @memberof Elarian
  */
@@ -449,6 +492,9 @@ Elarian.prototype.updateMetadata = function updateMetadata(id, updates) {
                         const result = {
                             status: res.getStatus(),
                             description: res.getDescription(),
+                            workId: (res.getWorkId() || {
+                                getValue: () => undefined,
+                            }).getValue(),
                         };
                         resolve(result);
                     } catch (ex) {
@@ -498,6 +544,9 @@ Elarian.prototype.deleteMetadata = function deleteMetadata(id, keys) {
                         const result = {
                             status: res.getStatus(),
                             description: res.getDescription(),
+                            workId: (res.getWorkId() || {
+                                getValue: () => undefined,
+                            }).getValue(),
                         };
                         resolve(result);
                     } catch (ex) {
@@ -652,3 +701,26 @@ Elarian.prototype.deleteAppState = function deleteAppState(id) {
 };
 
 module.exports = Elarian;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Client.html">Client</a></li><li><a href="Elarian.html">Elarian</a></li></ul><h3>Global</h3><ul><li><a href="global.html#initializeClient">initializeClient</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed Jul 05 2023 17:28:25 GMT+0300 (East Africa Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
