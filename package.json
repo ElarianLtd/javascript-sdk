@@ -49,8 +49,8 @@
     "ws": "^8.13.0"
   },
   "devDependencies": {
-    "dotenv": "^16.0.3",
-    "eslint": "^8.41.0",
+    "dotenv": "^16.3.1",
+    "eslint": "^8.44.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-mocha": "^10.1.0",
@@ -65,7 +65,7 @@
     "promise-parallel-throttle": "^3.3.0",
     "should": "^13.2.3",
     "signale": "^1.4.0",
-    "webpack": "^5.84.1",
-    "webpack-cli": "^5.1.1"
+    "webpack": "^5.88.1",
+    "webpack-cli": "^5.1.4"
   }
 }
