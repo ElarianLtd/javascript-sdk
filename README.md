@@ -40,7 +40,6 @@ const humanId = 'abc';
 const data = await elarian.leaseAppData(humanId);
 await elarian.updateAppData(humanId, { ...data, status: 'good boy' });
 await elarian.updateMetadata(humanId, { name: 'alice', age: 25 });
-const { name } = await elarian.getMetadata(humanId);
 
 ```
 
