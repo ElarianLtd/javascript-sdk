@@ -25,11 +25,6 @@ describe('Elarian', () => {
         resp.should.have.properties(['token', 'lifetime']);
     });
 
-    it('createHuman()', async () => {
-        const resp = await client.createHuman(fixtures.humanId);
-        resp.should.have.properties(['status', 'description']);
-    });
-
     it('addReminder()', async () => {
         const resp = await client.addReminder(
             fixtures.humanId,
@@ -109,14 +104,15 @@ describe('Elarian', () => {
         resp.should.have.properties(['status', 'description']);
     });
 
-    it('leaseAppState()', async () => {
-        const resp = await client.leaseAppState(fixtures.humanId);
-        resp.should.have.properties(['status', 'description', 'state']);
-    });
-
     it('updateAppState()', async () => {
         const resp = await client.updateAppState(fixtures.humanId, { stringVal: 'dewddwe' });
         resp.should.have.properties(['status', 'description']);
+    });
+
+    it('leaseAppState()', async () => {
+        const resp = await client.leaseAppState(fixtures.humanId);
+        resp.should.have.properties(['status', 'description', 'state']);
+        resp.state.should.have.properties(['stringVal', 'bytesVal']);
     });
 
     it('deleteAppState()', async () => {

@@ -91,7 +91,6 @@
 * [Elarian](#Elarian) ⇐ [<code>Client</code>](#Client)
     * [new Elarian(config)](#new_Elarian_new)
     * [.generateAuthToken()](#Elarian+generateAuthToken) ⇒ <code>AuthToken</code>
-    * [.createHuman(id)](#Elarian+createHuman) ⇒ <code>Reply</code>
     * [.addReminder(id, reminder)](#Elarian+addReminder) ⇒ <code>Reply</code>
     * [.addGroupReminder(group, reminder)](#Elarian+addGroupReminder) ⇒ <code>Reply</code>
     * [.cancelReminder(id, reminder)](#Elarian+cancelReminder) ⇒ <code>Reply</code>
@@ -125,17 +124,6 @@
 <p>Generate a short-lived auth token to use instead of apiKey. Used for browser and mobile clients.</p>
 
 **Kind**: instance method of [<code>Elarian</code>](#Elarian)  
-<a name="Elarian+createHuman"></a>
-
-### elarian.createHuman(id) ⇒ <code>Reply</code>
-<p>Create a human</p>
-
-**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| id | <code>string</code> | <p>human id</p> |
-
 <a name="Elarian+addReminder"></a>
 
 ### elarian.addReminder(id, reminder) ⇒ <code>Reply</code>

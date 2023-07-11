@@ -36,11 +36,11 @@ elarian.on('reminder', (data, customer) => {
     // ...
 });
 
-const humanId = 'abc';
-const { state } = await elarian.leaseAppState(humanId);
+const userId = 'abc...';
+const { state } = await elarian.leaseAppState(userId);
 const data = JSON.parse(state.stringVal);
-await elarian.updateAppState(humanId, { stringVal: JSON.stringify({ ...data, status: 'good boy' }) });
-await elarian.updateMetadata(humanId, { bio: { bytesVal: Buffer.from('age=29;gender=female') }});
+await elarian.updateAppState(userId, { stringVal: JSON.stringify({ ...data, status: 'good boy' }) });
+await elarian.updateMetadata(userId, { bio: { bytesVal: Buffer.from('age=29;gender=female') }});
 
 ```
 
@@ -72,4 +72,5 @@ If you find a bug, please file an issue on [our issue tracker on GitHub](https:/
 
 ## Known Issues
 
+- Missing method to lease/get/fetch user metadata
 - `resumable` connection options prevents app from connecting
