@@ -37,13 +37,12 @@ elarian.on('reminder', (data, customer) => {
 });
 
 const humanId = 'abc';
-const data = await elarian.leaseAppData(humanId);
-await elarian.updateAppState(humanId, { ...data, status: 'good boy' });
-await elarian.updateMetadata(humanId, { name: 'alice', age: 25 });
+const { state } = await elarian.leaseAppState(humanId);
+const data = JSON.parse(state.stringVal);
+await elarian.updateAppState(humanId, { stringVal: JSON.stringify({ ...data, status: 'good boy' }) });
+await elarian.updateMetadata(humanId, { bio: { bytesVal: Buffer.from('age=29;gender=female') }});
 
 ```
-
-See [example](example/) for a full sample app.
 
 ## Documentation
 
