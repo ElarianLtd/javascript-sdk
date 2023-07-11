@@ -38,7 +38,7 @@ elarian.on('reminder', (data, customer) => {
 
 const humanId = 'abc';
 const data = await elarian.leaseAppData(humanId);
-await elarian.updateAppData(humanId, { ...data, status: 'good boy' });
+await elarian.updateAppState(humanId, { ...data, status: 'good boy' });
 await elarian.updateMetadata(humanId, { name: 'alice', age: 25 });
 
 ```
