@@ -32,8 +32,8 @@ elarian.on('consentDenied', (userId, data) => {
 
 const userId = 'abc...';
 const { state } = await elarian.fetchAppState(userId);
-const data = JSON.parse(state.stringVal);
-await elarian.updateAppState(userId, { state: JSON.stringify({ ...data, status: 'good boy' }) });
+const data = JSON.parse(state.toString());
+await elarian.updateAppState(userId, { state: Buffer.from(JSON.stringify({ ...data, status: 'good boy' })) });
 
 ```
 
