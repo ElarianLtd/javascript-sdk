@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package com.elarian.hera;
+
+option go_package="elarian/hera";
+
+service SocialService {
+    /* TODO */
+}
