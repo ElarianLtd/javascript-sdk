@@ -8,8 +8,8 @@ const utils = require('../lib/utils');
 let appStateService;
 
 const clientParams = {
-    appId: process.env.APP_ID,
-    sessionId: process.env.SESSION_ID,
+    appId: process.env.APP_ID ? parseInt(process.env.APP_ID, 10) : 123,
+    sessionId: process.env.SESSION_ID || 'test_session',
     options: {
         dev: true,
         uris: {
