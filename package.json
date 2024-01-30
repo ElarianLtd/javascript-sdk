@@ -33,6 +33,7 @@
     "validate.js": "^0.13.1"
   },
   "devDependencies": {
+    "@alenon/grpc-mock-server": "^3.1.8",
     "dotenv": "^16.3.1",
     "eslint": "^8.55.0",
     "eslint-config-airbnb-base": "^15.0.0",
