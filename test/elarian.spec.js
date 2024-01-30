@@ -10,7 +10,8 @@ describe('Elarian', () => {
     let client;
 
     before(async () => {
-        client = await initializeClient(fixtures.clientParams, fixtures.connectOpts);
+        await fixtures.startMockAppStateService();
+        client = await initializeClient(fixtures.clientParams);
     });
 
     after(async () => {
@@ -18,12 +19,13 @@ describe('Elarian', () => {
         client.disconnect();
         await fixtures.sleep(1500);
         client = null;
+        await fixtures.stopMockAppStateService();
     });
 
     it('updateAppState()', async () => {
-        const data = Buffer.from([]);
+        const data = Buffer.from(JSON.stringify([1, 2, 3]));
         const resp = await client.updateAppState(data);
-        resp.should.have.properties(['status', 'description']);
+        resp.should.have.properties(['sessionId', 'appId', 'state']);
     });
 
     it('fetchAppState()', async () => {
