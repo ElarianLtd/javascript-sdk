@@ -16,31 +16,24 @@ $ npm install elarian@latest
 
 ```javascript
 
-// on node
 const { initializeClient }  = require('elarian');
-/*
-or in the browser
-<script src="web.js"></script>
-// or import { initializeClient } from 'elarian/web'
-*/
+
 
 // ...
 
 const elarian = await initializeClient({
-    apiKey: 'YOUR_API_KEY', // or authToken: 'YOUR_AUTH_TOKEN'
-    orgId: 'YOUR_ORG_ID',
+    sessionId: 'YOUR_SESSION_ID',
     appId: 'YOUR_APP_ID',
 });
 
-elarian.on('reminder', (data, customer) => {
+elarian.on('consentDenied', (userId, data) => {
     // ...
 });
 
 const userId = 'abc...';
-const { state } = await elarian.leaseAppState(userId);
-const data = JSON.parse(state.stringVal);
-await elarian.updateAppState(userId, { stringVal: JSON.stringify({ ...data, status: 'good boy' }) });
-await elarian.updateMetadata(userId, { bio: { bytesVal: Buffer.from('age=29;gender=female') }});
+const { state } = await elarian.fetchAppState();
+const data = JSON.parse(state.toString());
+await elarian.updateAppState({ state: Buffer.from(JSON.stringify({ ...data, status: 'good boy' })) });
 
 ```
 

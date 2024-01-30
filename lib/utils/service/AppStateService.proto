@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package com.elarian.hera.proto;
+
+message AppState {
+  int64 appId = 1;
+  string sessionId = 2;
+  bytes state = 3;
+}
+
+message GetAppStateRequest {
+  int64 appId = 1;
+  string sessionId = 2;
+}
+
+message UpdateAppStateRequest {
+  AppState state = 1;
+}
+
+service AppStateService {
+  rpc GetAppState (GetAppStateRequest) returns (AppState);
+  rpc UpdateAppState (UpdateAppStateRequest) returns (AppState);
+}

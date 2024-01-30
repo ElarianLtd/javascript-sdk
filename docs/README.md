@@ -90,18 +90,8 @@
 
 * [Elarian](#Elarian) ⇐ [<code>Client</code>](#Client)
     * [new Elarian(config)](#new_Elarian_new)
-    * [.generateAuthToken()](#Elarian+generateAuthToken) ⇒ <code>AuthToken</code>
-    * [.addReminder(id, reminder)](#Elarian+addReminder) ⇒ <code>Reply</code>
-    * [.addGroupReminder(group, reminder)](#Elarian+addGroupReminder) ⇒ <code>Reply</code>
-    * [.cancelReminder(id, reminder)](#Elarian+cancelReminder) ⇒ <code>Reply</code>
-    * [.cancelGroupReminder(group, reminder)](#Elarian+cancelGroupReminder) ⇒ <code>Reply</code>
-    * [.updateGroups(id, groups)](#Elarian+updateGroups) ⇒ <code>Reply</code>
-    * [.deleteGroups(id, groups)](#Elarian+deleteGroups) ⇒ <code>Reply</code>
-    * [.updateMetadata(id, updates)](#Elarian+updateMetadata) ⇒ <code>Reply</code>
-    * [.deleteMetadata(id, keys)](#Elarian+deleteMetadata) ⇒ <code>Reply</code>
-    * [.leaseAppState(id)](#Elarian+leaseAppState) ⇒ <code>StateReply</code>
-    * [.updateAppState(id, state)](#Elarian+updateAppState) ⇒ <code>StateReply</code>
-    * [.deleteAppState(id)](#Elarian+deleteAppState) ⇒ <code>StateReply</code>
+    * [.fetchAppState()](#Elarian+fetchAppState) ⇒ <code>AppState</code>
+    * [.updateAppState(data)](#Elarian+updateAppState) ⇒ <code>AppState</code>
     * [.connect()](#Client+connect) ⇒ [<code>Elarian</code>](#Elarian)
     * [.isConnected()](#Client+isConnected) ⇒ <code>boolean</code>
     * [.disconnect()](#Client+disconnect)
@@ -118,141 +108,22 @@
 | --- | --- |
 | config | <code>ClientConfig</code> | 
 
-<a name="Elarian+generateAuthToken"></a>
+<a name="Elarian+fetchAppState"></a>
 
-### elarian.generateAuthToken() ⇒ <code>AuthToken</code>
-<p>Generate a short-lived auth token to use instead of apiKey. Used for browser and mobile clients.</p>
-
-**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
-<a name="Elarian+addReminder"></a>
-
-### elarian.addReminder(id, reminder) ⇒ <code>Reply</code>
-<p>Add a reminder</p>
-
-**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| id | <code>string</code> | <p>human id</p> |
-| reminder | <code>Reminder</code> | <p>a reminder</p> |
-
-<a name="Elarian+addGroupReminder"></a>
-
-### elarian.addGroupReminder(group, reminder) ⇒ <code>Reply</code>
-<p>Add a group reminder</p>
-
-**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| group | <code>IndexMapping</code> |  |
-| reminder | <code>Reminder</code> | <p>a reminder</p> |
-
-<a name="Elarian+cancelReminder"></a>
-
-### elarian.cancelReminder(id, reminder) ⇒ <code>Reply</code>
-<p>Cancel a reminder</p>
-
-**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| id | <code>string</code> | <p>human id</p> |
-| reminder | <code>string</code> | <p>a reminder key</p> |
-
-<a name="Elarian+cancelGroupReminder"></a>
-
-### elarian.cancelGroupReminder(group, reminder) ⇒ <code>Reply</code>
-<p>Cancel a group reminder</p>
-
-**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| group | <code>IndexMapping</code> |  |
-| reminder | <code>string</code> | <p>a reminder key</p> |
-
-<a name="Elarian+updateGroups"></a>
-
-### elarian.updateGroups(id, groups) ⇒ <code>Reply</code>
-<p>Update a human's groups</p>
-
-**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| id | <code>string</code> | <p>a human id</p> |
-| groups | <code>Array.&lt;GroupIndex&gt;</code> |  |
-
-<a name="Elarian+deleteGroups"></a>
-
-### elarian.deleteGroups(id, groups) ⇒ <code>Reply</code>
-<p>Delete a human's groups</p>
-
-**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| id | <code>string</code> | <p>a human id</p> |
-| groups | <code>Array.&lt;string&gt;</code> |  |
-
-<a name="Elarian+updateMetadata"></a>
-
-### elarian.updateMetadata(id, updates) ⇒ <code>Reply</code>
-<p>Update a human's metadata</p>
-
-**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| id | <code>string</code> | <p>a human id</p> |
-| updates | <code>map.&lt;string, DataMapValue&gt;</code> |  |
-
-<a name="Elarian+deleteMetadata"></a>
-
-### elarian.deleteMetadata(id, keys) ⇒ <code>Reply</code>
-<p>Delete a human's metadata</p>
-
-**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| id | <code>string</code> | <p>a human id</p> |
-| keys | <code>Array.&lt;string&gt;</code> |  |
-
-<a name="Elarian+leaseAppState"></a>
-
-### elarian.leaseAppState(id) ⇒ <code>StateReply</code>
+### elarian.fetchAppState() ⇒ <code>AppState</code>
 <p>Lease app state</p>
 
 **Kind**: instance method of [<code>Elarian</code>](#Elarian)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| id | <code>string</code> | <p>a human id</p> |
-
 <a name="Elarian+updateAppState"></a>
 
-### elarian.updateAppState(id, state) ⇒ <code>StateReply</code>
+### elarian.updateAppState(data) ⇒ <code>AppState</code>
 <p>Update app state</p>
 
 **Kind**: instance method of [<code>Elarian</code>](#Elarian)  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| id | <code>string</code> | <p>a human id</p> |
-| state | <code>DataMapValue</code> |  |
-
-<a name="Elarian+deleteAppState"></a>
-
-### elarian.deleteAppState(id) ⇒ <code>StateReply</code>
-<p>Delete app state</p>
-
-**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| id | <code>string</code> | <p>a human id</p> |
+| Param | Type |
+| --- | --- |
+| data | <code>Buffer</code> | 
 
 <a name="Client+connect"></a>
 
