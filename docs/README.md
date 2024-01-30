@@ -90,8 +90,8 @@
 
 * [Elarian](#Elarian) ⇐ [<code>Client</code>](#Client)
     * [new Elarian(config)](#new_Elarian_new)
-    * [.fetchAppState(id)](#Elarian+fetchAppState) ⇒ <code>AppState</code>
-    * [.updateAppState(id, data)](#Elarian+updateAppState) ⇒ <code>AppState</code>
+    * [.fetchAppState()](#Elarian+fetchAppState) ⇒ <code>AppState</code>
+    * [.updateAppState(data)](#Elarian+updateAppState) ⇒ <code>AppState</code>
     * [.connect()](#Client+connect) ⇒ [<code>Elarian</code>](#Elarian)
     * [.isConnected()](#Client+isConnected) ⇒ <code>boolean</code>
     * [.disconnect()](#Client+disconnect)
@@ -110,26 +110,20 @@
 
 <a name="Elarian+fetchAppState"></a>
 
-### elarian.fetchAppState(id) ⇒ <code>AppState</code>
+### elarian.fetchAppState() ⇒ <code>AppState</code>
 <p>Lease app state</p>
 
 **Kind**: instance method of [<code>Elarian</code>](#Elarian)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| id | <code>string</code> | <p>an elarian id</p> |
-
 <a name="Elarian+updateAppState"></a>
 
-### elarian.updateAppState(id, data) ⇒ <code>AppState</code>
+### elarian.updateAppState(data) ⇒ <code>AppState</code>
 <p>Update app state</p>
 
 **Kind**: instance method of [<code>Elarian</code>](#Elarian)  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| id | <code>string</code> | <p>an elarian id</p> |
-| data | <code>AppState</code> |  |
+| Param | Type |
+| --- | --- |
+| data | <code>Buffer</code> | 
 
 <a name="Client+connect"></a>
 

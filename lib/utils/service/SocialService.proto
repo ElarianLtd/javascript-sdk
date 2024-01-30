@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package com.elarian.hera;
+package com.elarian.hera.proto;
 
 option go_package="elarian/hera";
 

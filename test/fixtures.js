@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const clientParams = {
     appId: process.env.APP_ID,
-    apiKey: process.env.API_KEY,
+    sessionId: process.env.SESSION_ID,
 };
 
 module.exports = {

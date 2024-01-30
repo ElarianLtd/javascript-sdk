@@ -22,12 +22,12 @@ describe('Elarian', () => {
 
     it('updateAppState()', async () => {
         const data = Buffer.from([]);
-        const resp = await client.updateAppState(fixtures.elarianId, data);
+        const resp = await client.updateAppState(data);
         resp.should.have.properties(['status', 'description']);
     });
 
-    it('fetcheAppState()', async () => {
-        const resp = await client.fetcheAppState(fixtures.elarianId);
-        resp.should.have.properties(['userId', 'appId', 'state']);
+    it('fetchAppState()', async () => {
+        const resp = await client.fetchAppState();
+        resp.should.have.properties(['sessionId', 'appId', 'state']);
     });
 });

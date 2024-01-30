@@ -22,7 +22,7 @@ const { initializeClient }  = require('elarian');
 // ...
 
 const elarian = await initializeClient({
-    apiKey: 'YOUR_API_KEY',
+    sessionId: 'YOUR_SESSION_ID',
     appId: 'YOUR_APP_ID',
 });
 
@@ -31,9 +31,9 @@ elarian.on('consentDenied', (userId, data) => {
 });
 
 const userId = 'abc...';
-const { state } = await elarian.fetchAppState(userId);
+const { state } = await elarian.fetchAppState();
 const data = JSON.parse(state.toString());
-await elarian.updateAppState(userId, { state: Buffer.from(JSON.stringify({ ...data, status: 'good boy' })) });
+await elarian.updateAppState({ state: Buffer.from(JSON.stringify({ ...data, status: 'good boy' })) });
 
 ```
 
