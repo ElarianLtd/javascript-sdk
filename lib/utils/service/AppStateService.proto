@@ -3,14 +3,14 @@ syntax = "proto3";
 package com.elarian.hera.proto;
 
 message AppState {
-  int64 appId = 1;
-  string sessionId = 2;
+  string appId = 1;
+  string token = 2;
   bytes state = 3;
 }
 
 message GetAppStateRequest {
-  int64 appId = 1;
-  string sessionId = 2;
+  string appId = 1;
+  string token = 2;
 }
 
 message UpdateAppStateRequest {

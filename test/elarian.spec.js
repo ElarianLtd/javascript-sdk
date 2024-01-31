@@ -25,11 +25,11 @@ describe('Elarian', () => {
     it('updateAppState()', async () => {
         const data = Buffer.from(JSON.stringify([1, 2, 3]));
         const resp = await client.updateAppState(data);
-        resp.should.have.properties(['sessionId', 'appId', 'state']);
+        resp.should.have.properties(['token', 'appId', 'state']);
     });
 
     it('fetchAppState()', async () => {
         const resp = await client.fetchAppState();
-        resp.should.have.properties(['sessionId', 'appId', 'state']);
+        resp.should.have.properties(['token', 'appId', 'state']);
     });
 });
