@@ -22,7 +22,7 @@ const { initializeClient }  = require('elarian');
 // ...
 
 const elarian = await initializeClient({
-    sessionId: 'YOUR_SESSION_ID',
+    token: 'YOUR_TOKEN',
     appId: 'YOUR_APP_ID',
 });
 
