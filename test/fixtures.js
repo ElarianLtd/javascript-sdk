@@ -42,7 +42,7 @@ module.exports = {
             GetAppState: (call, callback) => {
                 const res = proto.AppState.constructor({
                     appId: process.env.APP_ID,
-                    sessionId: process.env.SESSION_ID,
+                    token: process.env.TOKEN,
                     state: Buffer.from(JSON.stringify({ abc: 1 })),
                 });
                 callback(null, res);
@@ -50,7 +50,7 @@ module.exports = {
             UpdateAppState: (call, callback) => {
                 const res = proto.AppState.constructor({
                     appId: process.env.APP_ID,
-                    sessionId: process.env.SESSION_ID,
+                    token: process.env.TOKEN,
                     state: Buffer.from(JSON.stringify({ abc: 1 })),
                 });
                 callback(null, res);
