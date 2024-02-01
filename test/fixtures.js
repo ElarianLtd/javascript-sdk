@@ -43,7 +43,7 @@ module.exports = {
                 const state = proto.AppState.constructor({
                     appId: process.env.APP_ID,
                     token: process.env.TOKEN,
-                    state: [Buffer.from(JSON.stringify({ abc: 1 }))],
+                    state: Buffer.from(JSON.stringify({ abc: 1 })),
                 });
                 const res = proto.GetAppStatesReply.constructor({
                     states: [state],
