@@ -90,7 +90,7 @@
 
 * [Elarian](#Elarian) ⇐ [<code>Client</code>](#Client)
     * [new Elarian(config)](#new_Elarian_new)
-    * [.fetchAppState()](#Elarian+fetchAppState) ⇒ <code>AppState</code>
+    * [.fetchAppState(appIds)](#Elarian+fetchAppState) ⇒ <code>AppState</code> \| <code>Array.&lt;AppState&gt;</code>
     * [.updateAppState(data)](#Elarian+updateAppState) ⇒ <code>AppState</code>
     * [.connect()](#Client+connect) ⇒ [<code>Elarian</code>](#Elarian)
     * [.isConnected()](#Client+isConnected) ⇒ <code>boolean</code>
@@ -110,10 +110,15 @@
 
 <a name="Elarian+fetchAppState"></a>
 
-### elarian.fetchAppState() ⇒ <code>AppState</code>
-<p>Lease app state</p>
+### elarian.fetchAppState(appIds) ⇒ <code>AppState</code> \| <code>Array.&lt;AppState&gt;</code>
+<p>Fetch your app state</p>
 
 **Kind**: instance method of [<code>Elarian</code>](#Elarian)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| appIds | <code>Array.&lt;String&gt;</code> | <p>Other apps whose state you want to get. This trigger a consent notification to the user</p> |
+
 <a name="Elarian+updateAppState"></a>
 
 ### elarian.updateAppState(data) ⇒ <code>AppState</code>
