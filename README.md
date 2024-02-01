@@ -26,14 +26,17 @@ const elarian = await initializeClient({
     appId: 'YOUR_APP_ID',
 });
 
-elarian.on('consentDenied', (userId, data) => {
+elarian.on('consentDenied', (userId) => {
     // ...
 });
 
-const userId = 'abc...';
+elarian.on('consentGranted', (userId, data) => {
+    // ...
+});
+
 const { state } = await elarian.fetchAppState();
 const data = JSON.parse(state.toString());
-await elarian.updateAppState({ state: Buffer.from(JSON.stringify({ ...data, status: 'good boy' })) });
+await elarian.updateAppState(Buffer.from(JSON.stringify({ ...data, status: 'good boy' })));
 
 ```
 
@@ -65,5 +68,5 @@ If you find a bug, please file an issue on [our issue tracker on GitHub](https:/
 
 ## Known Issues
 
-- Missing method to lease/get/fetch user metadata
-- `resumable` connection options prevents app from connecting
+- Missing partial state updates
+- Missing consent event notifications
