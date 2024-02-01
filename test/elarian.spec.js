@@ -32,4 +32,10 @@ describe('Elarian', () => {
         const resp = await client.fetchAppState();
         resp.should.have.properties(['token', 'appId', 'state']);
     });
+
+    it('fetchAppState(appIds[])', async () => {
+        const resp = await client.fetchAppState(['app1', 'app2']);
+        resp.should.be.an.Array();
+        resp[0].should.have.properties(['token', 'appId', 'state']);
+    });
 });

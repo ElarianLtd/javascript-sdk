@@ -8,9 +8,14 @@ message AppState {
   bytes state = 3;
 }
 
-message GetAppStateRequest {
+message GetAppStatesRequest {
   string appId = 1;
   string token = 2;
+  repeated string appIds = 3;
+}
+
+message GetAppStatesReply {
+  repeated AppState states = 1;
 }
 
 message UpdateAppStateRequest {
@@ -18,6 +23,6 @@ message UpdateAppStateRequest {
 }
 
 service AppStateService {
-  rpc GetAppState (GetAppStateRequest) returns (AppState);
+  rpc GetAppState (GetAppStatesRequest) returns (GetAppStatesReply);
   rpc UpdateAppState (UpdateAppStateRequest) returns (AppState);
 }
