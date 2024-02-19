@@ -2,8 +2,29 @@ syntax = "proto3";
 
 package com.elarian.hera.proto;
 
-option go_package="elarian/hera";
+message Reply {
+  bool success = 1;
+  string message = 2;
+}
+
+message Cash {
+  double amount = 1;
+  string currency = 2;
+}
+
+message SendMessageRequest {
+  string appId = 1;
+  string token = 2;
+  string message = 3;
+}
+
+message CollectPaymentRequest {
+  string appId = 1;
+  string token = 2;
+  Cash amount = 3;
+}
 
 service SocialService {
-    /* TODO */
+  rpc SendMessage (SendMessageRequest) returns (Reply);
+  rpc CollectPayment (CollectPaymentRequest) returns (Reply);
 }
