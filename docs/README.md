@@ -92,6 +92,8 @@
     * [new Elarian(config)](#new_Elarian_new)
     * [.fetchAppState(appIds)](#Elarian+fetchAppState) ⇒ <code>AppState</code> \| <code>Array.&lt;AppState&gt;</code>
     * [.updateAppState(data)](#Elarian+updateAppState) ⇒ <code>AppState</code>
+    * [.sendMessage(message)](#Elarian+sendMessage) ⇒ <code>Response</code>
+    * [.collectPayment(amount)](#Elarian+collectPayment) ⇒ <code>Response</code>
     * [.connect()](#Client+connect) ⇒ [<code>Elarian</code>](#Elarian)
     * [.isConnected()](#Client+isConnected) ⇒ <code>boolean</code>
     * [.disconnect()](#Client+disconnect)
@@ -129,6 +131,28 @@
 | Param | Type |
 | --- | --- |
 | data | <code>Buffer</code> | 
+
+<a name="Elarian+sendMessage"></a>
+
+### elarian.sendMessage(message) ⇒ <code>Response</code>
+<p>Send user a message</p>
+
+**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
+
+| Param | Type |
+| --- | --- |
+| message | <code>string</code> | 
+
+<a name="Elarian+collectPayment"></a>
+
+### elarian.collectPayment(amount) ⇒ <code>Response</code>
+<p>Initiale payment collection from user</p>
+
+**Kind**: instance method of [<code>Elarian</code>](#Elarian)  
+
+| Param | Type |
+| --- | --- |
+| amount | <code>Cash</code> | 
 
 <a name="Client+connect"></a>
 

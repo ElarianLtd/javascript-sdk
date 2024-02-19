@@ -35,14 +35,18 @@ elarian.on('consentGranted', (userId, data) => {
 });
 
 const { state } = await elarian.fetchAppState();
-const data = JSON.parse(state.toString());
-await elarian.updateAppState(Buffer.from(JSON.stringify({ ...data, status: 'good boy' })));
+
+await elarian.updateAppState(Buffer.from('abc'));
+
+await elarian.sendMessage('Hello test');
+
+await elarian.collectPayment({ amount: 10, currency: 'UGX' });
 
 ```
 
 ## Documentation
 
-Take a look at the [product documentation](https://developers.elarian.com/). For detailed info on this SDK, see the [reference](https://elarianltd.github.io/javascript-sdk/index.html).
+For detailed info on this SDK, see the [reference](https://elarianltd.github.io/javascript-sdk/index.html).
 
 ## Development
 
@@ -70,3 +74,4 @@ If you find a bug, please file an issue on [our issue tracker on GitHub](https:/
 
 - Missing partial state updates
 - Missing consent event notifications
+- Missing sendMessage() and collectPayment() implementations
